@@ -53,11 +53,11 @@ const about = () => {
                         <div className='col-span-3 flex flex-col items-start justify-start xl:col-span-4 md:order-2 md:col-span-8'>
                             <h2 className='mb-4 text-lg font-bold uppercase text-dark/75 dark:text-light/75'>Biography</h2>
                             <p className='font-medium'>
-                                Greetings, I'm Feecon – a web developer and UI/UX designer driven to craft exquisite, practical, and user-centric digital encounters. Armed with a 2-year tenure in this realm, I perpetually seek novel and inventive means to actualize my clients' visions.
+                                Greetings, I m Feecon  a web developer and UI/UX designer driven to craft exquisite, practical, and user-centric digital encounters. Armed with a 2-year tenure in this realm, I perpetually seek novel and inventive means to actualize my clients visions.
                             </p>
 
                             <p className='my-4 font-medium'>
-                                I hold the belief that design surpasses mere aesthetics; it's about addressing challenges and establishing instinctive, gratifying user experiences.
+                                I hold the belief that design surpasses mere aesthetics; it is about addressing challenges and establishing instinctive, gratifying user experiences.
                             </p>
 
                             <p className='font-medium'>
