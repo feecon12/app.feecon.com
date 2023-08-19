@@ -1,17 +1,14 @@
 HOME PAGE: 
 
-- Turning Vision Into Reality With Code And Design. 
-- As a skilled full-stack developer, I am dedicated to turning ideas into innovative web applications. 
-Explore my latest projects and articles, showcasing my expertise in React.js and web development.
+- Bringing Dreams to Life: Where Vision Meets Code and Design.
+- Being a proficient full-stack developer, I am committed to translating concepts into inventive web applications. Discover my recent projects and articles, spotlighting my experties in React.js and web development.
 
 --------------------------------------------------------------
 
 ABOUT PAGE:
 
-- Passion Fuels Purpose! 
-- Hi, I'm CodeBucks, a web developer and UI/UX designer with a passion for creating beautiful, functional, 
-and user-centered digital experiences. With 4 years of experience in the field. I am always looking for 
-new and innovative ways to bring my clients' visions to life.
+- Passion Empowers Purpose! 
+- Greetings, I'm Feecon – a web developer and UI/UX designer driven to craft exquisite, practical, and user-centric digital encounters. Armed with a 2-year tenure in this realm, I perpetually seek novel and inventive means to actualize my clients' visions.
 
 - I believe that design is about more than just making things look pretty – it's about solving problems and 
 creating intuitive, enjoyable experiences for users. 
@@ -115,5 +112,6 @@ Build A Fabulous Todo List App With React, Redux And Framer-Motion
 Redux Simplified: A Beginner's Guide For Web Developers
 
 What Is Higher Order Component (Hoc) In React?
+
 
 
