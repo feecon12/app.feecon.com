@@ -69,16 +69,12 @@ export const NavBar = () => {
 
             {/* Desktop view */}
             <div className='w-full flex justify-between items-center lg:hidden'>
-
-                {/* Page navigations */}
                 <nav>
                     <CustomLink href='/' title='Home' className='mr-4' />
                     <CustomLink href='/about' title='About' className='mx-4' />
                     <CustomLink href='/projects' title='Projects' className='mx-4' />
                     {/* <CustomLink href='/articles' title='Articles' className='ml-4' /> */}
                 </nav>
-
-                {/* Social Icons */}
                 <nav className='flex items-center justify-center flex-wrap '>
                     {/* <motion.a href='https://twitter.com' target={'_blank'} whileHover={{ y: -2 }} whileTap={{ scale: 0.9 }} className='w-6 mr-3'>
                         <TwitterIcon />
@@ -100,15 +96,13 @@ export const NavBar = () => {
                         className={`ml-5 flex items-center justify-center rounded-full p-0.5 
                         ${mode === 'light' ? 'bg-dark text-light' : 'bg-light text-dark'}
                     
-                        `}
-                    >
+                        `}>
                         {
                             mode === 'dark' ? <MoonIcon className={'fill-dark'} /> : <SunIcon className={'fill-dark'} />
                         }
                     </botton>
                 </nav>
             </div>
-
 
             {/* Mobile view */}
 
@@ -161,7 +155,6 @@ export const NavBar = () => {
 
                     : null
             }
-
 
             <div className='absolute left-[50%] top-2 translate-x-[-50%]'>
                 <Logo />

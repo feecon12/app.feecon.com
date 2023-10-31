@@ -51,12 +51,16 @@ const Experience = () => {
                 <ul className='w-full flex flex-col items-start justify-between ml-4 xs:ml-2'>
                     
                     <Details
-                        position={'Software Engineer'}
+                        position={'Associate Software Engineer'}
                         company={'PwC'}
                         companyLink={'www.pwc.com'}
-                        time={'2021-2023'}
+                        time={'Apr 2021 - Oct 2023'}
                         address={'Bangalore, Karnataka'}
-                        work="Worked on a team responsible for developing and testing new features for an US giant Healthcare client. Developed a broker portal that featured for enrolling different groups to avail insurance products that is to be offered by the broker"
+                        work="I was part of a collaborative team effort focused on developing a healthcare domain portal. Developed a dedicated portal tailored to the needs of group insurance brokers, streamlining their interactions with the
+                        system. Implemented end-to-end business flows, including quoting, enrollment, and contract renewal, providing a holistic
+                        platform for managing insurance operations.Designed the portal to accommodate three distinct group types: Small Groups, Large Groups, and Family and Individual
+                        policies, ensuring flexibility and customization. Created robust maintenance flows, enabling quick and secure modification of various records, ensuring data accuracy and
+                        compliance with changing requirements."
                     />
                     <Details
                         position={'Intern'}
