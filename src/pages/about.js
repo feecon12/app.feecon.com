@@ -57,7 +57,7 @@ const about = () => {
                             </p>
 
                             <p className='my-4 font-medium'>
-                                Education has been a crucial stepping stone in Feecon's journey. He holds a Bachelor of Technology in Electronics and Communication from Siksha 'O' Anusandhan University, acquired between August 2016 and June 2020. His academic journey included a range of relevant coursework such as Data Structures and Algorithms, Database Management, and Web Development, providing him with a robust knowledge base.
+                                Education has been a crucial stepping stone in Feecons journey. He holds a Bachelor of Technology in Electronics and Communication from Siksha O Anusandhan University, acquired between August 2016 and June 2020. His academic journey included a range of relevant coursework such as Data Structures and Algorithms, Database Management, and Web Development, providing him with a robust knowledge base.
                             </p>
 
                             <p className='my-4 font-medium'>
@@ -65,7 +65,7 @@ const about = () => {
                             </p>
 
                             <p className='my-4 font-medium'>
-                                Before that, as an Associate, Feecon demonstrated his expertise in developing test strategies, saving substantial testing efforts and helping identify critical defects in a Salesforce project, significantly improving the product's efficiency. He also contributed to debugging and defect logging, enhancing product performance.
+                                Before that, as an Associate, Feecon demonstrated his expertise in developing test strategies, saving substantial testing efforts and helping identify critical defects in a Salesforce project, significantly improving the products efficiency. He also contributed to debugging and defect logging, enhancing product performance.
                             </p>
 
                             <p className='my-4 font-medium'>
@@ -73,7 +73,7 @@ const about = () => {
                             </p>
 
                             <p className='my-4 font-medium'>
-                                Feecon is enthusiastic about contributing his skills to a dynamic team and being a driving force for the success of the company. His technical skills include proficiency in languages such as Java, Python, C++, HTML/CSS, and JavaScript, and he is well-versed in developer tools like VS Code and Eclipse. He has hands-on experience with technologies and frameworks like React, NextJS, GitHub, Salesforce, and Azure/AWS Cloud Computing.
+                                Feecon is enthusiastic about contributing his skills to a dynamic team and being a driving force for the success of the company. His technical skills include proficiency in languages such as Java, Python, C++, HTML/CSS, and JavaScript, and he is well-versed in developer tools like VS Code and Eclipse. He has hands-on experience with technologies like React, Next, GitHub, Salesforce, and Azure/AWS Cloud Computing.
                             </p>
 
                             <p className='my-4 font-medium'>

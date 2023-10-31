@@ -40,9 +40,9 @@ export default function Home() {
               />
               <p className='my-4 text-base font-medium md:text-sm sm:text-xs'>
                 With more than 2 years of experience in software development and testing, I have a strong foundation in ReactJs and
-                MySql. Currently, I'm honing my problem-solving skills through Scaler Academy. I hold cloud certifications from
+                MySql. Currently, I m honing my problem-solving skills through Scaler Academy. I hold cloud certifications from
                 AWS and Azure, bringing expertise in cloud technologies. Additionally, I possess knowledge of CRM systems like
-                Salesforce. I'm enthusiastic about joining a dynamic team and contributing my skills to drive company success
+                Salesforce. I m enthusiastic about joining a dynamic team and contributing my skills to drive company success
 
               </p>
               <div className='flex items-center self-start mt-2 lg:self-center'>
