@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "undefined/subscriptions/e1f31831-268b-416a-82f9-c6db7abc3059/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/feecon-behera",
+  "appService.deploySubpath": "."
+}

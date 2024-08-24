@@ -48,6 +48,8 @@ module.exports = {
 
         circularDarkSm:
           "repeating-radial-gradient(rgba(255,255,255,0.5) 2px,#1b1b1b 4px,#1b1b1b 40px)",
+        
+        heroImg: 'url("../../public/images/logo/FME_Cover.jpg")',
       },
     },
     screens: {

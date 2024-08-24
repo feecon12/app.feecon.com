@@ -3,6 +3,7 @@ import { motion, useScroll } from 'framer-motion'
 import LiIcon from './LiIcon'
 
 const Details = ({ type, time, place, info }) => {
+    const infoArray = info.split('\n');
     return <li className='my-8 first:mt-0 last:mb-0 w-[60%] mx-auto flex flex-col items-center justify-between md:w-[80%]'>
         <LiIcon />
         <motion.div initial={{ y: 50 }} whileInView={{ y: 0 }} transition={{ duration: 0.5, type: 'spring' }}>
@@ -40,16 +41,16 @@ const Education = () => {
                     style={{ scaleY: scrollYProgress }}
                     className='absolute left-9 top-0 w-[4px] h-full bg-dark origin-top dark:bg-light
                     md:w-[2px] md:left-[30px] xs:left-[20px]
-                    '                    
+                    '
                 />
                 <ul className='w-full flex flex-col items-start justify-between ml-4 xs:ml-2'>
 
-                    
+
                     <Details
-                        type={'Fullstack Engineering'}
+                        type={'Specialized in Software Development & Problem Solving'}
                         time={'2022-present'}
                         place={'Scaler Academy'}
-                        info=" Relevant courses included Data Structures and Algorithms, Computer Systems Engineering, and Data Engineering"
+                        info="A meeting to discuss project updates.Please bring your progress reports.Refreshments will be provided."
 
                     />
 
@@ -57,7 +58,7 @@ const Education = () => {
                         type={'Bachelor of Technology In Electronics and Communication'}
                         time={'2016-2020'}
                         place={'Institute of Technical Education and Research (ITER, SOA University)'}
-                        info="Relevant courses included Electronics and Comunication, Computer Architecture, and programming in MATLAB, and Python"
+                        info="Relevant courses included Electronics and Communication, Computer Architecture, and programming in MATLAB, and Python"
 
                     />
 
@@ -65,11 +66,9 @@ const Education = () => {
                         type={'Higher Secondary Education in Science'}
                         time={'2016'}
                         place={'Kendriya Vidyalaya'}
-                        info=" Relevant courses included Physics, Chemistry, Mathematics, and Computer Sciences"
+                        info=" Relevant courses included Physics, Chemistry, Mathematics, and Computer Science"
 
                     />
-
-
                 </ul>
             </div>
         </div>
