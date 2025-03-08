@@ -17,29 +17,11 @@ const Details = ({ position, company, companyLink, time, address, p1, p2, p3, p4
             <span className='capitalize font-medium text-dark/75 dark:text-light/75 xs:text-sm'>
                 {time} | {address}
             </span>
-
-            <p className='font-medium w-full md:text-sm'>
-                {p1}
-            </p>
-            <p className='font-medium w-full md:text-sm'>
-                {p2}
-            </p>
-            <p className='font-medium w-full md:text-sm'>
-                {p3}
-            </p>
-            <p className='font-medium w-full md:text-sm'>
-                {p4}
-            </p>
-            <p className='font-medium w-full md:text-sm'>
-                {p5}
-            </p>
-            <p className='font-medium w-full md:text-sm'>
-                {p6}
-            </p>
-            <p className='font-medium w-full md:text-sm'>
-                {p7}
-            </p>
-
+            
+        <p className='font-medium w-full md:text-sm'>
+            {work}
+        </p>
+            
         </motion.div>
     </li>
 }
@@ -69,10 +51,18 @@ const Experience = () => {
                 <ul className='w-full flex flex-col items-start justify-between ml-4 xs:ml-2'>
 
                     <Details
-                        position={'Associate'}
+                        position={'Software Engineer'}
                         company={'PwC'}
                         companyLink={'www.pwc.com'}
-                        time={'2021 - Present'}
+                        time={'2021-2023'}
+                        address={'Bangalore, Karnataka'}
+                        work="Worked on a team responsible for developing and testing new features for an US giant Healthcare client. Developed a broker portal that featured for enrolling different groups to avail insurance products that is to be offered by the broker"
+                    />
+                    <Details
+                        position={'Intern'}
+                        company={'Capgemini'}
+                        companyLink={'www.capgemini.com'}
+                        time={'2020'}
                         address={'WFH'}
                         p1="● Developed test strategies that covered all test scenarios that helped save testing efforts by 40%."
                         p2="● Logged more than 1,000 critical and severe defects in a project in salesforce practice that helped product run smoothly in all stages of SDLC."
