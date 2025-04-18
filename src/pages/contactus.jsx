@@ -3,7 +3,8 @@ import fillForm from "../../public/images/profile/herocontactpage.png";
 import TransitionEffect from "../components/TransitionEffect";
 import { Layout } from "@/components/Layout";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
+import Image from "next/image";
 // import URL from "../urlConfig";
 
 const Contact = () => {
@@ -46,21 +47,29 @@ const Contact = () => {
 
     if (!isValidated) return; // Prevent submission if form is not valid
 
-    setIsSubmitting(true); // Disable button
+    setIsSubmitting(true); // Disable button while submitting
 
-    // Show loading toast before axios request
-    const toastId = toast.loading("Sending message...");
+    //toast loading
+    const toastId = toast.loading("Sending your message...");
 
     try {
       // Make sure your API URL is correctly formatted (e.g., with a trailing slash)
-      const response = await axios.post('/api/contact', formData);
+      const response = await axios.post("./api/contact", formData);
 
       if (response.status === 201) {
+        // Success toast
+        toast.update(toastId, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+          closeOnClick: true,
+        }); // Show success message
+        // alert("Message sent successfully! I will get back to you as soon as possible. Thank you for reaching out!");
         setIsValidated(true); // Set the state to true
         clearForm(); // Clear form after successful submission
-
-        // Success toast
-        toast.success("Message delivered!", { id: toastId, duration: 3000 });
+        console.log("Message sent successfully:", response.data);
       }
     } catch (error) {
       console.error(
@@ -69,9 +78,13 @@ const Contact = () => {
       );
 
       // Error toast
-      toast.error("Error while sending message. Please try again later.", {
-        id: toastId,
-        duration: 3000,
+      toast.update(toastId, {
+        render: "Error while sending message. Please try again later.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+        closeOnClick: true,
       });
     } finally {
       setIsSubmitting(false); // Re-enable the button after submission
@@ -85,7 +98,14 @@ const Contact = () => {
         <Layout className="pt-0 md:pt-16 sm:pt-8">
           <div className="flex items-center justify-between w-full lg:flex-col">
             <div className="w-1/2 md:w-full md:hidden">
-              <img src={fillForm} alt="fill contact form" width={600} />
+              <Image
+                src={fillForm}
+                alt="FME"
+                className="w-full h-auto lg:hidden md:inline-block md:w-full"
+                priority
+                sizes="(max-widthL768px) 100vw,
+                 (max-width:1200px) 60vw,50vw"
+              />
             </div>
 
             <div className="w-1/2 flex flex-col px-10 py-5 self-center lg:w-full lg:text-center sm:px-0">
@@ -149,4 +169,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
