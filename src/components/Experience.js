@@ -56,33 +56,33 @@ const Experience = () => {
   const verisysWork = [
     {
       bullet:
-        "Built and automated web scraping bots to gather  professionals' data from various sources, streamlining data collection processes",
+        "Developed automated web scrapers using JavaScript for healthcare credentialing data.",
     },
     {
       bullet:
-        "Utilized xPath and CSS selector techniques to interact with DOM elements and trigger JavaScript events, improving data extraction accuracy",
+        "Mastered CSS selectors to interact with DOM elements and trigger JavaScript events",
     },
     {
       bullet:
-        "Optimized data processing by implementing Ruby transformation logic and Regular Expressions, enhancing processing speed by 30%",
+        "Optimized data processing with Ruby transformation logic and Regular Expressions, enhancing processing speed by 30%",
     },
     {
       bullet:
-        "Performed peer code reviews that helped achieving the quality work significantly by 90%",
+        "Performed peer reviews that helped achieving the quality work significantly by 90%",
     },
     {
       bullet:
-        "Collaborated with different stakeholders on Jira, then Azure DevOps as a part of agile development practices",
+        "Collaborated with different stakeholders on Azure boards as a part of agile development practices",
     },
   ];
   const pwcWork = [
     {
       bullet:
-        "Headed the development of a scalable web application using Express/Nodejs, implementing best practices for maintainability and extensibility",
+        "Led full-stack development of a caregiver platform using Node.js, Express.js, and React.js.",
     },
     {
       bullet:
-        "Implemented RESTful APIs with Express Framework, reducing integration time by 20% through seamless external service integration",
+        "Implemented RESTful APIs with Express Framework, reducing integration time by 20% through seamless external service integration.",
     },
     {
       bullet:

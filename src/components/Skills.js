@@ -48,14 +48,13 @@ const Skills = () => {
         <Skill name="JavaScript" x="20vw" y="6vw" />
         <Skill name="ReactJS" x="0vw" y="12vw" />
         <Skill name="NextJS" x="-20vw" y="-15vw" />
-        <Skill name="Salesforce" x="15vw" y="-12vw" />
-        <Skill name="Test Case Design" x="0vw" y="-20vw" />
-        <Skill name="Quality Assurance" x="-25vw" y="18vw" />
+        <Skill name="API Integration" x="15vw" y="-12vw" />
+        <Skill name="System Design" x="0vw" y="-20vw" />
+        <Skill name="Azure" x="-25vw" y="18vw" />
         <Skill name="Tailwind CSS" x="18vw" y="18vw" />
-        <Skill name="Cloud Computing" x="32vw" y="-5vw" />
+        <Skill name="MongoDB" x="32vw" y="-5vw" />
       </div>
     </>
   );
 };
-
 export default Skills;

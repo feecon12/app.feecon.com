@@ -44,18 +44,18 @@ const Education = () => {
                     "
         />
         <ul className="w-full flex flex-col items-start justify-between ml-4 xs:ml-2">
-          <Details
+          {/* <Details
             type={"Specialized in Software Development & Problem Solving"}
             time={"2022-2024"}
             place={"Scaler, InterviewBit"}
-            info="A meeting to discuss project updates.Please bring your progress reports.Refreshments will be provided."
-          />
+            info=""
+          /> */}
 
           <Details
             type={"Bachelor of Technology In Electronics and Communication"}
             time={"2016-2020"}
-            place={"ITER, S'O'A University, Bhubaneswar"}
-            info="Relevant courses included Electronics and Communication, Computer Architecture, and programming in MATLAB, and Python"
+            place={"ITER, SOA University, Bhubaneswar"}
+            info=""
           />
         </ul>
       </div>

@@ -51,7 +51,7 @@ export default function Home() {
                 in some of the previous projects. I am passionate about building
                 software that is scalable, maintainable and user friendly. I am
                 always eager to learn new technologies and work on challenging
-                projects. I am a team player and always ready to help my team
+                projects.
               </p>
               <div className="flex items-center self-start mt-2 lg:self-center">
                 <Link

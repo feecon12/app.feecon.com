@@ -61,36 +61,32 @@ const about = () => {
                   work starts with practical application of JavaScript. As I
                   love data, so I know how to extract it using web scrappers,
                   clean it, and make it beautiful using a powerful tool called
-                  Regular Expressions. Along side I create UI components using
-                  one of the amazing libraries of JavaScript, React.js! I am
-                  Coursera's Meta certified React developer. Knows the
-                  implementation of server side architecture with Express.js and
-                  Node.js. I hold cloud certifications from vendors like AWS and
-                  Azure with their prestigious certification programs - AWS
-                  Solutions Architect Associate and Azure Data Engineering,
-                  underscoring my proficiency in cloud technologies. My career
-                  reflects a blend of technical expertise and a dedication to
-                  continuous learning which makes me a complete full stack
-                  engineer. I am quick to adapt to new technologies, driven by a
-                  deep curiosity to understand the fundamentals, which enables
-                  me to develop innovative solutions that meet business needs. I
-                  am enthusiastic about leveraging my diverse skill set to
-                  contribute to challenging projects and eager to further
-                  enhance my capabilities in cutting-edge technologies.
+                  Regular Expressions.
                 </p>
 
                 <p className="my-4 font-medium">
-                  I hold the belief that design surpasses mere aesthetics; it is
-                  about addressing challenges and establishing instinctive,
-                  gratifying user experiences.
+                  Along side I create UI components using one of the amazing
+                  libraries of JavaScript, React.js! I am Coursera&apos;s Meta
+                  certified React developer. Knows the implementation of server
+                  side architecture with Express.js and Node.js.
+                </p>
+
+                <p className="my-4 font-medium">
+                  I hold cloud certifications from vendors like AWS and Azure
+                  with their prestigious certification programs - AWS Solutions
+                  Architect Associate and Azure Data Engineering, underscoring
+                  my proficiency in cloud technologies.
                 </p>
 
                 <p className="font-medium">
-                  Whether engaged in website development, mobile app creation,
-                  or any digital venture, I infuse each project with an
-                  unwavering dedication to design superiority and user-centric
-                  contemplation. I eagerly anticipate the chance to contribute
-                  my expertise and enthusiasm to your forthcoming endeavor.
+                  My career reflects a blend of technical expertise and a
+                  dedication to continuous learning which makes me a complete
+                  full stack engineer. I am quick to adapt to new technologies,
+                  driven by a deep curiosity to understand the fundamentals,
+                  which enables me to develop innovative solutions that meet
+                  business needs. I am enthusiastic about leveraging my diverse
+                  skill set to contribute to challenging projects and eager to
+                  further enhance my capabilities in cutting-edge technologies.
                 </p>
               </div>
               <div className="col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark bg-light p-8 dark:border-light dark:bg-dark xl:col-span-4 md:order-1 md:col-span-8">
@@ -109,7 +105,7 @@ const about = () => {
               <div className="col-span-2 flex flex-col items-end justify-between xl:col-span-8 xl:flex-row xl:items-center md:order-3">
                 <div className="flex flex-col items-end justify-center xl:items-center">
                   <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
-                    <AnimatedNumbers value={4} />+
+                    <AnimatedNumbers value={10} />+
                   </span>
                   <h2 className="text-xl font-medium capitalize text-dark/75 dark:text-light/75 xl:text-center md:text-lg xs:text-base">
                     satisfied clients
@@ -118,7 +114,7 @@ const about = () => {
 
                 <div className="flex flex-col items-end justify-center  xl:items-center">
                   <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
-                    <AnimatedNumbers value={10} />+
+                    <AnimatedNumbers value={30} />+
                   </span>
                   <h2 className="text-xl font-medium capitalize text-dark/75 dark:text-light/75 xl:text-center md:text-lg xs:text-base">
                     projects completed
@@ -127,7 +123,7 @@ const about = () => {
 
                 <div className="flex flex-col items-end justify-center  xl:items-center">
                   <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
-                    <AnimatedNumbers value={2} />+
+                    <AnimatedNumbers value={4} />+
                   </span>
                   <h2 className="text-xl font-medium capitalize text-dark/75 dark:text-light/75 xl:text-center md:text-lg xs:text-base">
                     years of experiences
@@ -137,7 +133,7 @@ const about = () => {
             </div>
 
             <Skills />
-            <SkillAndCertifications/>
+            <SkillAndCertifications />
             <Experience />
             <Education />
           </Layout>
