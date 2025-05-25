@@ -45,17 +45,13 @@ export default function Home() {
                 in different industries in healthcare and insurance domains. I
                 have extensive experience from building software to make them
                 production ready. I worked on multiple projects from scratch to
-                production. Along with the traditional web development I have
-                also pitched in to Saas based technologies like Salesforce, and
-                guidewire and understood their basic to advanced implementations
-                in some of the previous projects. I am passionate about building
-                software that is scalable, maintainable and user friendly. I am
-                always eager to learn new technologies and work on challenging
-                projects.
+                production. I am passionate about building software that is
+                scalable, maintainable and user friendly. I am always eager to
+                learn new technologies and work on challenging projects.
               </p>
               <div className="flex items-center self-start mt-2 lg:self-center">
                 <Link
-                  href="../../public/resume.pdf"
+                  href="/Feecon_resume_fullstack.pdf"
                   target={"_blank"}
                   className="flex items-center bg-dark text-light p-2 px-6 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark border-2 border-solid hover:border-dark dark:bg-light dark:text-dark hover:dark:bg-dark hover:dark:text-light hover:dark:border-light md:p-2 md:px-4 md:text-base "
                   download={true}
