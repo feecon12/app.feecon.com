@@ -1,18 +1,20 @@
 import { Layout } from "@/components/Layout";
+import TransitionEffect from "@/components/TransitionEffect.js";
+import URL from "@/utils/urlConfig";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import fillForm from "../../public/images/profile/herocontactpage.png";
-import TransitionEffect from "../components/TransitionEffect";
-import URL from "../utils/urlConfig";
+import fillForm from "../../../public/images/profile/herocontactpage.png";
 
-const Login = () => {
+const ResetPassword = () => {
   const router = useRouter();
+  const { id: userId } = router.query;
+
   const [formData, setFormData] = useState({
-    email: "",
+    otp: "",
     password: "",
   });
   const [isValidated, setIsValidated] = useState(false);
@@ -32,14 +34,14 @@ const Login = () => {
 
   function clearForm() {
     setFormData({
-      email: "",
+      otp: "",
       password: "",
     });
     setIsValidated(false); // Reset validation
   }
 
   function validateForm(data) {
-    const isFormValid = data.email && data.password;
+    const isFormValid = data.otp && data.password;
     setIsValidated(isFormValid); // Button will be enabled if fields are filled
   }
 
@@ -48,41 +50,48 @@ const Login = () => {
 
     if (!isValidated) return; // Prevent submission if form is not valid
 
+    // Check if userId is available
+    if (!userId) {
+      toast.error("User is not available.");
+      return;
+    }
+
     setIsSubmitting(true); // Disable button while submitting
 
     //toast loading
-    const toastId = toast.loading("Authenticating...");
+    const toastId = toast.loading("Resetting password...");
 
     try {
-      // Make sure your API URL is correctly formatted (e.g., with a trailing slash)
-      const response = await axios.post(URL.LOGIN, formData);
+      console.log("Resetting password for userId:", userId);
+
+      const response = await axios.patch(
+        `${URL.RESET_PASSWORD}/${userId}`,
+        formData
+      );
+
+      console.log(response);
 
       if (response.status === 200) {
         // Success toast
         toast.update(toastId, {
-          render: response.data.message || "Login successful! Welcome back.",
+          render: response.data.message,
           type: "success",
           isLoading: false,
           autoClose: 3000,
           closeButton: true,
           closeOnClick: true,
-        }); // Show success message
-        setIsValidated(true); // Set the state to true
-        clearForm(); // Clear form after successful submission
-        console.log("Login successful:");
-        router.push("/");
+        });
+        setIsValidated(true);
+        clearForm();
+        console.log("Password reset successful:");
+        router.push("/login");
       }
     } catch (error) {
-      console.error(
-        "Error during login:",
-        error.response?.data || error.message
-      );
+      console.error(error.message);
 
       // Error toast
       toast.update(toastId, {
-        render:
-          error.response?.data?.message ||
-          "Error during login. Please try again later.",
+        render: error.response?.data?.message,
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -90,7 +99,7 @@ const Login = () => {
         closeOnClick: true,
       });
     } finally {
-      setIsSubmitting(false); // Re-enable the button after submission
+      setIsSubmitting(false);
     }
   };
 
@@ -113,22 +122,26 @@ const Login = () => {
 
             <div className="w-1/2 flex flex-col px-10 py-5 self-center lg:w-full lg:text-center sm:px-0">
               <div className="mb-6">
-                <h1 className="text-4xl font-bold mb-2">Welcome Back!</h1>
+                <h1 className="text-4xl font-bold mb-2">Reset Password?</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Please sign in to your account to continue.
+                  Enter the 6-digit otp that sent to your email address and
+                  enter the new password.
                 </p>
               </div>
               <form onSubmit={handleSubmit}>
                 <fieldset className="capitalize">
                   <div>
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="otp">6-Digit OTP</label>
                   </div>
                   <div>
                     <input
-                      type="email"
-                      name="email"
+                      type="text"
+                      name="otp"
                       required
-                      value={formData.email}
+                      maxLength="6"
+                      pattern="[0-9]{6}"
+                      placeholder="Enter 6-digit OTP"
+                      value={formData.otp}
                       onChange={handleChange}
                       className="border px-2 py-1 rounded-lg focus:outline-none"
                     />
@@ -141,7 +154,7 @@ const Login = () => {
                       type="password"
                       name="password"
                       required
-                      autoComplete="current-password"
+                      autoComplete="new-password"
                       value={formData.password}
                       onChange={handleChange}
                       className="border px-2 py-1 rounded-lg focus:outline-none"
@@ -153,27 +166,21 @@ const Login = () => {
                       disabled={!isValidated || isSubmitting}
                       className="bg-primary text-light mt-2 py-2 px-6 rounded-lg text-lg font-semibold hover:bg-light hover:text-primary border-2 border-solid hover:border-primary"
                     >
-                      {isSubmitting ? "Signing In..." : "Login"}
+                      {isSubmitting
+                        ? "Changing Password..."
+                        : "Change Password"}
                     </button>
                   </div>
                 </fieldset>
                 <div className="text-sm mt-4">
-                  <div className="mb-2">
-                    <Link
-                      href={"/forgotPassword"}
-                      className="underline text-primary hover:text-primary-dark"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
                   <div>
                     <span>
-                      Don't have an account?{" "}
+                      Remember your password?{" "}
                       <Link
-                        href={"/signup"}
+                        href="/login"
                         className="underline text-primary hover:text-primary-dark"
                       >
-                        Create one
+                        Back to Login
                       </Link>
                     </span>
                   </div>
@@ -187,4 +194,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

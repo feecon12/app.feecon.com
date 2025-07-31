@@ -23,7 +23,6 @@ const signUpHandler = async (req, res) => {
         message: `User with ${userObj.email} already exists, Please login instead!`,
       });
     } else {
-      
       const newUser = await User.create(userObj);
       res.status(201).json({
         status: 201,
@@ -43,7 +42,7 @@ const signUpHandler = async (req, res) => {
 const loginHandler = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email }); 
+    const user = await User.findOne({ email });
     if (!user) {
       res.status(400).json({
         status: 400,
@@ -61,12 +60,12 @@ const loginHandler = async (req, res) => {
         console.log("req.cookies", req.cookies);
         res.json({
           message: "Login successful!",
-          data:user,
+          data: user,
           user: {
             username: user.username,
             email: user.email,
             role: user.role,
-          }
+          },
         });
       } else {
         res.status(401).json({
@@ -132,7 +131,7 @@ const logoutHandler = (req, res) => {
 /**-----------------------------Ends--------------------------------*/
 
 //-----------Forgot password and Reset password --------------
-const forgetPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   //user sends their email
   try {
     const { email } = req.body;
@@ -153,7 +152,7 @@ const forgetPassword = async (req, res) => {
       //send email with link to reset password
       emailBuilder(user.email, "Reset Password", `Your OTP is ${token}`)
         .then(() => {
-          console.log("Reset email is sent successfully to "+user.email);
+          console.log("Reset email is sent successfully to " + user.email);
         })
         .catch((err) => {
           console.log("Error in sending email", err);
@@ -161,6 +160,7 @@ const forgetPassword = async (req, res) => {
       res.status(200).json({
         status: "success",
         message: "OTP is sent to your email",
+        userId: user.id,
       });
     }
   } catch (error) {
@@ -176,13 +176,11 @@ const otpGenerator = () => {
   return Math.floor(100000 + Math.random() * 900000);
 };
 
-const  resetPassword = async (req, res) => {
-  //user send token and the new password
-  //verify that token is valid
-  //update the user's password
+//Reset Password
+const resetPassword = async (req, res) => {
   try {
-    const { token, password } = req.body;
-    const { userId } = req.params;
+    const { token, password, userId } = req.body;
+    // const { userId } = req.params;
     const user = await User.findById(userId);
     if (!user) {
       res.status(400).json({
@@ -227,7 +225,7 @@ const  resetPassword = async (req, res) => {
 
 module.exports = {
   protectRoute,
-  forgetPassword,
+  forgotPassword,
   resetPassword,
   signUpHandler,
   loginHandler,

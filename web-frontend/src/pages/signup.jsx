@@ -9,11 +9,15 @@ import fillForm from "../../public/images/profile/herocontactpage.png";
 import TransitionEffect from "../components/TransitionEffect";
 import URL from "../utils/urlConfig";
 
-const Login = () => {
+const Signup = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
+    phone: "",
     password: "",
+    confirmPassword: "",
+    role: "",
   });
   const [isValidated, setIsValidated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,14 +36,25 @@ const Login = () => {
 
   function clearForm() {
     setFormData({
+      username: "",
       email: "",
+      phone: "",
       password: "",
+      confirmPassword: "",
+      role: "",
     });
     setIsValidated(false); // Reset validation
   }
 
   function validateForm(data) {
-    const isFormValid = data.email && data.password;
+    const isFormValid =
+      data.username &&
+      data.email &&
+      data.phone &&
+      data.password &&
+      data.confirmPassword &&
+      data.role &&
+      data.password === data.confirmPassword;
     setIsValidated(isFormValid); // Button will be enabled if fields are filled
   }
 
@@ -48,19 +63,26 @@ const Login = () => {
 
     if (!isValidated) return; // Prevent submission if form is not valid
 
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+
     setIsSubmitting(true); // Disable button while submitting
 
     //toast loading
-    const toastId = toast.loading("Authenticating...");
+    const toastId = toast.loading("Creating user...");
 
     try {
       // Make sure your API URL is correctly formatted (e.g., with a trailing slash)
-      const response = await axios.post(URL.LOGIN, formData);
-
-      if (response.status === 200) {
+      const response = await axios.post(URL.SIGNUP, formData);
+      if (response.status === 201) {
         // Success toast
         toast.update(toastId, {
-          render: response.data.message || "Login successful! Welcome back.",
+          render:
+            response.data.message ||
+            "Account created successfully! Please login to continue.",
           type: "success",
           isLoading: false,
           autoClose: 3000,
@@ -69,12 +91,12 @@ const Login = () => {
         }); // Show success message
         setIsValidated(true); // Set the state to true
         clearForm(); // Clear form after successful submission
-        console.log("Login successful:");
-        router.push("/");
+        console.log("Signup successful:");
+        router.push("/login");
       }
     } catch (error) {
       console.error(
-        "Error during login:",
+        "Error during signup:",
         error.response?.data || error.message
       );
 
@@ -82,7 +104,7 @@ const Login = () => {
       toast.update(toastId, {
         render:
           error.response?.data?.message ||
-          "Error during login. Please try again later.",
+          "Error during signup. Please try again later.",
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -113,13 +135,27 @@ const Login = () => {
 
             <div className="w-1/2 flex flex-col px-10 py-5 self-center lg:w-full lg:text-center sm:px-0">
               <div className="mb-6">
-                <h1 className="text-4xl font-bold mb-2">Welcome Back!</h1>
+                <h1 className="text-4xl font-bold mb-2">Create Account</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Please sign in to your account to continue.
+                  Join us today! Please fill in the details to create your
+                  account.
                 </p>
               </div>
               <form onSubmit={handleSubmit}>
                 <fieldset className="capitalize">
+                  <div>
+                    <label htmlFor="username">Username</label>
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      name="username"
+                      required
+                      value={formData.username}
+                      onChange={handleChange}
+                      className="border px-2 py-1 rounded-lg focus:outline-none"
+                    />
+                  </div>
                   <div>
                     <label htmlFor="email">Email</label>
                   </div>
@@ -134,6 +170,19 @@ const Login = () => {
                     />
                   </div>
                   <div>
+                    <label htmlFor="phone">Phone</label>
+                  </div>
+                  <div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="border px-2 py-1 rounded-lg focus:outline-none"
+                    />
+                  </div>
+                  <div>
                     <label htmlFor="password">Password</label>
                   </div>
                   <div>
@@ -141,11 +190,41 @@ const Login = () => {
                       type="password"
                       name="password"
                       required
-                      autoComplete="current-password"
+                      autoComplete="new-password"
                       value={formData.password}
                       onChange={handleChange}
                       className="border px-2 py-1 rounded-lg focus:outline-none"
                     />
+                  </div>
+                  <div>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      required
+                      autoComplete="new-password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="border px-2 py-1 rounded-lg focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="role">Role</label>
+                  </div>
+                  <div>
+                    <select
+                      name="role"
+                      required
+                      value={formData.role}
+                      onChange={handleChange}
+                      className="border px-2 py-1 rounded-lg focus:outline-none"
+                    >
+                      <option value="">Select a role</option>
+                      <option value="user">user</option>
+                      <option value="admin">admin</option>
+                    </select>
                   </div>
                   <div>
                     <button
@@ -153,27 +232,19 @@ const Login = () => {
                       disabled={!isValidated || isSubmitting}
                       className="bg-primary text-light mt-2 py-2 px-6 rounded-lg text-lg font-semibold hover:bg-light hover:text-primary border-2 border-solid hover:border-primary"
                     >
-                      {isSubmitting ? "Signing In..." : "Login"}
+                      {isSubmitting ? "Creating Account..." : "Sign Up"}
                     </button>
                   </div>
                 </fieldset>
                 <div className="text-sm mt-4">
-                  <div className="mb-2">
-                    <Link
-                      href={"/forgotPassword"}
-                      className="underline text-primary hover:text-primary-dark"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
                   <div>
                     <span>
-                      Don't have an account?{" "}
+                      Already have an account?{" "}
                       <Link
-                        href={"/signup"}
+                        href={"/login"}
                         className="underline text-primary hover:text-primary-dark"
                       >
-                        Create one
+                        Login here
                       </Link>
                     </span>
                   </div>
@@ -187,4 +258,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
