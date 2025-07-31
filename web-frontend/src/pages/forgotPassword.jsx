@@ -117,8 +117,8 @@ const ForgotPassword = () => {
               <div className="mb-6">
                 <h1 className="text-4xl font-bold mb-2">Forgot Password?</h1>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Enter your email address and we'll send you a link to reset
-                  your password.
+                  Enter your email address and we&apos;ll send you a link to
+                  reset your password.
                 </p>
               </div>
               <form onSubmit={handleSubmit}>
