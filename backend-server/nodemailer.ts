@@ -1,27 +1,23 @@
-const nodemailer = require("nodemailer");
-require("dotenv").config();
+import dotenv from "dotenv";
+import nodemailer, { SendMailOptions } from "nodemailer";
+
+dotenv.config();
+
+if (!process.env.EMAIL || !process.env.PASSWORD) {
+  throw new Error("EMAIL and PASSWORD environment variables must be set.");
+}
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
-    port: 587,
-  secure : false,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
 });
-
-const SENDEMAIL = async (mailDetails, callback) => {
-  try {
-    const info = await transporter.sendMail(mailDetails);
-    callback(info);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const HTML_TEMPLATE = (text) => {
+export const HTML_TEMPLATE = (text: string): string => {
   return `
         <!DOCTYPE html>
       <html>
@@ -77,27 +73,24 @@ const HTML_TEMPLATE = (text) => {
     `;
 };
 
-async function emailBuilder(to, subject, message) {
+export async function emailBuilder(
+  to: string,
+  subject: string,
+  message: string
+): Promise<void> {
   try {
-    const options = {
+    const options: SendMailOptions = {
       from: process.env.EMAIL,
-      to: to,
-      subject: subject,
+      to,
+      subject,
       text: message,
       html: HTML_TEMPLATE(message),
     };
 
-    SENDEMAIL(options, (info) => {
-      console.log("Email sent successfully!");
-      console.log("Message id", info.messageId);
-    });
+    const info = await transporter.sendMail(options);
+    console.log("Email sent successfully!");
+    console.log("Message Id", info.messageId);
   } catch (error) {
-    console.log(error);
+    console.log("Error sending email:", error);
   }
 }
-
-module.exports = {
-  SENDEMAIL,
-  HTML_TEMPLATE,
-  emailBuilder,
-};

@@ -1,15 +1,13 @@
-const express = require("express");
-const authRouter = express.Router();
-
-const {
+import express from "express";
+import {
   forgotPassword,
-  resetPassword,
-  logoutHandler,
-  signUpHandler,
   loginHandler,
-} = require("../controllers/authController");
+  logoutHandler,
+  resetPassword,
+  signUpHandler,
+} from "../controllers/authController";
 
-// const { checkInput } = require('../utils/crudFactory');
+const authRouter = express.Router();
 
 authRouter.post("/signup", signUpHandler);
 authRouter.post("/login", loginHandler);
@@ -17,4 +15,4 @@ authRouter.post("/logout", logoutHandler);
 authRouter.post("/forgotPassword", forgotPassword);
 authRouter.patch("/resetPassword/:userId", resetPassword);
 
-module.exports = authRouter;
+export default authRouter;

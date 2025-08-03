@@ -1,17 +1,37 @@
-const mongoose = require("mongoose");
+import mongoose, { Document, Model, Schema } from "mongoose";
 
-const productSchema = new mongoose.Schema({
+export interface IProduct extends Document {
+  name: string;
+  price: number;
+  categories: string[];
+  images?: string[];
+  averageRating?: number;
+  discount?: number;
+  description?: string;
+  stock: number;
+  brand: string;
+  reviews?: mongoose.Types.ObjectId[];
+}
+
+const validCategories = [
+  "electronics",
+  "clothings",
+  "furnitures",
+  "stationaries",
+];
+
+const productSchema = new Schema<IProduct>({
   name: {
     type: String,
     required: [true, "Product name is required"],
-    unique: [true, "Product name should be unique"],
+    unique: true,
     maxLength: [40, "Product name should not exceed 40 characters"],
   },
   price: {
     type: Number,
     required: [true, "Product price is required"],
     validate: {
-      validator: function () {
+      validator: function (this: IProduct) {
         return this.price > 0;
       },
       message: "Price should be greater than 0",
@@ -32,8 +52,8 @@ const productSchema = new mongoose.Schema({
   discount: {
     type: Number,
     validate: {
-      validator: function () {
-        return this.discount < this.price;
+      validator: function (this: IProduct) {
+        return this.discount === undefined || this.discount < this.price;
       },
       message: "Discount should be less than price",
     },
@@ -47,7 +67,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Product stock is required"],
     validate: {
-      validator: function () {
+      validator: function (this: IProduct) {
         return this.stock >= 0;
       },
       message: "Stock should be greater than or equals to 0",
@@ -58,22 +78,13 @@ const productSchema = new mongoose.Schema({
     required: [true, "Product brand is required"],
   },
   reviews: {
-    type: [mongoose.Schema.Types.ObjectId],
+    type: Schema.Types.ObjectId,
     ref: "Review",
-  }
+  },
 });
 
-//valid product categories
-const validCategories = [
-  "electronics",
-  "clothings",
-  "furnitures",
-  "stationaries",
-];
-
 productSchema.pre("save", function (next) {
-  console.log("pre save hook");
-  const invalidCategories = this.categories.filter((category) => {
+  const invalidCategories = this.categories.filter((category: string) => {
     return !validCategories.includes(category);
   });
   if (invalidCategories.length) {
@@ -87,6 +98,9 @@ productSchema.post("save", function () {
   console.log("post save hook");
 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product: Model<IProduct> = mongoose.model<IProduct>(
+  "Product",
+  productSchema
+);
 
-module.exports = Product;
+export default Product;

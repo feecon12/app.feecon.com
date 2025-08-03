@@ -1,15 +1,14 @@
-const express = require("express");
-const productRouter = express.Router();
-
-const {
-  getProducts,
+import express from "express";
+import {
   createProduct,
-  getProductById,
-  updateProductById,
   deleteProductById,
+  getProductById,
+  getProducts,
   searchByParams,
-} = require("../controllers/productController");
+  updateProductById,
+} from "../controllers/productController";
 
+const productRouter = express.Router();
 //routes for products
 productRouter.get("/", searchByParams);
 productRouter.get("/", getProducts);
@@ -18,4 +17,4 @@ productRouter.get("/:id", getProductById);
 productRouter.patch("/:id", updateProductById);
 productRouter.delete("/:id", deleteProductById);
 
-module.exports = productRouter;
+export default productRouter;
