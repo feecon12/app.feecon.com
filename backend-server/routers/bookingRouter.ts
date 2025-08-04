@@ -4,14 +4,12 @@ import {
   createBooking,
   getBookings,
   verifyBooking,
-} from "../controllers/BookingController";
+} from "../controllers/bookingController";
 
 const bookingRouter = express.Router();
 
 bookingRouter.post("/:productId", protectRoute, createBooking);
-
 bookingRouter.get("/", protectRoute, getBookings);
-
 bookingRouter.post("/verify", verifyBooking);
 
 export default bookingRouter;
