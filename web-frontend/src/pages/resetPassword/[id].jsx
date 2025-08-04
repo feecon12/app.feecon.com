@@ -41,7 +41,7 @@ const ResetPassword = () => {
   }
 
   function validateForm(data) {
-    const isFormValid = data.otp && data.password;
+    const isFormValid = data.token && data.password;
     setIsValidated(isFormValid); // Button will be enabled if fields are filled
   }
 
