@@ -14,7 +14,7 @@ const ResetPassword = () => {
   const { id: userId } = router.query;
 
   const [formData, setFormData] = useState({
-    otp: "",
+    token: "",
     password: "",
   });
   const [isValidated, setIsValidated] = useState(false);
@@ -34,7 +34,7 @@ const ResetPassword = () => {
 
   function clearForm() {
     setFormData({
-      otp: "",
+      token: "",
       password: "",
     });
     setIsValidated(false); // Reset validation
@@ -64,10 +64,10 @@ const ResetPassword = () => {
     try {
       console.log("Resetting password for userId:", userId);
 
-      const response = await axios.patch(
-        `${URL.RESET_PASSWORD}/${userId}`,
-        formData
-      );
+      const response = await axios.patch(`${URL.RESET_PASSWORD}/${userId}`, {
+        ...formData,
+        userId,
+      });
 
       console.log(response);
 
@@ -131,17 +131,17 @@ const ResetPassword = () => {
               <form onSubmit={handleSubmit}>
                 <fieldset className="capitalize">
                   <div>
-                    <label htmlFor="otp">6-Digit OTP</label>
+                    <label htmlFor="token">6-Digit OTP</label>
                   </div>
                   <div>
                     <input
                       type="text"
-                      name="otp"
+                      name="token"
                       required
                       maxLength="6"
                       pattern="[0-9]{6}"
                       placeholder="Enter 6-digit OTP"
-                      value={formData.otp}
+                      value={formData.token}
                       onChange={handleChange}
                       className="border px-2 py-1 rounded-lg focus:outline-none"
                     />

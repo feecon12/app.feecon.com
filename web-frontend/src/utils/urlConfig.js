@@ -13,6 +13,6 @@ const urlConfig = {
   SEND_MESSAGE: `${BASE_URL}/api/contact`,
 };
 
-console.log("RESET_PASSWORD URL:", urlConfig.RESET_PASSWORD); // Debug log
+console.log("FORGOT_PASSWORD URL:", urlConfig.FORGOT_PASSWORD); // Debug log
 
 export default urlConfig;

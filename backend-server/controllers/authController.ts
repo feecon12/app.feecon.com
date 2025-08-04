@@ -187,6 +187,12 @@ const otpGenerator = (): number => {
 const resetPassword = async (req: Request, res: Response) => {
   try {
     const { token, password, userId } = req.body;
+    if (!token || !password || !userId) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Missing required fields",
+      });
+    }
     const user = await User.findById(userId);
     if (!user) {
       res.status(400).json({
@@ -194,7 +200,7 @@ const resetPassword = async (req: Request, res: Response) => {
         message: "User not found",
       });
     } else {
-      if (user.token !== token) {
+      if (String(user.token) !== String(token)) {
         res.status(401).json({
           status: "fail",
           message: "Invalid token",
@@ -209,7 +215,7 @@ const resetPassword = async (req: Request, res: Response) => {
           //Hash the new Password before saving
           const hashedPassword = await bcrypt.hash(password, 10);
           user.password = hashedPassword;
-          // user.confirmPassword = hashedPassword;
+          user.confirmPassword = hashedPassword;
           user.token = undefined;
           user.otpExpiry = undefined;
           await user.save();
@@ -229,11 +235,11 @@ const resetPassword = async (req: Request, res: Response) => {
 };
 
 export {
-  signUpHandler,
-  loginHandler,
-  isAuthorized,
-  protectRoute,
-  logoutHandler,
   forgotPassword,
+  isAuthorized,
+  loginHandler,
+  logoutHandler,
+  protectRoute,
   resetPassword,
+  signUpHandler,
 };

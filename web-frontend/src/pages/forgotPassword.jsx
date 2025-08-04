@@ -53,8 +53,8 @@ const ForgotPassword = () => {
 
     try {
       // Make sure your API URL is correctly formatted (e.g., with a trailing slash)
-        const response = await axios.post(URL.FORGOT_PASSWORD, formData);
-        const userId = response.data.userId;
+      const response = await axios.post(URL.FORGOT_PASSWORD, formData);
+      const userId = response.data.userId;
 
       if (response.status === 200) {
         // Success toast

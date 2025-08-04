@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Request, Response, NextFunction } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { protectRoute } from "./controllers/authController";
 import {
@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: CLIENT_URL, // Allows  server to accept requests from different origins
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // Custom headers if needed
   })
 );
@@ -54,7 +54,6 @@ app.use("/api/user", protectRoute, userRouter);
 app.use("/api/product", protectRoute, productRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/review", reviewRouter);
-
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
