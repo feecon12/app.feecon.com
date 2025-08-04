@@ -20,7 +20,10 @@ dotenv.config();
 const app = express();
 
 /*--------Environment variables------------*/
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
+if (!PORT) {
+  throw new Error("PORT environment variable is not set!");
+}
 const DB_URI = process.env.DB_URI as string;
 const CLIENT_URL = process.env.CLIENT_URL;
 const ENV = process.env.ENV;
