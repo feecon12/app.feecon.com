@@ -1,0 +1,11 @@
+{
+    "username": "John Doe",
+    "email": "john.doe.brehai.bhai@example.com",
+    "phone": "8249462118",
+    "password": "SecurePassword123",
+    "confirmPassword": "SecurePassword123",
+    "role": [
+        "user",
+        "admin"
+    ]
+}
