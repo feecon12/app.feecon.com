@@ -9,6 +9,7 @@ import { protectRoute } from "./controllers/authController";
 import {
   authRouter,
   bookingRouter,
+  groqRouter,
   messageRouter,
   productRouter,
   reviewRouter,
@@ -57,6 +58,7 @@ app.use("/api/user", protectRoute, userRouter);
 app.use("/api/product", protectRoute, productRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/generate", groqRouter);
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

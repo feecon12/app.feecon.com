@@ -11,8 +11,9 @@ const urlConfig = {
   GET_PRODUCTS: `${BASE_URL}/api/product`,
   GET_CATEGORIES: `${BASE_URL}/api/product/categories`,
   SEND_MESSAGE: `${BASE_URL}/api/contact`,
+  GENERATE_AI_TEXT: `${BASE_URL}/api/generate`,
 };
 
-console.log("FORGOT_PASSWORD URL:", urlConfig.FORGOT_PASSWORD); // Debug log
+console.log("GENERATE_AI_TEXT URL:", urlConfig.GENERATE_AI_TEXT); // Debug log
 
 export default urlConfig;

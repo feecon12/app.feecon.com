@@ -4,6 +4,7 @@ import messageRouter from "./messageRouter";
 import productRouter from "./productRouter";
 import reviewRouter from "./reviewRouter";
 import userRouter from "./userRouter";
+import groqRouter from "./groqRouter";
 
 export {
   authRouter,
@@ -12,4 +13,5 @@ export {
   productRouter,
   reviewRouter,
   userRouter,
+  groqRouter
 };
