@@ -33,11 +33,21 @@ const ENV = process.env.ENV;
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
+
 app.use(
   cors({
-    origin: CLIENT_URL, // Allows  server to accept requests from different origins
+    origin: CLIENT_URL,
+    credentials: true, // This is crucial for cookies to work
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Custom headers if needed
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Access-Control-Allow-Credentials",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+    ], // Extended headers for preflight requests
+    optionsSuccessStatus: 200,
   })
 );
 

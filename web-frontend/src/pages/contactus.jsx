@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import fillForm from "../../public/images/profile/herocontactpage.png";
 import TransitionEffect from "../components/TransitionEffect";
 import URL from "../utils/urlConfig";
+import Head from "next/head";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -93,6 +94,10 @@ const Contact = () => {
 
   return (
     <>
+      <Head>
+        <title>Feecon | Contact Us</title>
+        <meta name="Contact Us  page" contents="This is BContact Us page." />
+      </Head>
       <TransitionEffect />
       <main className="w-full flex flex-col items-center justify-center dark:text-light">
         <Layout className="pt-0 md:pt-16 sm:pt-8">

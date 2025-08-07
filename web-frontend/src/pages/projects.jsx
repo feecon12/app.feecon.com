@@ -125,7 +125,7 @@ const projects = () => {
   return (
     <>
       <Head>
-        <title>Feecon | Project Page </title>
+        <title>Feecon | Projects</title>
         <meta name="description" contents="any description" />
       </Head>
       <TransitionEffect />

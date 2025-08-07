@@ -1,18 +1,45 @@
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
-import { Layout } from '@/components/Layout'
-import Image from 'next/image'
-import profilepic from '../../public/images/profile/dev1.png'
-import { AnimatedText } from '@/components/AnimatedText'
-import Link from 'next/link'
-import { LinkArrow } from '@/components/Icons'
-import HireMe from '@/components/HireMe'
-import lightBulb from '../../public/images/svgs/bulb.svg'
-import TransitionEffect from '@/components/TransitionEffect'
+import { AnimatedText } from "@/components/AnimatedText";
+import HireMe from "@/components/HireMe";
+import { LinkArrow } from "@/components/Icons";
+import { Layout } from "@/components/Layout";
+import TransitionEffect from "@/components/TransitionEffect";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import profilepic from "../../public/images/profile/dev1.png";
+import lightBulb from "../../public/images/svgs/bulb.svg";
+import { useAuth } from "../contexts/AuthContext";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  // Show loading while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Don't render anything if authenticated (will redirect)
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
     <>
       <Head>
@@ -40,14 +67,15 @@ export default function Home() {
                 className="!text-6xl !text-left xl:!text-5xl lg:!text-center  lg:!text-6xl md:!text-6xl sm:!text-3xl"
               />
               <p className="my-4 text-base font-medium md:text-sm sm:text-xs">
-                With over 4 years of experience in software engineering, I
-                cultivated strong expertise in multiple web based technologies
-                in different industries in healthcare and insurance domains. I
-                have extensive experience from building software to make them
-                production ready. I worked on multiple projects from scratch to
-                production. I am passionate about building software that is
-                scalable, maintainable and user friendly. I am always eager to
-                learn new technologies and work on challenging projects.
+                As a seasoned software engineer with 5+ years of expertise, I
+                specialize in crafting robust web solutions across healthcare
+                and insurance sectors. From conceptualization to production
+                deployment, I've architected scalable applications that drive
+                business success. My passion lies in building intuitive,
+                high-performance software that seamlessly bridges user needs
+                with cutting-edge technology. I thrive on tackling complex
+                challenges and continuously expanding my technical horizons to
+                deliver exceptional digital experiences.
               </p>
               <div className="flex items-center self-start mt-2 lg:self-center">
                 <Link

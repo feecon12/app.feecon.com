@@ -1,16 +1,17 @@
 import { Layout } from "@/components/Layout";
-import axios from "axios";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import fillForm from "../../public/images/profile/herocontactpage.png";
-import TransitionEffect from "../components/TransitionEffect";
-import URL from "../utils/urlConfig";
+import { useAuth } from "../contexts/AuthContext";
+import Head from "next/head";
 
 const Login = () => {
   const router = useRouter();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -54,23 +55,26 @@ const Login = () => {
     const toastId = toast.loading("Authenticating...");
 
     try {
-      // Make sure your API URL is correctly formatted (e.g., with a trailing slash)
-      const response = await axios.post(URL.LOGIN, formData);
+      // Use the AuthContext login function
+      const result = await login(formData.email, formData.password);
 
-      if (response.status === 200) {
+      if (result.success) {
         // Success toast
         toast.update(toastId, {
-          render: response.data.message || "Login successful! Welcome back.",
+          render: result.data.message || "Login successful! Welcome back.",
           type: "success",
           isLoading: false,
           autoClose: 3000,
           closeButton: true,
           closeOnClick: true,
-        }); // Show success message
-        setIsValidated(true); // Set the state to true
-        clearForm(); // Clear form after successful submission
-        console.log("Login successful:");
-        router.push("/");
+        });
+
+        setIsValidated(true);
+        clearForm();
+        console.log("Login successful:", result.data);
+
+        // Redirect to dashboard page
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error(
@@ -95,95 +99,100 @@ const Login = () => {
   };
 
   return (
-    <>
-      <TransitionEffect />
-      <main className="w-full flex flex-col items-center justify-center dark:text-light">
-        <Layout className="pt-0 md:pt-16 sm:pt-8">
-          <div className="flex items-center justify-between w-full lg:flex-col">
-            <div className="w-1/2 md:w-full md:hidden">
-              <Image
-                src={fillForm}
-                alt="FME"
-                className="w-full h-auto lg:hidden md:inline-block md:w-full"
-                priority
-                sizes="(max-widthL768px) 100vw,
+    <ProtectedRoute requireAuth={false}>
+      <>
+        <Head>
+          <title>Feecon | Login</title>
+          <meta name="description" contents="any description" />
+        </Head>
+        <main className="w-full flex flex-col items-center justify-center dark:text-light">
+          <Layout className="pt-0 md:pt-16 sm:pt-8">
+            <div className="flex items-center justify-between w-full lg:flex-col">
+              <div className="w-1/2 md:w-full md:hidden">
+                <Image
+                  src={fillForm}
+                  alt="FME"
+                  className="w-full h-auto lg:hidden md:inline-block md:w-full"
+                  priority
+                  sizes="(max-widthL768px) 100vw,
                  (max-width:1200px) 60vw,50vw"
-              />
-            </div>
-
-            <div className="w-1/2 flex flex-col px-10 py-5 self-center lg:w-full lg:text-center sm:px-0">
-              <div className="mb-6">
-                <h1 className="text-4xl font-bold mb-2">Welcome Back!</h1>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Please sign in to your account to continue.
-                </p>
+                />
               </div>
-              <form onSubmit={handleSubmit}>
-                <fieldset className="capitalize">
-                  <div>
-                    <label htmlFor="email">Email</label>
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="border px-2 py-1 rounded-lg focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="password">Password</label>
-                  </div>
-                  <div>
-                    <input
-                      type="password"
-                      name="password"
-                      required
-                      autoComplete="current-password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      className="border px-2 py-1 rounded-lg focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      disabled={!isValidated || isSubmitting}
-                      className="bg-primary text-light mt-2 py-2 px-6 rounded-lg text-lg font-semibold hover:bg-light hover:text-primary border-2 border-solid hover:border-primary"
-                    >
-                      {isSubmitting ? "Signing In..." : "Login"}
-                    </button>
-                  </div>
-                </fieldset>
-                <div className="text-sm mt-4">
-                  <div className="mb-2">
-                    <Link
-                      href={"/forgotPassword"}
-                      className="underline text-primary hover:text-primary-dark"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <div>
-                    <span>
-                      Don&apos;t have an account?{" "}
+
+              <div className="w-1/2 flex flex-col px-10 py-5 self-center lg:w-full lg:text-center sm:px-0">
+                <div className="mb-6">
+                  <h1 className="text-4xl font-bold mb-2">Welcome Back!</h1>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Please sign in to your account to continue.
+                  </p>
+                </div>
+                <form onSubmit={handleSubmit}>
+                  <fieldset className="capitalize">
+                    <div>
+                      <label htmlFor="email">Email</label>
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="border px-2 py-1 rounded-lg focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="password">Password</label>
+                    </div>
+                    <div>
+                      <input
+                        type="password"
+                        name="password"
+                        required
+                        autoComplete="current-password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="border px-2 py-1 rounded-lg focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <button
+                        type="submit"
+                        disabled={!isValidated || isSubmitting}
+                        className="bg-primary text-light mt-2 py-2 px-6 rounded-lg text-lg font-semibold hover:bg-light hover:text-primary border-2 border-solid hover:border-primary"
+                      >
+                        {isSubmitting ? "Signing In..." : "Login"}
+                      </button>
+                    </div>
+                  </fieldset>
+                  <div className="text-sm mt-4">
+                    <div className="mb-2">
                       <Link
-                        href={"/signup"}
+                        href={"/forgotPassword"}
                         className="underline text-primary hover:text-primary-dark"
                       >
-                        Create one
+                        Forgot password?
                       </Link>
-                    </span>
+                    </div>
+                    <div>
+                      <span>
+                        Don&apos;t have an account?{" "}
+                        <Link
+                          href={"/signup"}
+                          className="underline text-primary hover:text-primary-dark"
+                        >
+                          Create one
+                        </Link>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
-        </Layout>
-      </main>
-    </>
+          </Layout>
+        </main>
+      </>
+    </ProtectedRoute>
   );
 };
 

@@ -1,5 +1,5 @@
-import { useRef } from "react";
 import { motion, useScroll } from "framer-motion";
+import { useRef } from "react";
 import LiIcon from "./LiIcon";
 
 const DetailCard = ({
@@ -56,37 +56,37 @@ const Experience = () => {
   const verisysWork = [
     {
       bullet:
-        "Developed automated web scrapers using JavaScript for healthcare credentialing data.",
+        "Architected and deployed automated web scraping solutions using JavaScript to streamline healthcare credentialing data extraction and processing workflows.",
     },
     {
       bullet:
-        "Mastered CSS selectors to interact with DOM elements and trigger JavaScript events",
+        "Leveraged advanced CSS selectors and DOM manipulation techniques to build dynamic, event-driven JavaScript applications with enhanced user interaction capabilities.",
     },
     {
       bullet:
-        "Optimized data processing with Ruby transformation logic and Regular Expressions, enhancing processing speed by 30%",
+        "Engineered high-performance data transformation pipelines using Ruby and Regular Expressions, achieving 30% improvement in processing efficiency and system throughput.",
     },
     {
       bullet:
-        "Performed peer reviews that helped achieving the quality work significantly by 90%",
+        "Conducted comprehensive code reviews and quality assurance processes, resulting in 90% improvement in deliverable quality and reduced production defects.",
     },
     {
       bullet:
-        "Collaborated with different stakeholders on Azure boards as a part of agile development practices",
+        "Collaborated cross-functionally with stakeholders through Azure DevOps boards, implementing agile methodologies to ensure timely project delivery and stakeholder alignment.",
     },
   ];
   const pwcWork = [
     {
       bullet:
-        "Led full-stack development of a caregiver platform using Node.js, Express.js, and React.js.",
+        "Spearheaded end-to-end development of a comprehensive caregiver platform utilizing Node.js, Express.js, and React.js, delivering scalable healthcare solutions.",
     },
     {
       bullet:
-        "Implemented RESTful APIs with Express Framework, reducing integration time by 20% through seamless external service integration.",
+        "Designed and implemented robust RESTful API architectures with Express Framework, achieving 20% reduction in third-party integration time through optimized service connectivity.",
     },
     {
       bullet:
-        "Utilized Postman for API testing, accelerating development cycles, and enhancing software quality",
+        "Orchestrated comprehensive API testing strategies using Postman, significantly accelerating development velocity while maintaining high software quality standards.",
     },
   ];
 
