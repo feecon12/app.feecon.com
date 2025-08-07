@@ -70,8 +70,8 @@ export default function Home() {
                 As a seasoned software engineer with 5+ years of expertise, I
                 specialize in crafting robust web solutions across healthcare
                 and insurance sectors. From conceptualization to production
-                deployment, I've architected scalable applications that drive
-                business success. My passion lies in building intuitive,
+                deployment, I&apos;ve architected scalable applications that
+                drive business success. My passion lies in building intuitive,
                 high-performance software that seamlessly bridges user needs
                 with cutting-edge technology. I thrive on tackling complex
                 challenges and continuously expanding my technical horizons to

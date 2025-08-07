@@ -36,7 +36,7 @@ const Dashboard = () => {
                   Welcome Back!
                 </h1>
                 <p className="text-xl text-gray-600 dark:text-gray-300">
-                  Here's your dashboard overview
+                  Here&apos;s your dashboard overview
                 </p>
               </motion.div>
 
