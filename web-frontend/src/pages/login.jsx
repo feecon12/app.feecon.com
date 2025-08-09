@@ -71,7 +71,7 @@ const Login = () => {
 
         setIsValidated(true);
         clearForm();
-        console.log("Login successful:", result.data);
+        console.log("Login successful:", result.data.user);
 
         // Redirect to dashboard page
         router.push("/dashboard");

@@ -107,8 +107,19 @@ export const NavBar = () => {
         {/* Navigation Links - Show different links based on auth status */}
         <nav>
           {isAuthenticated ? (
-            // Only show Dashboard when authenticated
-            <CustomLink href="/dashboard" title="Dashboard" className="mr-4" />
+            // Only show the navigation when authenticated
+            <>
+              <CustomLink
+                href="/dashboard"
+                title="Dashboard"
+                className="mr-4"
+              />
+              <CustomLink
+                href="/generator"
+                title="AI Generator"
+                className="ml-4"
+              />
+            </>
           ) : (
             // Show all navigation links when not authenticated
             <>
@@ -118,7 +129,7 @@ export const NavBar = () => {
               <CustomLink
                 href="/contactus"
                 title="Contact Us"
-                className="mx-4"
+                className="ml-4"
               />
             </>
           )}
@@ -238,13 +249,20 @@ export const NavBar = () => {
           {/* Page navigations */}
           <nav className="flex items-center flex-col justify-center">
             {isAuthenticated ? (
-              // Only show Dashboard when authenticated
-              <CustomMobileLink
-                href="/dashboard"
-                title="Dashboard"
-                className=""
-                toggle={handleClick}
-              />
+              <>
+                <CustomMobileLink
+                  href="/dashboard"
+                  title="Dashboard"
+                  className=""
+                  toggle={handleClick}
+                />
+                <CustomMobileLink
+                  href="/generator"
+                  title="AI Generator"
+                  className=""
+                  toggle={handleClick}
+                />
+              </>
             ) : (
               // Show all navigation links when not authenticated
               <>

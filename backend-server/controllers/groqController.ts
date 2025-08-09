@@ -124,13 +124,13 @@ const groqHandler = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.status(500).json({
+    res.status(500).json({  
       success: false,
       message: "Internal server error",
       error:
         process.env.NODE_ENV === "Development"
           ? err.message
-          : "Somethinh went wrong",
+          : "Something went wrong",
     });
   }
 };

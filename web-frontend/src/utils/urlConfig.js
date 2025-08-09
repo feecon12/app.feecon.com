@@ -1,6 +1,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-console.log("BASE_URL from env:", BASE_URL); // Debug log
+// console.log("BASE_URL from env:", BASE_URL); // Debug log
 
 const urlConfig = {
   LOGIN: `${BASE_URL}/api/auth/login`,
@@ -14,6 +14,6 @@ const urlConfig = {
   GENERATE_AI_TEXT: `${BASE_URL}/api/generate`,
 };
 
-console.log("GENERATE_AI_TEXT URL:", urlConfig.GENERATE_AI_TEXT); // Debug log
+// console.log("GENERATE_AI_TEXT URL:", urlConfig.GENERATE_AI_TEXT); // Debug log
 
 export default urlConfig;
