@@ -18,19 +18,17 @@ const userRouter = express.Router();
 // Search users (protected, or make public if you want)
 userRouter.get(
   "/search",
-  protectRoute,
   isAuthorized(authorizedRoles),
   searchUserByParams
 );
 
 // Get all users (protected)
-userRouter.get("/", protectRoute, isAuthorized(authorizedRoles), getUser);
+userRouter.get("/", isAuthorized(authorizedRoles), getUser);
 
 // Create user
 userRouter.post(
   "/",
   checkInput,
-  protectRoute,
   isAuthorized(authorizedRoles),
   createUser
 );
@@ -38,7 +36,6 @@ userRouter.post(
 // Get user by ID
 userRouter.get(
   "/:id",
-  protectRoute,
   isAuthorized(authorizedRoles),
   getUserById
 );
@@ -46,7 +43,6 @@ userRouter.get(
 // Update user by ID
 userRouter.patch(
   "/:id",
-  protectRoute,
   isAuthorized(authorizedRoles),
   updateUserById
 );
@@ -54,7 +50,6 @@ userRouter.patch(
 // Delete user by ID
 userRouter.delete(
   "/:id",
-  protectRoute,
   isAuthorized(authorizedToDeleteUserRoles),
   deleteUserById
 );

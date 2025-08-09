@@ -7,40 +7,67 @@ const groq = new Groq({
 
 interface GenerateRequest {
   prompt: string;
-  temperature?: number;
+  temperature?: number | string;
   tone?: string;
-  // maxTokens?: number;
+  maxTokens?: number | string;
   model?: string;
 }
 
 //Generate AI response handler
 const groqHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log("Request body:", req.body);
-    console.log("Request body type:", typeof req.body);
+    if (process.env.NODE_ENV === "development") {
+      console.log("[groqHandler] body:", req.body);
+    }
 
     const {
       prompt,
-      temperature = 0.7,
+      temperature,
       tone = "neutral",
-      // maxTokens = 1024,
+      maxTokens,
       model = "llama3-8b-8192",
     }: GenerateRequest = req.body;
 
     //validation
     if (!prompt || prompt.trim().length === 0) {
       res.status(400).json({
-        sucess: false,
+        success: false,
         message: "Prompt is required and cannot be empty.",
       });
       return;
     }
 
-    //validate temperature range
-    if (temperature < 0 || temperature > 2) {
+    // Validate API key presence
+    if (!process.env.GROQ_API_KEY) {
       res.status(400).json({
         success: false,
-        message: "Temperature must be between 0 and 2",
+        message: "GROQ_API_KEY is not configured on the server",
+      });
+      return;
+    }
+
+    // Coerce numeric inputs that may arrive as strings
+    const tempNum =
+      typeof temperature === "string"
+        ? Number(temperature)
+        : temperature ?? 0.7;
+    const maxTokNum =
+      typeof maxTokens === "string" ? Number(maxTokens) : maxTokens ?? 1024;
+
+    //validate temperature range
+    if (!Number.isFinite(tempNum) || tempNum < 0 || tempNum > 2) {
+      res.status(400).json({
+        success: false,
+        message: "Temperature must be a number between 0 and 2",
+      });
+      return;
+    }
+
+    // validate max tokens
+    if (!Number.isFinite(maxTokNum) || maxTokNum <= 0) {
+      res.status(400).json({
+        success: false,
+        message: "maxTokens must be a positive number",
       });
       return;
     }
@@ -61,15 +88,13 @@ const groqHandler = async (req: Request, res: Response): Promise<void> => {
         },
       ],
       model: model,
-      temperature: temperature,
-      // max_tokens: maxTokens,
+      temperature: tempNum,
+      max_tokens: maxTokNum,
       top_p: 1,
       stream: false,
     });
 
     const generatedText = chatCompletion.choices[0]?.message?.content;
-
-    console.log(generatedText);
 
     if (!generatedText) {
       res.status(500).json({
@@ -81,35 +106,35 @@ const groqHandler = async (req: Request, res: Response): Promise<void> => {
 
     //success response
     res.status(201).json({
-      sucess: true,
+      success: true,
       message: "Response generated successfully",
       data: {
         response: generatedText,
         metadata: {
           model: model,
-          temperature: temperature,
+          temperature: tempNum,
           tone: tone,
           tokensUsed: chatCompletion.usage?.total_tokens || 0,
           promptTokens: chatCompletion.usage?.prompt_tokens || 0,
-          completionToken: chatCompletion.usage?.completion_tokens || 0,
+          completionTokens: chatCompletion.usage?.completion_tokens || 0,
         },
       },
     });
   } catch (err: any) {
     console.error("Error in groqHandler:", err);
 
-    //handle specific Gqoq API errors
+    //handle specific Groq API errors
     if (err.status === 401) {
       res.status(401).json({
         success: false,
-        messgae: "Invalid API Key",
+        message: "Invalid API Key",
       });
       return;
     }
 
     if (err.status == 429) {
       res.status(429).json({
-        sucess: false,
+        success: false,
         message: "Rate limit exceeded. Please try again later.",
       });
       return;
@@ -117,25 +142,25 @@ const groqHandler = async (req: Request, res: Response): Promise<void> => {
 
     if (err.status == 400) {
       res.status(400).json({
-        status: false,
+        success: false,
         message: "Invalid request parameters",
         error: err.message,
       });
       return;
     }
 
-    res.status(500).json({  
+    res.status(500).json({
       success: false,
       message: "Internal server error",
       error:
-        process.env.NODE_ENV === "Development"
+        process.env.NODE_ENV === "development"
           ? err.message
           : "Something went wrong",
     });
   }
 };
 
-//Helpper function to get system message based on tone
+//Helper function to get system message based on tone
 const getSystemMessage = (tone: string): string => {
   const toneMessages: { [key: string]: string } = {
     neutral:

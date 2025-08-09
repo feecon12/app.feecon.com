@@ -8,8 +8,8 @@ import {
 
 const bookingRouter = express.Router();
 
-bookingRouter.post("/:productId", protectRoute, createBooking);
-bookingRouter.get("/", protectRoute, getBookings);
+bookingRouter.post("/:productId", createBooking);
+bookingRouter.get("/", getBookings);
 bookingRouter.post("/verify", verifyBooking);
 
 export default bookingRouter;
