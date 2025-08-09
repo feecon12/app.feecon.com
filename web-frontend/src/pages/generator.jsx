@@ -88,8 +88,8 @@ const BioGenerator = () => {
                 className="font-extrabold text-5xl text-center w-full lg:w-[90%] uppercase"
               />
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                Just answer a few questions, and we'll generate an essay for
-                you.
+                Just answer a few questions, and we&apos;ll generate an essay
+                for you.
               </p>
             </div>
 
@@ -294,7 +294,7 @@ const BioGenerator = () => {
                     <div className="flex items-center justify-center h-full">
                       <p className="text-gray-500 dark:text-gray-400 text-center">
                         Your generated bio will appear here. Fill out the form
-                        and click "Generate Bio" to get started.
+                        and click &quot;Generate Bio&quot; to get started.
                       </p>
                     </div>
                   )}
