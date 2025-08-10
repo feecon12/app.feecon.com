@@ -94,7 +94,6 @@ app.use(
     allowedHeaders: [
       "Content-Type",
       "Authorization",
-      "Access-Control-Allow-Credentials",
       "X-Requested-With",
       "Accept",
       "Origin",
@@ -102,6 +101,12 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+
+//Explicit handle preflight requests for all routes
+app.options("*", cors({
+  origin: CLIENT_URL,
+  credentials: true,
+}));
 
 /**-------Database connection strings------*/
 mongoose

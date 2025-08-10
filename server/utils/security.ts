@@ -42,7 +42,7 @@ export const createGeneralLimiter = () => {
 export const createAuthLimiter = () => {
   return rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: 10, // Start blocking after 10 requests
+    max: 20, // Start blocking after 10 requests
     message: "Too many login attempts, please try again after an hour",
     standardHeaders: true,
     legacyHeaders: false,
