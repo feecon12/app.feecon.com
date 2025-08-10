@@ -20,7 +20,7 @@ export const setCsrfToken = (
   res.cookie("XSRF-TOKEN", csrfToken, {
     httpOnly: false, // This needs to be accessible from JavaScript
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 
