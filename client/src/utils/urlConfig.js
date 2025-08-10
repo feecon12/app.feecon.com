@@ -15,6 +15,6 @@ const urlConfig = {
   CHECK_AUTH: `${BASE_URL}/api/auth/me`,
 };
 
-console.log("GENERATE_AI_TEXT URL:", urlConfig.GENERATE_AI_TEXT); // Debug log
+console.log("CHECK_AUTH URL:", urlConfig.CHECK_AUTH); // Debug log
 
 export default urlConfig;
