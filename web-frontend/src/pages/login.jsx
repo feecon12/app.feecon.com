@@ -57,7 +57,7 @@ const Login = () => {
     try {
       // Use the AuthContext login function
       const result = await login(formData.email, formData.password);
-
+    
       if (result.success) {
         // Success toast
         toast.update(toastId, {
