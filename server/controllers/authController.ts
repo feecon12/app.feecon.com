@@ -255,20 +255,20 @@ const loginHandler = async (req: CustomRequest, res: Response) => {
 
     await user.save();
 
-    // Set access token in HTTP-only cookie
+    // Set access token in HTTPS cookie
     res.cookie("token", accessToken, {
       maxAge: 15 * 60 * 1000, // 15 minutes
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
-    // Set refresh token in HTTP-only cookie
+    // Set refresh token in HTTPS cookie
     res.cookie("refreshToken", refreshToken, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     // Log successful login
@@ -641,6 +641,7 @@ const resetPassword = async (req: CustomRequest, res: Response) => {
 
 export {
   forgotPassword,
+  getMeHandler,
   isAuthorized,
   loginHandler,
   logoutHandler,
@@ -648,5 +649,4 @@ export {
   refreshAccessToken,
   resetPassword,
   signUpHandler,
-  getMeHandler,
 };
