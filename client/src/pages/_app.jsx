@@ -1,15 +1,15 @@
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/NavBar";
 import "@/styles/globals.css";
-import { Montserrat } from "next/font/google";
+import { Nunito } from "next/font/google";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "../contexts/AuthContext";
 
-const montserrat = Montserrat({
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-mont",
+  variable: "--font-nunito",
 });
 
 export default function App({ Component, pageProps }) {
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }) {
 
       <AuthProvider>
         <main
-          className={`${montserrat.variable} font-mont bg-light  dark:bg-dark w-full min-h-screen`}
+          className={`${nunito.variable} font-nunito bg-light  dark:bg-dark w-full min-h-screen`}
         >
           <NavBar />
 

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import fillForm from "../../public/images/profile/herocontactpage.png";
+import fillForm from "../../public/images/svgs/forgotPassword.svg";
 import URL from "../utils/urlConfig";
 
 const ForgotPassword = () => {
@@ -116,13 +116,12 @@ const ForgotPassword = () => {
                 <Image
                   src={fillForm}
                   alt="FME"
-                  className="w-full h-auto lg:hidden md:inline-block md:w-full"
+                  className="w-full h-auto lg:hidden md:inline-block md:w-full transform -scale-x-100"
                   priority
                   sizes="(max-widthL768px) 100vw,
                  (max-width:1200px) 60vw,50vw"
                 />
               </div>
-
               <div className="w-1/2 flex flex-col px-10 py-5 self-center lg:w-full lg:text-center sm:px-0">
                 <div className="mb-6">
                   <h1 className="text-4xl font-bold mb-2">Forgot Password?</h1>
@@ -167,7 +166,7 @@ const ForgotPassword = () => {
                           Back to Login
                         </Link>
                       </span>
-                    </div>  
+                    </div>
                   </div>
                 </form>
               </div>

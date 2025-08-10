@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import fillForm from "../../../public/images/profile/herocontactpage.png";
+import fillForm from "../../../public/images/svgs/resetPassword.svg";
 
 const ResetPassword = () => {
   const router = useRouter();

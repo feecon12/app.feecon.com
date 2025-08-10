@@ -1,28 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 
-const { color } = require('framer-motion')
-const { fontFamily } = require('tailwindcss/defaultTheme')
+// const { color } = require("framer-motion");
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: [
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class',
+  darkMode: "class",
   theme: {
-    extend:
-    {
+    extend: {
       fontFamily: {
-        mont: ['var(--font-mont)', ...fontFamily.sans],
+        nunito: ["var(--font-nunito)", ...fontFamily.sans],
       },
       colors: {
         dark: "#1b1b1b",
         light: "#f5f5f5",
-        primary: "#B63E96", // 240,86,199
-        primaryDark: "#58E6D9", // 80,230,217
+        primary: "#c11313", // 240,86,199
+        primaryDark: "#edc91a", // 80,230,217
       },
       animation: {
-        'spin-slow': 'spin 8s linear infinite'
+        "spin-slow": "spin 8s linear infinite",
       },
       backgroundImage: {
         circularLight:
@@ -48,7 +47,7 @@ module.exports = {
 
         circularDarkSm:
           "repeating-radial-gradient(rgba(255,255,255,0.5) 2px,#1b1b1b 4px,#1b1b1b 40px)",
-        
+
         heroImg: 'url("../../public/images/logo/FME_Cover.jpg")',
       },
     },
@@ -73,4 +72,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
