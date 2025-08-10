@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import fillForm from "../../public/images/profile/herocontactpage.png";
+import fillForm from "../../public/images/svgs/signup.svg";
 // import TransitionEffect from "../components/TransitionEffect";
 import URL from "../utils/urlConfig";
 import Head from "next/head";

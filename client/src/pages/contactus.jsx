@@ -3,7 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import fillForm from "../../public/images/profile/herocontactpage.png";
+import fillForm from "../../public/images/svgs/message.svg";
 import TransitionEffect from "../components/TransitionEffect";
 import URL from "../utils/urlConfig";
 import Head from "next/head";

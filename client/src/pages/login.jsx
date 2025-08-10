@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import fillForm from "../../public/images/profile/herocontactpage.png";
+import fillForm from "../../public/images/svgs/login.svg";
 import { useAuth } from "../contexts/AuthContext";
 import Head from "next/head";
 
