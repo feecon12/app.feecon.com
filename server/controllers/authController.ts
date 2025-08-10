@@ -479,6 +479,16 @@ const refreshAccessToken = async (
   }
 };
 
+const getMeHandler = async (req: CustomRequest, res: Response) => {
+  const user = await User.findById(req.userId).select(
+    "-password -confirmPassword"
+  );
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
+  }
+  res.json({ success: true, user });
+};
+
 //logout
 const logoutHandler = (req: CustomRequest, res: Response): void => {
   try {
@@ -638,4 +648,5 @@ export {
   refreshAccessToken,
   resetPassword,
   signUpHandler,
+  getMeHandler,
 };

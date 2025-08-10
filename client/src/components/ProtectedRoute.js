@@ -23,6 +23,7 @@ const ProtectedRoute = ({
     } else if (!requireAuth && isAuthenticated) {
       router.replace("/dashboard"); // Redirect authenticated users to dashboard
     }
+    console.log("isAuthenticated:", isAuthenticated, "isLoading:", isLoading);
   }, [isAuthenticated, isLoading, isClient, requireAuth, redirectTo, router]);
 
   // Show loading or nothing while checking auth

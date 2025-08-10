@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import fillForm from "../../public/images/profile/herocontactpage.png";
 import { useAuth } from "../contexts/AuthContext";
 import Head from "next/head";
@@ -51,24 +50,11 @@ const Login = () => {
 
     setIsSubmitting(true); // Disable button while submitting
 
-    //toast loading
-    const toastId = toast.loading("Authenticating...");
-
     try {
       // Use the AuthContext login function
       const result = await login(formData.email, formData.password);
     
       if (result.success) {
-        // Success toast
-        toast.update(toastId, {
-          render: result.data.message || "Login successful! Welcome back.",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-          closeButton: true,
-          closeOnClick: true,
-        });
-
         setIsValidated(true);
         clearForm();
         console.log("Login successful:", result.data.user);
@@ -81,18 +67,6 @@ const Login = () => {
         "Error during login:",
         error.response?.data || error.message
       );
-
-      // Error toast
-      toast.update(toastId, {
-        render:
-          error.response?.data?.message ||
-          "Error during login. Please try again later.",
-        type: "error",
-        isLoading: false,
-        autoClose: 3000,
-        closeButton: true,
-        closeOnClick: true,
-      });
     } finally {
       setIsSubmitting(false); // Re-enable the button after submission
     }

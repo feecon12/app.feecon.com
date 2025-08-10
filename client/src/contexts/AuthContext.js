@@ -117,37 +117,45 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Initialize auth state from session storage
+  // Check authentication on app load or hard refresh
   useEffect(() => {
     const initAuth = async () => {
+      console.log("initAuth running");
+      // 1. Get session from storage
       const session = sessionUtils.getUserSession();
+      console.log("Session from storage:", session);
 
-      if (session.user && session.token) {
+      if (session.user) {
         try {
-          // Verify the session with the server
+          console.log("Calling checkAuth..."); 
+          // 2. Verify session with backend (/me endpoint)
           const response = await AuthAPI.checkAuth();
+          console.log("checkAuth response:", response);
           if (response.success && response.user) {
+            // 3. If valid, update context state
             dispatch({
               type: AUTH_ACTIONS.LOGIN_SUCCESS,
               payload: { user: response.user, token: session.token },
             });
           } else {
+            // 4. If invalid, clear session and set auth error
             sessionUtils.clearUserSession();
             dispatch({ type: AUTH_ACTIONS.AUTH_ERROR });
           }
         } catch (error) {
+          // 5. On error, clear session and set auth error
           console.error("Auth verification failed:", error);
           sessionUtils.clearUserSession();
           dispatch({ type: AUTH_ACTIONS.AUTH_ERROR });
         }
       } else {
+        // 6. No session found, just stop loading
         dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
       }
     };
 
     initAuth();
-  }, []);
-
+  }, []); // <-- This runs only once on mount
   // Login function
   const login = async (email, password) => {
     dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
