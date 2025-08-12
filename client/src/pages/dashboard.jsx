@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSession } from "../hooks/useAuthHooks";
+import TransitionEffect from "@/components/TransitionEffect";
 
 const Dashboard = () => {
   const { user, getUserInfo, getUserRole, isAdmin, logout } = useSession();
@@ -22,6 +23,7 @@ const Dashboard = () => {
       </Head>
 
       <ProtectedRoute requireAuth={true}>
+        <TransitionEffect />
         <main className="w-full flex flex-col items-center justify-center dark:text-light">
           <Layout className="pt-0 md:pt-16 sm:pt-8">
             <div className="flex flex-col items-center justify-center min-h-[70vh]">

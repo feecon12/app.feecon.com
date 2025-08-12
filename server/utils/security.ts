@@ -42,7 +42,7 @@ export const createGeneralLimiter = () => {
 export const createAuthLimiter = () => {
   return rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: 20, // Start blocking after 10 requests
+    max: process.env.NODE_ENV === "production" ? 20 : Number.MAX_VALUE, // Start blocking after 20 requests in production
     message: "Too many login attempts, please try again after an hour",
     standardHeaders: true,
     legacyHeaders: false,

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import useThemeSwitcher from "./hooks/useThemeSwitcher";
 import {
@@ -66,6 +66,126 @@ const CustomMobileLink = ({ href, title, className = "", toggle }) => {
   );
 };
 
+// Add this new dropdown component
+const DropdownMenu = ({ title, children, className = "" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  return (
+    <div className={`relative ${className}`} ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center group"
+      >
+        {title}
+        <svg
+          className={`ml-1 w-4 h-4 transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+
+        <span
+          className={`
+            h-[1px] inline-block bg-dark 
+            absolute left-0 -bottom-0.5 
+            group-hover:w-full transition-[width] ease duration-300
+            w-0 dark:bg-light
+          `}
+        >
+          &nbsp;
+        </span>
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 mt-2 py-2 w-48 bg-light dark:bg-dark rounded-md shadow-lg z-20 border border-gray-200 dark:border-gray-700">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Dropdown item component
+const DropdownItem = ({ href, title }) => {
+  const router = useRouter();
+
+  return (
+    <Link
+      href={href}
+      className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+    >
+      {title}
+    </Link>
+  );
+};
+
+// Add this mobile dropdown component
+const MobileDropdown = ({ title, children, toggle }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = (e) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="w-full flex flex-col items-center">
+      <button
+        onClick={handleToggle}
+        className="relative group text-light dark:text-dark my-2 flex items-center"
+      >
+        {title}
+        <svg
+          className={`ml-1 w-4 h-4 transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="flex flex-col items-center w-full py-1 mb-2">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
 export const NavBar = () => {
   const [mode, setMode] = useThemeSwitcher();
   const [isOpen, setIsOpen] = useState(false);
@@ -114,11 +234,14 @@ export const NavBar = () => {
                 title="Dashboard"
                 className="mr-4"
               />
-              <CustomLink
-                href="/generator"
-                title="AI Generator"
-                className="ml-4"
-              />
+              <DropdownMenu title="AI Solutions" className="inline-block mx-4">
+                <DropdownItem href="/sumText" title="Summary Generator" />
+                <DropdownItem href="/fotofunic" title="Fotofunic AI" />
+                <DropdownItem
+                  href="/twitterBioGenerator"
+                  title="Twitter Bio Generator"
+                />
+              </DropdownMenu>
             </>
           ) : (
             // Show all navigation links when not authenticated
@@ -240,157 +363,177 @@ export const NavBar = () => {
       {/* Mobile view */}
 
       {isOpen ? (
-        <motion.div
-          initial={{ scale: 0, opacity: 0, x: "-50%", y: "-50%" }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="min-w-[70vw] flex flex-col justify-between items-center fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+        <>
+          <div
+            className="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+          />
+          <motion.div
+            initial={{ scale: 0, opacity: 0, x: "-50%", y: "-50%" }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="min-w-[70vw] flex flex-col justify-between items-center fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                 bg-dark/90 dark:bg-light/75 rounded-lg backdrop-blur-md py-32"
-        >
-          {/* Page navigations */}
-          <nav className="flex items-center flex-col justify-center">
-            {isAuthenticated ? (
-              <>
-                <CustomMobileLink
-                  href="/dashboard"
-                  title="Dashboard"
-                  className=""
-                  toggle={handleClick}
-                />
-                <CustomMobileLink
-                  href="/generator"
-                  title="AI Generator"
-                  className=""
-                  toggle={handleClick}
-                />
-              </>
-            ) : (
-              // Show all navigation links when not authenticated
-              <>
-                <CustomMobileLink
-                  href="/"
-                  title="Home"
-                  className=""
-                  toggle={handleClick}
-                />
-                <CustomMobileLink
-                  href="/about"
-                  title="About"
-                  className=""
-                  toggle={handleClick}
-                />
-                <CustomMobileLink
-                  href="/projects"
-                  title="Projects"
-                  className=""
-                  toggle={handleClick}
-                />
-                <CustomMobileLink
-                  href="/contactus"
-                  title="Contact Us"
-                  className=""
-                  toggle={handleClick}
-                />
-              </>
-            )}
+          >
+            {/* Page navigations */}
+            <nav className="flex items-center flex-col justify-center">
+              {isAuthenticated ? (
+                <>
+                  <CustomMobileLink
+                    href="/dashboard"
+                    title="Dashboard"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <MobileDropdown title="AI Solutions">
+                    <CustomMobileLink
+                      href="/sumText"
+                      title="Summary Generator"
+                      className="text-sm"
+                      toggle={handleClick}
+                    />
+                    <CustomMobileLink
+                      href="/fotofunic"
+                      title="Fotofunic AI"
+                      className="text-sm"
+                      toggle={handleClick}
+                    />
+                    <CustomMobileLink
+                      href="/twitterBioGenerator"
+                      title="Twitter Bio Generator"
+                      className="text-sm"
+                      toggle={handleClick}
+                    />
+                  </MobileDropdown>
+                </>
+              ) : (
+                // Show all navigation links when not authenticated
+                <>
+                  <CustomMobileLink
+                    href="/"
+                    title="Home"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <CustomMobileLink
+                    href="/about"
+                    title="About"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <CustomMobileLink
+                    href="/projects"
+                    title="Projects"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <CustomMobileLink
+                    href="/contactus"
+                    title="Contact Us"
+                    className=""
+                    toggle={handleClick}
+                  />
+                </>
+              )}
 
-            {/* Mobile Authentication Links */}
-            {isAuthenticated ? (
-              <div className="flex flex-col items-center mt-4">
-                <span className="text-light dark:text-dark text-sm mb-2">
-                  Welcome, {user?.username || "User"}!
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="text-light dark:text-dark bg-primary px-4 py-2 rounded-md hover:bg-primary/80 transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center mt-4">
-                <CustomMobileLink
-                  href="/login"
-                  title="Login"
-                  className=""
-                  toggle={handleClick}
-                />
-                <CustomMobileLink
-                  href="/signup"
-                  title="Sign Up"
-                  className=""
-                  toggle={handleClick}
-                />
-              </div>
-            )}
-          </nav>
-
-          {/* Social Icons - Only show when not authenticated */}
-          {!isAuthenticated && (
-            <nav className="flex items-center justify-center flex-wrap mt-2">
-              <motion.a
-                href="https://twitter.com"
-                target={"_blank"}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-6 mr-3 sm:mx-1"
-              >
-                <TwitterIcon />
-              </motion.a>
-              <motion.a
-                href="https://github.com/feecon12"
-                target={"_blank"}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-6 mx-3 bg-light rounded-full dark:bg-dark sm:mx-1"
-              >
-                <GithubIcon />
-              </motion.a>
-              <motion.a
-                href="https://www.linkedin.com/in/feecon-behera-574009188/"
-                target={"_blank"}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-6 m-3 sm:mx-1"
-              >
-                <LinkedInIcon />
-              </motion.a>
-              <motion.a
-                href=""
-                target={"_blank"}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-6 mx-3 bg-light rounded-full sm:mx-1"
-              >
-                <PinterestIcon />
-              </motion.a>
-              <motion.a
-                href=""
-                target={"_blank"}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-6 ml-3 sm:mx-1"
-              >
-                <DribbbleIcon />
-              </motion.a>
+              {/* Mobile Authentication Links */}
+              {isAuthenticated ? (
+                <div className="flex flex-col items-center mt-4">
+                  <span className="text-light dark:text-dark text-sm mb-2">
+                    Welcome, {user?.username || "User"}!
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-light dark:text-dark bg-primary px-4 py-2 rounded-md hover:bg-primary/80 transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center mt-4">
+                  <CustomMobileLink
+                    href="/login"
+                    title="Login"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <CustomMobileLink
+                    href="/signup"
+                    title="Sign Up"
+                    className=""
+                    toggle={handleClick}
+                  />
+                </div>
+              )}
             </nav>
-          )}
-          <button
-            onClick={() => setMode(mode === "light" ? "dark" : "light")}
-            className={`ml-1 flex items-center justify-center rounded-full p-0.5 mt-4
+
+            {/* Social Icons - Only show when not authenticated */}
+            {!isAuthenticated && (
+              <nav className="flex items-center justify-center flex-wrap mt-2">
+                <motion.a
+                  href="https://twitter.com"
+                  target={"_blank"}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-6 mr-3 sm:mx-1"
+                >
+                  <TwitterIcon />
+                </motion.a>
+                <motion.a
+                  href="https://github.com/feecon12"
+                  target={"_blank"}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-6 mx-3 bg-light rounded-full dark:bg-dark sm:mx-1"
+                >
+                  <GithubIcon />
+                </motion.a>
+                <motion.a
+                  href="https://www.linkedin.com/in/feecon-behera-574009188/"
+                  target={"_blank"}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-6 m-3 sm:mx-1"
+                >
+                  <LinkedInIcon />
+                </motion.a>
+                <motion.a
+                  href=""
+                  target={"_blank"}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-6 mx-3 bg-light rounded-full sm:mx-1"
+                >
+                  <PinterestIcon />
+                </motion.a>
+                <motion.a
+                  href=""
+                  target={"_blank"}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-6 ml-3 sm:mx-1"
+                >
+                  <DribbbleIcon />
+                </motion.a>
+              </nav>
+            )}
+            <button
+              onClick={() => setMode(mode === "light" ? "dark" : "light")}
+              className={`ml-1 flex items-center justify-center rounded-full p-0.5 mt-4
                                 ${
                                   mode === "light"
                                     ? "bg-light text-dark"
                                     : "bg-dark text-light"
                                 }
                             `}
-          >
-            {mode === "dark" ? (
-              <MoonIcon className={"fill-dark"} />
-            ) : (
-              <SunIcon className={"fill-dark"} />
-            )}
-          </button>
-        </motion.div>
+            >
+              {mode === "dark" ? (
+                <MoonIcon className={"fill-dark"} />
+              ) : (
+                <SunIcon className={"fill-dark"} />
+              )}
+            </button>
+          </motion.div>
+        </>
       ) : null}
 
       {/* <div className="absolute left-[50%] top-2 translate-x-[-50%]">

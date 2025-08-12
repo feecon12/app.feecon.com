@@ -120,17 +120,17 @@ export const AuthProvider = ({ children }) => {
   // Check authentication on app load or hard refresh
   useEffect(() => {
     const initAuth = async () => {
-      console.log("initAuth running");
+      // console.log("initAuth running");
       // 1. Get session from storage
       const session = sessionUtils.getUserSession();
-      console.log("Session from storage:", session);
+      // console.log("Session from storage:", session);
 
       if (session.user) {
         try {
-          console.log("Calling checkAuth..."); 
+          // console.log("Calling checkAuth..."); 
           // 2. Verify session with backend (/me endpoint)
           const response = await AuthAPI.checkAuth();
-          console.log("checkAuth response:", response);
+          // console.log("checkAuth response:", response);
           if (response.success && response.user) {
             // 3. If valid, update context state
             dispatch({

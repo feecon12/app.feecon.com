@@ -1,6 +1,7 @@
 import { AnimatedText } from "@/components/AnimatedText";
 import { Layout } from "@/components/Layout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import TransitionEffect from "@/components/TransitionEffect";
 import URL from "@/utils/urlConfig";
 import axios from "axios";
 import Head from "next/head";
@@ -80,15 +81,16 @@ const BioGenerator = () => {
             contents="This is Generator AI app whih can generate all kind of text outputs based on a single prompt."
           />
         </Head>
+        <TransitionEffect/>
         <main>
           <Layout className="pt-0 md:pt-16 sm:pt-8">
             <div className="col-span-full w-full flex flex-col items-center justify-center space-y-4 mb-4 text-center">
               <AnimatedText
-                text="CRAFT THE PERFECT ESSAY IN SECONDS!"
+                text="CRAFT THE PERFECT SUMMARY IN SECONDS!"
                 className="font-extrabold text-5xl text-center w-full lg:w-[90%] uppercase"
               />
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                Just answer a few questions, and we&apos;ll generate an essay
+                Just answer a few questions, and we&apos;ll generate an summary
                 for you.
               </p>
             </div>
@@ -294,7 +296,7 @@ const BioGenerator = () => {
                     <div className="flex items-center justify-center h-full">
                       <p className="text-gray-500 dark:text-gray-400 text-center">
                         Your generated bio will appear here. Fill out the form
-                        and click &quot;Generate Bio&quot; to get started.
+                        and click &quot;Generate&quot; to get started.
                       </p>
                     </div>
                   )}
