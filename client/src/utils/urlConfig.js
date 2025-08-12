@@ -1,6 +1,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-console.log("BASE_URL from env:", BASE_URL); // Debug log
+// console.log("BASE_URL from env:", BASE_URL); // Debug log
 
 const urlConfig = {
   LOGIN: `${BASE_URL}/api/auth/login`,
@@ -15,6 +15,6 @@ const urlConfig = {
   CHECK_AUTH: `${BASE_URL}/api/auth/me`,
 };
 
-console.log("CHECK_AUTH URL:", urlConfig.CHECK_AUTH); // Debug log
+// console.log("CHECK_AUTH URL:", urlConfig.CHECK_AUTH); // Debug log
 
 export default urlConfig;

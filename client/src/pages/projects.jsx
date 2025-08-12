@@ -170,7 +170,7 @@ It allows users to generate creative and catchy bios with customizable settings 
 
             <div className="col-span-12 sm:col-span-12">
               <FeaturedProject
-                title={"Pictoria AI - AI Powered image generation app"}
+                title={"Fotofunic AI - AI Powered image generation app"}
                 summary="A feature-rich Crypto Screener App using React, Tailwind CSS, Context API, React Router and Recharts. 
                 It shows detail regarding almost all the cryptocurrency. You can easily convert the price in your 
                 local currency."
@@ -192,7 +192,7 @@ It allows users to generate creative and catchy bios with customizable settings 
 
             <div className="col-span-6  sm:col-span-12">
               <Project
-                title={"Pictoia AI - Generate Image"}
+                title={"Fotofunic AI - Generate Image"}
                 type="Featured project"
                 img={pictoria2}
                 link="https://pictoria-ai-lovat.vercel.app/login"
