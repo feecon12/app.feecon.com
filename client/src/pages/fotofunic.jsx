@@ -12,7 +12,7 @@ const FotofunicAI = () => {
           <title>Fotofunic AI</title>
         </Head>
         <iframe
-          src="https://pictoria-ai-lovat.vercel.app"
+          src="https://fotofunic.vercel.app/image-generation"
           className="w-full flex-1 border-none"
           title="Fotofunic AI"
           allow="camera; microphone; fullscreen"
