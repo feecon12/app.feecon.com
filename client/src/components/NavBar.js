@@ -248,10 +248,10 @@ export const NavBar = () => {
             <>
               <CustomLink href="/" title="Home" className="mr-4" />
               <CustomLink href="/about" title="About" className="mx-4" />
-              <CustomLink href="/projects" title="Projects" className="mx-4" />
+              {/* <CustomLink href="/projects" title="Projects" className="mx-4" /> */}
               <CustomLink
                 href="/contactus"
-                title="Contact Us"
+                title="Contact Me"
                 className="ml-4"
               />
             </>
@@ -420,15 +420,15 @@ export const NavBar = () => {
                     className=""
                     toggle={handleClick}
                   />
-                  <CustomMobileLink
+                  {/* <CustomMobileLink
                     href="/projects"
                     title="Projects"
                     className=""
                     toggle={handleClick}
-                  />
+                  /> */}
                   <CustomMobileLink
                     href="/contactus"
-                    title="Contact Us"
+                    title="Contact Me"
                     className=""
                     toggle={handleClick}
                   />

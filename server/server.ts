@@ -108,6 +108,23 @@ app.options("*", cors({
   credentials: true,
 }));
 
+// Basic performance monitoring middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
+    
+    // Log slow requests
+    if (duration > 200) {
+      console.warn(`Slow request: ${req.method} ${req.originalUrl} - ${duration}ms`);
+    }
+  });
+  
+  next();
+});
+
 /**-------Database connection strings------*/
 mongoose
   .connect(DB_URI)

@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "load-test": "npx playwright test api-load-test.js --project=api-load-testing"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
