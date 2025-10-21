@@ -39,6 +39,19 @@ export default defineConfig({
       name: "Google Chrome",
       use: { ...devices["Desktop Chrome"], channel: "chrome" },
     },
+    {
+      name: "api-load-testing",
+      testDir: "./tests",
+      testMatch: /api-load-test\.js/,
+      use: {
+        // Remove browser launch for API tests
+        launchOptions: {
+          headless: true,
+        },
+        // Long timeout for load tests
+        timeout: 300000,
+      },
+    },
     // {
     //   name: "chromium",
     //   use: { ...devices["Desktop Chrome"] },

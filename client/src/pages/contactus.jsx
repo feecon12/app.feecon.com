@@ -95,8 +95,8 @@ const Contact = () => {
   return (
     <>
       <Head>
-        <title>Feecon | Contact Us</title>
-        <meta name="Contact Us  page" contents="This is BContact Us page." />
+        <title>Feecon | Contact</title>
+        <meta name="Contact page" contents="This is BContact Us page." />
       </Head>
       <TransitionEffect />
       <main className="w-full flex flex-col items-center justify-center dark:text-light">

@@ -56,37 +56,51 @@ const Experience = () => {
   const verisysWork = [
     {
       bullet:
-        "Architected and deployed automated web scraping solutions using JavaScript to streamline healthcare credentialing data extraction and processing workflows.",
+        "Led the modernization of a legacy web crawler by architecting and building a scalable microservices system.",
     },
     {
       bullet:
-        "Leveraged advanced CSS selectors and DOM manipulation techniques to build dynamic, event-driven JavaScript applications with enhanced user interaction capabilities.",
+        "Engineered high-performance APIs and background services, significantly improving system speed and responsiveness.",
     },
     {
       bullet:
-        "Engineered high-performance data transformation pipelines using Ruby and Regular Expressions, achieving 30% improvement in processing efficiency and system throughput.",
+        "Improved operational efficiency and reduced infrastructure costs by optimizing server capacity and resource management.",
     },
     {
       bullet:
-        "Conducted comprehensive code reviews and quality assurance processes, resulting in 90% improvement in deliverable quality and reduced production defects.",
+        "Enhanced data reliability and success rates by implementing advanced crawling strategies and robust data pipelines.",
     },
     {
       bullet:
-        "Collaborated cross-functionally with stakeholders through Azure DevOps boards, implementing agile methodologies to ensure timely project delivery and stakeholder alignment.",
+        "Established a future-proof, maintainable architecture by cleanly separating API, worker, and storage concerns.",
+    },
+  ];
+  const capGWork = [
+    {
+      bullet:
+        "Developed foundational skills in full-stack development by building dynamic and interactive web components.",
+    },
+    {
+      bullet:
+        "Collaborated with senior developers on project work, gaining hands-on experience with professional development workflows.",
     },
   ];
   const pwcWork = [
     {
       bullet:
-        "Spearheaded end-to-end development of a comprehensive caregiver platform utilizing Node.js, Express.js, and React.js, delivering scalable healthcare solutions.",
+        "Spearheaded the full-stack development of an internal platform, leading to a marked increase in user adoption.",
     },
     {
       bullet:
-        "Designed and implemented robust RESTful API architectures with Express Framework, achieving 20% reduction in third-party integration time through optimized service connectivity.",
+        "Designed and scaled backend systems to support a large user base and integrated real-time communication features.",
     },
     {
       bullet:
-        "Orchestrated comprehensive API testing strategies using Postman, significantly accelerating development velocity while maintaining high software quality standards.",
+        "Mentored junior engineers and established team standards to elevate code quality and consistency.",
+    },
+    {
+      bullet:
+        "Enhanced team agility and project predictability through active participation in Agile process refinement.",
     },
   ];
 
@@ -106,7 +120,7 @@ const Experience = () => {
 
         <ul className="w-full flex flex-col items-start justify-between ml-4 xs:ml-2">
           <DetailCard
-            position={"Associate Software Engineer"}
+            position={"Product"}
             company={"Verisys"}
             companyLink={"www.verisys.com"}
             time={"Feb 2024 - present"}
@@ -114,12 +128,20 @@ const Experience = () => {
             work={verisysWork}
           />
           <DetailCard
-            position={"Associate"}
+            position={"Software Developer Engineer"}
             company={"PwC"}
             companyLink={"www.pwc.com"}
-            time={"Apr 2021 - Oct 2023"}
+            time={"Apr 2021 - Jan 2024"}
             address={"Bangalore, Karnataka"}
             work={pwcWork}
+          />
+          <DetailCard
+            position={"Software Intern"}
+            company={"Capgemini"}
+            companyLink={"www.capgemini.com"}
+            time={"Jul 2020 - Oct 2020"}
+            address={"Remote"}
+            work={capGWork}
           />
         </ul>
       </div>

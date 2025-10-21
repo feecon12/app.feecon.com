@@ -1,16 +1,22 @@
-import React from "react";
-import { Layout } from "./Layout";
-import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { formatLastUpdated, getBuildInfo } from "@/utils/buildInfo";
+import Link from "next/link";
+import { Layout } from "./Layout";
 
 export const Footer = () => {
   const { isAuthenticated } = useAuth();
+  const buildInfo = getBuildInfo();
   return (
     <footer className="w-full border-t-2 border-solid border-dark dark:border-light dark:text-light sm:text-base">
       <Layout className="py-7 flex items-center justify-between lg:flex-col lg:py-6">
-        <span>
-          <time>{new Date().getFullYear()}</time> &copy; All Rights Reserved.
-        </span>
+        <div className="flex flex-col items-start lg:items-center">
+          <span>
+            <time>{new Date().getFullYear()}</time> &copy; All Rights Reserved.
+          </span>
+          <span className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+            Last updated on {formatLastUpdated(buildInfo.lastUpdated)}
+          </span>
+        </div>
         {!isAuthenticated ? (
           <>
             <Link href="/contactus" className="underline underline-offset-2">

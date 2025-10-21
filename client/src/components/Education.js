@@ -5,7 +5,7 @@ import LiIcon from "./LiIcon";
 const Details = ({ type, time, place, info }) => {
   // const infoArray = info.split('\n');
   return (
-    <li className="my-8 first:mt-0 last:mb-0 w-[60%] mx-auto flex flex-col items-center justify-between md:w-[80%]">
+    <li className="my-8 first:mt-0 last:mb-0 w-[60%] mx-auto flex flex-col justify-between md:w-[80%]">
       <LiIcon />
       <motion.div
         initial={{ y: 50 }}
@@ -44,15 +44,16 @@ const Education = () => {
                     "
         />
         <ul className="w-full flex flex-col items-start justify-between ml-4 xs:ml-2">
-          {/* <Details
+          
+          <Details
             type={"Specialized in Software Development & Problem Solving"}
             time={"2022-2024"}
-            place={"Scaler, InterviewBit"}
+            place={"Scaler Academy by InterviewBit"}
             info=""
-          /> */}
+          />
 
           <Details
-            type={"Bachelor of Technology In Electronics and Communication"}
+            type={"Bachelor of Technology"}
             time={"2016-2020"}
             place={"ITER, SOA University, Bhubaneswar"}
             info=""

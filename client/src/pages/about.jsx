@@ -56,38 +56,37 @@ const about = () => {
                 Biography
               </h2>
               <p className="font-medium">
-                As a seasoned software engineer with extensive experience across
-                multiple technology stacks, I specialize in crafting robust,
-                scalable solutions that drive business success through
-                continuous innovation and technical excellence. My expertise
-                encompasses the complete development lifecycle, from data
-                extraction and processing using advanced web scraping techniques
-                and Regular Expressions, to building sophisticated applications
-                with modern JavaScript frameworks that consistently deliver
-                transformative results.
+                As a backend engineer with a passion for architecting robust and
+                scalable systems, I thrive on transforming complex challenges
+                into elegant, efficient solutions. My journey is driven by a
+                deep curiosity for how things work behind the scenes and a
+                continuous enthusiasm for modernizing legacy infrastructures. I
+                am particularly drawn to building the foundational engines that
+                power applications, ensuring they are not only performant but
+                also reliable and maintainable for the long term.
               </p>
 
               <p className="my-4 font-medium">
-                I architect dynamic user interfaces leveraging React.js, backed
-                by my Meta certification from Coursera as a professional React
-                Developer. My full-stack capabilities extend to designing and
-                implementing scalable server-side architectures using Express.js
-                and Node.js, ensuring optimal performance and maintainability
-                across enterprise-level applications. I thrive on solving
-                complex challenges by combining deep technical knowledge with
-                strategic thinking to anticipate future business needs.
+                My expertise is rooted in leading significant backend
+                transformations, most notably in re-architecting monolithic
+                applications into modular microservices. I find immense
+                satisfaction in designing systems that enhance performance, from
+                engineering high-concurrency APIs to building intelligent data
+                processing pipelines. The entire lifecycle, from initial design
+                and development to optimization and mentoring, fuels my passion
+                for creating technology that delivers tangible impact and
+                empowers teams to do their best work.
               </p>
 
               <p className="font-medium">
-                My cloud expertise is validated through industry-recognized
-                certifications including AWS Solutions Architect Associate and
-                Azure Data Engineering. These credentials demonstrate my
-                proficiency in designing cloud-native solutions that leverage
-                the full potential of modern cloud platforms to deliver
-                exceptional scalability and reliability. My passion for emerging
-                technologies and proven track record of successful project
-                delivery make me an ideal partner for organizations seeking
-                digital transformation solutions.
+                I am consistently exploring the intersection of proven
+                engineering principles and emerging technologies, always eager
+                to tackle new problems that require thoughtful, scalable
+                architecture. I believe in building systems that are not just
+                functional but are also a delight for other developers to work
+                with. I am excited by the opportunity to contribute to ambitious
+                projects and collaborate with teams that share a dedication to
+                technical excellence and innovation.
               </p>
             </div>
             <div className="col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark bg-light p-8 dark:border-light dark:bg-dark xl:col-span-4 md:order-1 md:col-span-8">
@@ -106,7 +105,7 @@ const about = () => {
             <div className="col-span-2 flex flex-col items-end justify-between xl:col-span-8 xl:flex-row xl:items-center md:order-3">
               <div className="flex flex-col items-end justify-center xl:items-center">
                 <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
-                  <AnimatedNumbers value={10} />+
+                  <AnimatedNumbers value={30} />+
                 </span>
                 <h2 className="text-xl font-medium capitalize text-dark/75 dark:text-light/75 xl:text-center md:text-lg xs:text-base">
                   satisfied clients
@@ -115,7 +114,7 @@ const about = () => {
 
               <div className="flex flex-col items-end justify-center  xl:items-center">
                 <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
-                  <AnimatedNumbers value={30} />+
+                  <AnimatedNumbers value={50} />+
                 </span>
                 <h2 className="text-xl font-medium capitalize text-dark/75 dark:text-light/75 xl:text-center md:text-lg xs:text-base">
                   projects completed
@@ -124,7 +123,7 @@ const about = () => {
 
               <div className="flex flex-col items-end justify-center  xl:items-center">
                 <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
-                  <AnimatedNumbers value={4} />+
+                  <AnimatedNumbers value={5} />+
                 </span>
                 <h2 className="text-xl font-medium capitalize text-dark/75 dark:text-light/75 xl:text-center md:text-lg xs:text-base">
                   years of experiences
