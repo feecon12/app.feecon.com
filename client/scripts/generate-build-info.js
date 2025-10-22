@@ -13,7 +13,17 @@ try {
   // Get current build date
   const buildDate = new Date().toISOString();
 
-  // Create environment variables content
+  // In production environments like Vercel, set environment variables directly
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL || process.env.CI) {
+    process.env.NEXT_PUBLIC_LAST_UPDATED = lastCommitDate;
+    process.env.NEXT_PUBLIC_BUILD_DATE = buildDate;
+    console.log("✅ Build information set for production environment");
+    console.log(`Last commit: ${lastCommitDate}`);
+    console.log(`Build date: ${buildDate}`);
+    return;
+  }
+
+  // Create environment variables content for local development
   const envContent = `NEXT_PUBLIC_LAST_UPDATED=${lastCommitDate}
 NEXT_PUBLIC_BUILD_DATE=${buildDate}
 `;
@@ -55,6 +65,15 @@ NEXT_PUBLIC_BUILD_DATE=${buildDate}
 
   // Fallback to current date if git is not available
   const fallbackDate = new Date().toISOString();
+  
+  // In production environments like Vercel, set environment variables directly
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL || process.env.CI) {
+    process.env.NEXT_PUBLIC_LAST_UPDATED = fallbackDate;
+    process.env.NEXT_PUBLIC_BUILD_DATE = fallbackDate;
+    console.log("✅ Fallback build information set for production environment");
+    return;
+  }
+
   const envContent = `NEXT_PUBLIC_LAST_UPDATED=${fallbackDate}
 NEXT_PUBLIC_BUILD_DATE=${fallbackDate}
 `;
