@@ -10,7 +10,17 @@ export const getBuildInfo = () => {
 
 export const formatLastUpdated = (dateString) => {
   try {
+    // Handle undefined or null values
+    if (!dateString || dateString === 'undefined') {
+      return 'Recently';
+    }
+    
     const date = new Date(dateString);
+    
+    // Check if the date is invalid
+    if (isNaN(date.getTime())) {
+      return 'Recently';
+    }
 
     // Format: DD/MM/YYYY, HH:MM (24-hour format)
     const day = date.getDate().toString().padStart(2, "0");
@@ -19,9 +29,9 @@ export const formatLastUpdated = (dateString) => {
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
 
-    return `${month}/${day}/${year}, ${hours}:${minutes}`;
+    return `${day}/${month}/${year}, ${hours}:${minutes}`;
   } catch (error) {
     console.error("Error formatting date:", error);
-    return "Unknown";
+    return "Recently";
   }
 };
