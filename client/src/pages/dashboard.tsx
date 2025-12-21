@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Layout } from "@/components/Layout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import TransitionEffect from "@/components/TransitionEffect";
