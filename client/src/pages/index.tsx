@@ -3,10 +3,11 @@ import HireMe from "@/components/HireMe";
 import { LinkArrow } from "@/components/Icons";
 import { Layout } from "@/components/Layout";
 import TransitionEffect from "@/components/TransitionEffect";
+import { HomeContent } from "@/types";
 import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import profilepic from "../../public/images/profile/dev1.png";
@@ -15,16 +16,16 @@ import lightBulb from "../../public/images/svgs/bulb.svg";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [homeContent, setHomeContent] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetchHomeContent();
   }, []);
 
-  const fetchHomeContent = async () => {
+  const fetchHomeContent = async (): Promise<void> => {
     try {
-      const response = await axios.get(
+      const response = await axios.get<{ data: HomeContent }>(
         `${process.env.NEXT_PUBLIC_API_URL}/api/home`
       );
       if (response.data.data) {
@@ -44,7 +45,8 @@ export default function Home() {
   const bioParagraph =
     homeContent?.bioParagraph ||
     "As a seasoned software engineer with 5+ years of expertise, I specialize in crafting robust web solutions across healthcare and insurance sectors. From conceptualization to production deployment, I've architected scalable applications that drive business success. My passion lies in building intuitive, high-performance software that seamlessly bridges user needs with cutting-edge technology. I thrive on tackling complex challenges and continuously expanding my technical horizons to deliver exceptional digital experiences.";
-  const profileImage = homeContent?.profileImage || profilepic;
+  const profileImage: string | StaticImageData =
+    homeContent?.profileImage || profilepic;
   const resumeLink = homeContent?.resumeLink || "/Feecon_resume_fullstack.pdf";
 
   return (

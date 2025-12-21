@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import useThemeSwitcher from "./hooks/useThemeSwitcher";
 import {
@@ -13,9 +13,18 @@ import {
   SunIcon,
   TwitterIcon,
 } from "./Icons";
-// import { Logo } from "./Logo";
 
-const CustomLink = ({ href, title, className = "" }) => {
+interface CustomLinkProps {
+  href: string;
+  title: string;
+  className?: string;
+}
+
+const CustomLink: React.FC<CustomLinkProps> = ({
+  href,
+  title,
+  className = "",
+}) => {
   const router = useRouter();
 
   return (
@@ -36,7 +45,19 @@ const CustomLink = ({ href, title, className = "" }) => {
   );
 };
 
-const CustomMobileLink = ({ href, title, className = "", toggle }) => {
+interface CustomMobileLinkProps {
+  href: string;
+  title: string;
+  className?: string;
+  toggle: () => void;
+}
+
+const CustomMobileLink: React.FC<CustomMobileLinkProps> = ({
+  href,
+  title,
+  className = "",
+  toggle,
+}) => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -46,7 +67,6 @@ const CustomMobileLink = ({ href, title, className = "", toggle }) => {
 
   return (
     <button
-      href={href}
       className={`${className} relative group text-light dark:text-dark my-2`}
       onClick={handleClick}
     >
@@ -66,15 +86,27 @@ const CustomMobileLink = ({ href, title, className = "", toggle }) => {
   );
 };
 
-// Add this new dropdown component
-const DropdownMenu = ({ title, children, className = "" }) => {
+interface DropdownMenuProps {
+  title: string;
+  children: ReactNode;
+  className?: string;
+}
+
+const DropdownMenu: React.FC<DropdownMenuProps> = ({
+  title,
+  children,
+  className = "",
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -130,10 +162,12 @@ const DropdownMenu = ({ title, children, className = "" }) => {
   );
 };
 
-// Dropdown item component
-const DropdownItem = ({ href, title }) => {
-  const router = useRouter();
+interface DropdownItemProps {
+  href: string;
+  title: string;
+}
 
+const DropdownItem: React.FC<DropdownItemProps> = ({ href, title }) => {
   return (
     <Link
       href={href}
@@ -144,11 +178,20 @@ const DropdownItem = ({ href, title }) => {
   );
 };
 
-// Add this mobile dropdown component
-const MobileDropdown = ({ title, children, toggle }) => {
+interface MobileDropdownProps {
+  title: string;
+  children: ReactNode;
+  toggle: () => void;
+}
+
+const MobileDropdown: React.FC<MobileDropdownProps> = ({
+  title,
+  children,
+  toggle,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleToggle = (e) => {
+  const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsOpen(!isOpen);
   };
@@ -186,7 +229,8 @@ const MobileDropdown = ({ title, children, toggle }) => {
     </div>
   );
 };
-export const NavBar = () => {
+
+export const NavBar: React.FC = () => {
   const [mode, setMode] = useThemeSwitcher();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
@@ -199,6 +243,7 @@ export const NavBar = () => {
     await logout();
     setIsOpen(false); // Close mobile menu if open
   };
+
   return (
     <header className="w-full px-32 py-8 relative z-10 font-medium flex items-center justify-between dark:text-light lg:px-16 md:px-12 sm:px-8">
       <button
@@ -227,7 +272,6 @@ export const NavBar = () => {
         {/* Navigation Links - Show different links based on auth status */}
         <nav>
           {isAuthenticated ? (
-            // Only show the navigation when authenticated
             <>
               <CustomLink
                 href="/dashboard"
@@ -244,7 +288,6 @@ export const NavBar = () => {
               </DropdownMenu>
             </>
           ) : (
-            // Show all navigation links when not authenticated
             <>
               <CustomLink href="/" title="Home" className="mr-4" />
               <CustomLink href="/about" title="About" className="mx-4" />
@@ -346,7 +389,6 @@ export const NavBar = () => {
       </div>
 
       {/* Mobile view */}
-
       {isOpen ? (
         <>
           <div
@@ -369,7 +411,7 @@ export const NavBar = () => {
                     className=""
                     toggle={handleClick}
                   />
-                  <MobileDropdown title="AI Solutions">
+                  <MobileDropdown title="AI Solutions" toggle={handleClick}>
                     <CustomMobileLink
                       href="/sumText"
                       title="Summary Generator"
@@ -391,7 +433,6 @@ export const NavBar = () => {
                   </MobileDropdown>
                 </>
               ) : (
-                // Show all navigation links when not authenticated
                 <>
                   <CustomMobileLink
                     href="/"
@@ -505,10 +546,6 @@ export const NavBar = () => {
           </motion.div>
         </>
       ) : null}
-
-      {/* <div className="absolute left-[50%] top-2 translate-x-[-50%]">
-        <Logo />
-      </div> */}
     </header>
   );
 };

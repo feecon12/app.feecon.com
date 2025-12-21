@@ -1,20 +1,70 @@
+import { User } from "@/types";
 import sessionUtils from "@/utils/sessionUtils";
 import URL from "@/utils/urlConfig";
 import axios from "axios";
-import { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import { toast } from "react-toastify";
+
+// Types
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  token: string | null;
+}
+
+interface LoginResponse {
+  success: boolean;
+  user: User;
+  token?: string;
+  message?: string;
+}
+
+interface AuthContextType extends AuthState {
+  login: (email: string, password: string) => Promise<void>;
+  signup: (userData: SignupData) => Promise<void>;
+  logout: () => Promise<void>;
+  updateUser: (userData: Partial<User>) => void;
+  checkAuth: () => Promise<void>;
+  getSession: () => { user: User | null; token: string | null };
+  setSession: (user: User, token?: string) => void;
+  clearSession: () => void;
+}
+
+interface SignupData {
+  username: string;
+  email: string;
+  password: string;
+  role?: string;
+}
+
+type AuthAction =
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "LOGIN_SUCCESS"; payload: { user: User; token?: string | null } }
+  | { type: "SET_USER"; payload: User | null }
+  | { type: "LOGOUT" }
+  | { type: "AUTH_ERROR" };
 
 // API utilities
 class AuthAPI {
-  static handleError(error) {
+  static handleError(error: any): never {
     const message =
       error.response?.data?.message || error.message || "An error occurred";
     throw new Error(message);
   }
 
-  static async login(credentials) {
+  static async login(credentials: {
+    email: string;
+    password: string;
+  }): Promise<LoginResponse> {
     try {
-      const response = await axios.post(URL.LOGIN, credentials, {
+      const response = await axios.post<LoginResponse>(URL.LOGIN, credentials, {
         withCredentials: true,
       });
       return response.data;
@@ -23,9 +73,9 @@ class AuthAPI {
     }
   }
 
-  static async signup(userData) {
+  static async signup(userData: SignupData): Promise<LoginResponse> {
     try {
-      const response = await axios.post(URL.SIGNUP, userData, {
+      const response = await axios.post<LoginResponse>(URL.SIGNUP, userData, {
         withCredentials: true,
       });
       return response.data;
@@ -34,7 +84,7 @@ class AuthAPI {
     }
   }
 
-  static async logout() {
+  static async logout(): Promise<void> {
     try {
       await axios.post(URL.LOGOUT, {}, { withCredentials: true });
     } catch (error) {
@@ -43,9 +93,9 @@ class AuthAPI {
     }
   }
 
-  static async checkAuth() {
+  static async checkAuth(): Promise<LoginResponse> {
     try {
-      const response = await axios.get(URL.CHECK_AUTH, {
+      const response = await axios.get<LoginResponse>(URL.CHECK_AUTH, {
         withCredentials: true,
       });
       return response.data;
@@ -56,7 +106,7 @@ class AuthAPI {
 }
 
 // Initial state
-const initialState = {
+const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   isLoading: true,
@@ -65,15 +115,15 @@ const initialState = {
 
 // Action types
 const AUTH_ACTIONS = {
-  SET_LOADING: "SET_LOADING",
-  LOGIN_SUCCESS: "LOGIN_SUCCESS",
-  LOGOUT: "LOGOUT",
-  SET_USER: "SET_USER",
-  AUTH_ERROR: "AUTH_ERROR",
+  SET_LOADING: "SET_LOADING" as const,
+  LOGIN_SUCCESS: "LOGIN_SUCCESS" as const,
+  LOGOUT: "LOGOUT" as const,
+  SET_USER: "SET_USER" as const,
+  AUTH_ERROR: "AUTH_ERROR" as const,
 };
 
 // Reducer function
-const authReducer = (state, action) => {
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case AUTH_ACTIONS.SET_LOADING:
       return {
@@ -111,26 +161,26 @@ const authReducer = (state, action) => {
 };
 
 // Create context
-const AuthContext = createContext();
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Auth provider component
-export const AuthProvider = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   // Check authentication on app load or hard refresh
   useEffect(() => {
     const initAuth = async () => {
-      // console.log("initAuth running");
       // 1. Get session from storage
       const session = sessionUtils.getUserSession();
-      // console.log("Session from storage:", session);
 
       if (session.user) {
         try {
-          // console.log("Calling checkAuth..."); 
           // 2. Verify session with backend (/me endpoint)
           const response = await AuthAPI.checkAuth();
-          // console.log("checkAuth response:", response);
           if (response.success && response.user) {
             // 3. If valid, update context state
             dispatch({
@@ -155,9 +205,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     initAuth();
-  }, []); // <-- This runs only once on mount
+  }, []);
+
   // Login function
-  const login = async (email, password) => {
+  const login = async (email: string, password: string): Promise<void> => {
     dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
     try {
       const response = await AuthAPI.login({ email, password });
@@ -180,7 +231,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Signup function
-  const signup = async (userData) => {
+  const signup = async (userData: SignupData): Promise<void> => {
     dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
     try {
       const response = await AuthAPI.signup(userData);
@@ -203,7 +254,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Logout function
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     try {
       await AuthAPI.logout();
     } catch (error) {
@@ -216,7 +267,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Update user function
-  const updateUser = (userData) => {
+  const updateUser = (userData: Partial<User>): void => {
     if (state.user) {
       const updatedUser = sessionUtils.updateUserSession(userData);
       dispatch({ type: AUTH_ACTIONS.SET_USER, payload: updatedUser });
@@ -224,7 +275,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Check auth function
-  const checkAuth = async () => {
+  const checkAuth = async (): Promise<void> => {
     try {
       const response = await AuthAPI.checkAuth();
       if (response.success && response.user) {
@@ -244,7 +295,7 @@ export const AuthProvider = ({ children }) => {
   const setSession = sessionUtils.setUserSession;
   const clearSession = sessionUtils.clearUserSession;
 
-  const contextValue = {
+  const contextValue: AuthContextType = {
     ...state,
     login,
     signup,
@@ -262,7 +313,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 // Custom hook to use auth context
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");

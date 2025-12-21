@@ -1,8 +1,15 @@
+import { Skill as SkillType } from "@/types";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const Skill = ({ name, x, y }) => {
+interface SkillProps {
+  name: string;
+  x: string;
+  y: string;
+}
+
+const Skill: React.FC<SkillProps> = ({ name, x, y }) => {
   return (
     <motion.div
       className="flex items-center justify-center rounded-full font-semibold bg-dark text-light py-3 px-6 shadow-dark absolute dark:bg-light dark:text-dark 
@@ -19,17 +26,23 @@ const Skill = ({ name, x, y }) => {
   );
 };
 
-const Skills = () => {
-  const [skills, setSkills] = useState([]);
-  const [loading, setLoading] = useState(true);
+interface DefaultSkill {
+  name: string;
+  x: string;
+  y: string;
+}
+
+const Skills: React.FC = () => {
+  const [skills, setSkills] = useState<(SkillType | DefaultSkill)[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetchSkills();
   }, []);
 
-  const fetchSkills = async () => {
+  const fetchSkills = async (): Promise<void> => {
     try {
-      const response = await axios.get(
+      const response = await axios.get<{ data: SkillType[] }>(
         `${process.env.NEXT_PUBLIC_API_URL}/api/skills`
       );
       if (response.data.data && response.data.data.length > 0) {
@@ -106,4 +119,5 @@ const Skills = () => {
     </>
   );
 };
+
 export default Skills;
