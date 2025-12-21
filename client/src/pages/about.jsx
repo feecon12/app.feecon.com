@@ -35,7 +35,7 @@ const AnimatedNumbers = ({ value }) => {
   return <span ref={ref}> </span>;
 };
 
-const about = () => {
+const About = () => {
   const [aboutData, setAboutData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -216,4 +216,4 @@ const about = () => {
   );
 };
 
-export default about;
+export default About;
