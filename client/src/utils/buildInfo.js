@@ -14,9 +14,9 @@ export const formatLastUpdated = (dateString) => {
     if (!dateString || dateString === 'undefined') {
       return 'Recently';
     }
-    
+
     const date = new Date(dateString);
-    
+
     // Check if the date is invalid
     if (isNaN(date.getTime())) {
       return 'Recently';

@@ -1,5 +1,6 @@
-import React from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const Skill = ({ name, x, y }) => {
   return (
@@ -19,6 +20,55 @@ const Skill = ({ name, x, y }) => {
 };
 
 const Skills = () => {
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSkills();
+  }, []);
+
+  const fetchSkills = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/skills`
+      );
+      if (response.data.data && response.data.data.length > 0) {
+        setSkills(response.data.data);
+      } else {
+        // Fallback to default skills
+        setSkills([
+          { name: "Postgresql", x: "-25vw", y: "2vw" },
+          { name: "S3", x: "-5vw", y: "-10vw" },
+          { name: "JavaScript", x: "20vw", y: "6vw" },
+          { name: "React.JS", x: "0vw", y: "12vw" },
+          { name: "Express.Js", x: "-20vw", y: "-15vw" },
+          { name: "Docker", x: "15vw", y: "-12vw" },
+          { name: "System Design", x: "0vw", y: "-20vw" },
+          { name: "Azure", x: "-25vw", y: "18vw" },
+          { name: "Redis", x: "18vw", y: "18vw" },
+          { name: "MongoDB", x: "32vw", y: "-5vw" },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+      // Fallback to default skills
+      setSkills([
+        { name: "Postgresql", x: "-25vw", y: "2vw" },
+        { name: "S3", x: "-5vw", y: "-10vw" },
+        { name: "JavaScript", x: "20vw", y: "6vw" },
+        { name: "React.JS", x: "0vw", y: "12vw" },
+        { name: "Express.Js", x: "-20vw", y: "-15vw" },
+        { name: "Docker", x: "15vw", y: "-12vw" },
+        { name: "System Design", x: "0vw", y: "-20vw" },
+        { name: "Azure", x: "-25vw", y: "18vw" },
+        { name: "Redis", x: "18vw", y: "18vw" },
+        { name: "MongoDB", x: "32vw", y: "-5vw" },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <h2 className="font-bold text-8xl mt-64 w-full text-center md:text-6xl md:mt-32">
@@ -43,16 +93,15 @@ const Skills = () => {
           Tech-Stack
         </motion.div>
 
-        <Skill name="Postgresql" x="-25vw" y="2vw" />
-        <Skill name="S3" x="-5vw" y="-10vw" />
-        <Skill name="JavaScript" x="20vw" y="6vw" />
-        <Skill name="React.JS" x="0vw" y="12vw" />
-        <Skill name="Express.Js" x="-20vw" y="-15vw" />
-        <Skill name="Docker" x="15vw" y="-12vw" />
-        <Skill name="System Design" x="0vw" y="-20vw" />
-        <Skill name="Azure" x="-25vw" y="18vw" />
-        <Skill name="Redis" x="18vw" y="18vw" />
-        <Skill name="MongoDB" x="32vw" y="-5vw" />
+        {loading ? (
+          <div className="absolute">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          skills.map((skill, index) => (
+            <Skill key={index} name={skill.name} x={skill.x} y={skill.y} />
+          ))
+        )}
       </div>
     </>
   );

@@ -248,7 +248,7 @@ export const NavBar = () => {
             <>
               <CustomLink href="/" title="Home" className="mr-4" />
               <CustomLink href="/about" title="About" className="mx-4" />
-              {/* <CustomLink href="/projects" title="Projects" className="mx-4" /> */}
+              <CustomLink href="/projects" title="Projects" className="mx-4" />
               <CustomLink
                 href="/contactus"
                 title="Contact Me"
@@ -260,7 +260,7 @@ export const NavBar = () => {
 
         <nav className="flex items-center justify-center flex-wrap ">
           {/* Authentication Links */}
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <div className="flex items-center mr-4">
               <span className="text-sm mr-3">
                 Welcome, {user?.username || "User"}!
@@ -271,21 +271,6 @@ export const NavBar = () => {
               >
                 Logout
               </button>
-            </div>
-          ) : (
-            <div className="flex items-center mr-4">
-              <Link
-                href="/login"
-                className="text-sm mr-3 hover:text-primary transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="text-sm bg-primary text-light px-3 py-1 rounded-md hover:bg-primary/80 transition-colors"
-              >
-                Sign Up
-              </Link>
             </div>
           )}
 
@@ -420,12 +405,12 @@ export const NavBar = () => {
                     className=""
                     toggle={handleClick}
                   />
-                  {/* <CustomMobileLink
+                  <CustomMobileLink
                     href="/projects"
                     title="Projects"
                     className=""
                     toggle={handleClick}
-                  /> */}
+                  />
                   <CustomMobileLink
                     href="/contactus"
                     title="Contact Me"
@@ -436,7 +421,7 @@ export const NavBar = () => {
               )}
 
               {/* Mobile Authentication Links */}
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <div className="flex flex-col items-center mt-4">
                   <span className="text-light dark:text-dark text-sm mb-2">
                     Welcome, {user?.username || "User"}!
@@ -447,21 +432,6 @@ export const NavBar = () => {
                   >
                     Logout
                   </button>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center mt-4">
-                  <CustomMobileLink
-                    href="/login"
-                    title="Login"
-                    className=""
-                    toggle={handleClick}
-                  />
-                  <CustomMobileLink
-                    href="/signup"
-                    title="Sign Up"
-                    className=""
-                    toggle={handleClick}
-                  />
                 </div>
               )}
             </nav>

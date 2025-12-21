@@ -17,16 +17,26 @@ export const sanitizeInputs = (
     // Create a new object to avoid modifying the original request
     const sanitizedBody: any = {};
 
+    // Fields that should not be sanitized (URLs, etc)
+    const skipSanitization = [
+      "image",
+      "projectUrl",
+      "githubUrl",
+      "profileImage",
+    ];
+
     // Basic sanitization for each field in the request body
     for (const key in req.body) {
       if (typeof req.body[key] === "string") {
-        // Remove potentially dangerous characters
-        sanitizedBody[key] = req.body[key]
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#x27;")
-          .replace(/\//g, "&#x2F;");
+        if (skipSanitization.includes(key)) {
+          // Don't sanitize URL fields
+          sanitizedBody[key] = req.body[key];
+        } else {
+          // Remove potentially dangerous characters
+          sanitizedBody[key] = req.body[key]
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
       } else {
         sanitizedBody[key] = req.body[key];
       }
