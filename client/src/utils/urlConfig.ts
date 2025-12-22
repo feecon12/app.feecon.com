@@ -19,6 +19,9 @@ interface UrlConfig {
   HOME: string;
   GET_SKILLS: string;
   SKILLS: string;
+  UPLOAD_IMAGE: string;
+  UPLOAD_RESUME: string;
+  UPLOAD_FILE: string;
 }
 
 const urlConfig: UrlConfig = {
@@ -40,6 +43,9 @@ const urlConfig: UrlConfig = {
   HOME: `${BASE_URL}/api/home`,
   GET_SKILLS: `${BASE_URL}/api/skills`,
   SKILLS: `${BASE_URL}/api/skills`,
+  UPLOAD_IMAGE: `${BASE_URL}/api/upload/image`,
+  UPLOAD_RESUME: `${BASE_URL}/api/upload/resume`,
+  UPLOAD_FILE: `${BASE_URL}/api/upload/file`,
 };
 
 export default urlConfig;

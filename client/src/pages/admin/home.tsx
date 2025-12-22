@@ -1,4 +1,5 @@
 // @ts-nocheck
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
@@ -16,6 +17,8 @@ const AdminHome = () => {
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [message, setMessage] = useState({ type: "", text: "" });
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +51,62 @@ const AdminHome = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadingImage(true);
+      const uploadData = new FormData();
+      uploadData.append("image", file);
+
+      try {
+        const response = await axios.post(urlConfig.UPLOAD_IMAGE, uploadData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+
+        if (response.data.success) {
+          setFormData((prev) => ({
+            ...prev,
+            profileImage: response.data.data.url,
+          }));
+        }
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setMessage({ type: "error", text: "Failed to upload image" });
+      } finally {
+        setUploadingImage(false);
+      }
+    }
+  };
+
+  const handleResumeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadingResume(true);
+      const uploadData = new FormData();
+      uploadData.append("resume", file);
+
+      try {
+        const response = await axios.post(urlConfig.UPLOAD_RESUME, uploadData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+
+        if (response.data.success) {
+          setFormData((prev) => ({
+            ...prev,
+            resumeLink: response.data.data.url,
+          }));
+        }
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setMessage({ type: "error", text: "Failed to upload resume" });
+      } finally {
+        setUploadingResume(false);
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -172,17 +231,21 @@ const AdminHome = () => {
                   htmlFor="profileImage"
                   className="block text-lg font-medium mb-2 text-dark dark:text-light"
                 >
-                  Profile Image URL
+                  Profile Image
                 </label>
                 <input
-                  type="url"
+                  type="file"
                   id="profileImage"
-                  name="profileImage"
-                  value={formData.profileImage}
-                  onChange={handleChange}
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  disabled={uploadingImage}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-light dark:bg-dark text-dark dark:text-light"
-                  placeholder="https://example.com/image.jpg"
                 />
+                {uploadingImage && (
+                  <p className="text-sm text-primary mt-2">
+                    Uploading image...
+                  </p>
+                )}
                 {formData.profileImage && (
                   <div className="mt-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
@@ -206,17 +269,34 @@ const AdminHome = () => {
                   htmlFor="resumeLink"
                   className="block text-lg font-medium mb-2 text-dark dark:text-light"
                 >
-                  Resume Link URL
+                  Resume (PDF)
                 </label>
                 <input
-                  type="url"
+                  type="file"
                   id="resumeLink"
-                  name="resumeLink"
-                  value={formData.resumeLink}
-                  onChange={handleChange}
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleResumeChange}
+                  disabled={uploadingResume}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-light dark:bg-dark text-dark dark:text-light"
-                  placeholder="https://example.com/resume.pdf"
                 />
+                {uploadingResume && (
+                  <p className="text-sm text-primary mt-2">
+                    Uploading resume...
+                  </p>
+                )}
+                {formData.resumeLink && (
+                  <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+                    Current:{" "}
+                    <a
+                      href={formData.resumeLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      View Resume
+                    </a>
+                  </p>
+                )}
               </div>
 
               <button

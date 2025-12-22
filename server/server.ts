@@ -18,6 +18,7 @@ import {
   projectRouter,
   reviewRouter,
   skillRouter,
+  uploadRouter,
   userRouter,
 } from "./routers";
 import { createAuthLimiter } from "./utils/security";
@@ -37,8 +38,12 @@ const CLIENT_URL = process.env.CLIENT_URL;
 const ENV = process.env.ENV;
 
 /**-------Middlewares----------------------*/
-// Basic Helmet security headers
-app.use(helmet());
+// Basic Helmet security headers (with relaxed policy for uploads)
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 
 // Parse cookies
 app.use(cookieParser());
@@ -79,7 +84,8 @@ mongoose
   .catch((err: Error) => {
     console.log("Something went wrong with DB connection", err);
   });
-
+// Serve static files
+app.use("/uploads", express.static("uploads"));
 /** ------------Routes---------------------*/
 // Add health check endpoint
 app.get("/health", (req: Request, res: Response) => {
@@ -120,6 +126,8 @@ app.use("/api/projects", projectRouter);
 app.use("/api/about", aboutRouter);
 app.use("/api/home", homeContentRouter);
 app.use("/api/skills", skillRouter);
+app.use("/api/upload", uploadRouter);
+app.use("/api/upload", uploadRouter);
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

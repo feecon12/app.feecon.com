@@ -7,6 +7,7 @@ import SkillAndCertifications from "@/components/SkillAndCertifications";
 import Skills from "@/components/Skills";
 import TransitionEffect from "@/components/TransitionEffect";
 import { AboutData } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { useInView, useMotionValue, useSpring } from "framer-motion";
 import Head from "next/head";

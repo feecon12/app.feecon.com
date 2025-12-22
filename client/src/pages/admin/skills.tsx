@@ -57,18 +57,12 @@ const AdminSkills: React.FC = () => {
 
     try {
       if (editingId) {
-        await axios.patch(
-          `${urlConfig.SKILLS}/${editingId}`,
-          formData,
-          { withCredentials: true }
-        );
+                await axios.patch(`${urlConfig.SKILLS}/${editingId}`, formData, {
+          withCredentials: true,
+        });
         setMessage({ type: "success", text: "Skill updated successfully!" });
       } else {
-        await axios.post(
-          urlConfig.SKILLS,
-          formData,
-          { withCredentials: true }
-        );
+        await axios.post(urlConfig.SKILLS, formData, { withCredentials: true });
         setMessage({ type: "success", text: "Skill created successfully!" });
       }
       setFormData({ name: "", x: "", y: "", order: 0 });
@@ -97,10 +91,9 @@ const AdminSkills: React.FC = () => {
     if (!confirm("Are you sure you want to delete this skill?")) return;
 
     try {
-      await axios.delete(
-        `${urlConfig.SKILLS}/${id}`,
-        { withCredentials: true }
-      );
+      await axios.delete(`${urlConfig.SKILLS}/${id}`, {
+        withCredentials: true,
+      });
       setMessage({ type: "success", text: "Skill deleted successfully!" });
       fetchSkills();
     } catch (error) {

@@ -28,6 +28,7 @@ const AdminAbout: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
+  const [uploading, setUploading] = useState<boolean>(false);
   const [message, setMessage] = useState<FormMessage>({ type: "", text: "" });
   const router = useRouter();
 
@@ -63,6 +64,34 @@ const AdminAbout: React.FC = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const response = await axios.post(urlConfig.UPLOAD_IMAGE, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+
+        if (response.data.success) {
+          setFormData((prev) => ({
+            ...prev,
+            profileImage: response.data.data.url,
+          }));
+        }
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setMessage({ type: "error", text: "Failed to upload image" });
+      } finally {
+        setUploading(false);
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -160,16 +189,20 @@ const AdminAbout: React.FC = () => {
 
               <div className="mb-6">
                 <label className="block text-dark dark:text-light font-medium mb-2">
-                  Profile Image URL
+                  Profile Image
                 </label>
                 <input
-                  type="url"
-                  name="profileImage"
-                  value={formData.profileImage}
-                  onChange={handleChange}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-dark dark:text-light"
-                  placeholder="https://example.com/image.jpg"
+                  disabled={uploading}
                 />
+                {uploading && (
+                  <p className="text-sm text-primary mt-2">
+                    Uploading image...
+                  </p>
+                )}
                 {formData.profileImage && (
                   <div className="mt-4">
                     <Image
