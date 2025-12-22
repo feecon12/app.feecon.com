@@ -3,6 +3,7 @@ import HireMe from "@/components/HireMe";
 import { LinkArrow } from "@/components/Icons";
 import { Layout } from "@/components/Layout";
 import TransitionEffect from "@/components/TransitionEffect";
+import { useDataContext } from "@/contexts/DataContext";
 import { HomeContent } from "@/types";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
@@ -17,12 +18,14 @@ import lightBulb from "../../public/images/svgs/bulb.svg";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [homeContent, setHomeContent] = useState<HomeContent | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { homeData, setHomeData, homeLoaded, setHomeLoaded } = useDataContext();
+  const [loading, setLoading] = useState<boolean>(!homeLoaded);
 
   useEffect(() => {
-    fetchHomeContent();
-  }, []);
+    if (!homeLoaded) {
+      fetchHomeContent();
+    }
+  }, [homeLoaded]);
 
   const fetchHomeContent = async (): Promise<void> => {
     try {
@@ -30,10 +33,12 @@ export default function Home() {
         urlConfig.GET_HOME
       );
       if (response.data.data) {
-        setHomeContent(response.data.data);
+        setHomeData(response.data.data);
       }
+      setHomeLoaded(true);
     } catch (error) {
       console.error("Error fetching home content:", error);
+      setHomeLoaded(true);
     } finally {
       setLoading(false);
     }
@@ -41,14 +46,14 @@ export default function Home() {
 
   // Fallback content
   const heroText =
-    homeContent?.heroText ||
+    homeData?.heroText ||
     "Bringing Dreams to Life: Where Vision Meets Code and Design";
   const bioParagraph =
-    homeContent?.bioParagraph ||
+    homeData?.bioParagraph ||
     "As a seasoned software engineer with 5+ years of expertise, I specialize in crafting robust web solutions across healthcare and insurance sectors. From conceptualization to production deployment, I've architected scalable applications that drive business success. My passion lies in building intuitive, high-performance software that seamlessly bridges user needs with cutting-edge technology. I thrive on tackling complex challenges and continuously expanding my technical horizons to deliver exceptional digital experiences.";
   const profileImage: string | StaticImageData =
-    homeContent?.profileImage || profilepic;
-  const resumeLink = homeContent?.resumeLink || "/Feecon_resume_fullstack.pdf";
+    homeData?.profileImage || profilepic;
+  const resumeLink = homeData?.resumeLink || "/Feecon_resume_fullstack.pdf";
 
   if (loading) {
     return (
