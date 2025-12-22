@@ -25,12 +25,16 @@ export const Footer: React.FC = () => {
             </Link>
           </>
         ) : null}
-        <div>
+        <div className="flex items-center">
           Build with{" "}
           <span className="text-primary dark:text-primaryDark text-2xl px-1 lg:py-2">
             &#9825;
           </span>{" "}
           by <span className="underline underline-offset-2">Feecon</span>
+          <span className="mx-2">|</span>
+          <Link href="/about" className="underline underline-offset-2">
+            About Me
+          </Link>
         </div>
       </Layout>
     </footer>
