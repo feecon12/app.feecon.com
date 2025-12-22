@@ -1,4 +1,5 @@
 import About from "./aboutModel";
+import Blog from "./blogModel";
 import Booking from "./bookingModel";
 import HomeContent from "./homeContentModel";
 import Message from "./messageModel";
@@ -10,6 +11,7 @@ import User from "./userModel";
 
 export default {
   About,
+  Blog,
   User,
   Product,
   Booking,
