@@ -1,17 +1,25 @@
+import aboutRouter from "./aboutRouter";
 import authRouter from "./authRouter";
 import bookingRouter from "./bookingRouter";
+import groqRouter from "./groqRouter";
+import homeContentRouter from "./homeContentRouter";
 import messageRouter from "./messageRouter";
 import productRouter from "./productRouter";
+import projectRouter from "./projectRouter";
 import reviewRouter from "./reviewRouter";
+import skillRouter from "./skillRouter";
 import userRouter from "./userRouter";
-import groqRouter from "./groqRouter";
 
 export {
+  aboutRouter,
   authRouter,
   bookingRouter,
+  groqRouter,
+  homeContentRouter,
   messageRouter,
   productRouter,
+  projectRouter,
   reviewRouter,
+  skillRouter,
   userRouter,
-  groqRouter
 };

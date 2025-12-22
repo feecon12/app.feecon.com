@@ -65,9 +65,13 @@ NEXT_PUBLIC_BUILD_DATE=${buildDate}
 
   // Fallback to current date if git is not available
   const fallbackDate = new Date().toISOString();
-  
+
   // In production environments like Vercel, set environment variables directly
-  if (process.env.NODE_ENV === 'production' || process.env.VERCEL || process.env.CI) {
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.VERCEL ||
+    process.env.CI
+  ) {
     process.env.NEXT_PUBLIC_LAST_UPDATED = fallbackDate;
     process.env.NEXT_PUBLIC_BUILD_DATE = fallbackDate;
     console.log("✅ Fallback build information set for production environment");

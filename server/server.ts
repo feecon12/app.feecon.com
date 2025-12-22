@@ -8,31 +8,19 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import { protectRoute } from "./controllers/authController";
 import {
+  aboutRouter,
   authRouter,
   bookingRouter,
   groqRouter,
+  homeContentRouter,
   messageRouter,
   productRouter,
+  projectRouter,
   reviewRouter,
+  skillRouter,
   userRouter,
 } from "./routers";
-import {
-  createAuthLimiter,
-  createGeneralLimiter,
-  findAvailablePort,
-  getCSPConfig,
-  securityHeaders,
-} from "./utils/security";
-import {
-  ensureSecurityHeaders,
-  logSuspiciousRequests,
-  preventParameterPollution,
-  sanitizeInputs,
-} from "./utils/securityMiddleware";
-import {
-  createAuthLogger,
-  detectSecurityThreats,
-} from "./utils/securityMonitoring";
+import { createAuthLimiter } from "./utils/security";
 import { checkServerHealth, setupGracefulShutdown } from "./utils/serverUtils";
 
 dotenv.config();
@@ -49,81 +37,38 @@ const CLIENT_URL = process.env.CLIENT_URL;
 const ENV = process.env.ENV;
 
 /**-------Middlewares----------------------*/
-// Log suspicious requests that might indicate security probing
-app.use(logSuspiciousRequests);
-
-// Detect potential security attacks
-app.use(detectSecurityThreats);
-
-// Apply Helmet for setting various HTTP security headers
+// Basic Helmet security headers
 app.use(helmet());
-
-// Configure content security policy
-app.use(helmet.contentSecurityPolicy(getCSPConfig(CLIENT_URL as string)));
-
-// Ensure security headers are present in all responses
-app.use(ensureSecurityHeaders);
-
-// Rate limiting to prevent brute force and DoS attacks
-const limiter = createGeneralLimiter();
-// Apply rate limiting to all requests
-app.use(limiter);
-
-// Apply stricter rate limits to authentication routes
-const authLimiter = createAuthLimiter();
 
 // Parse cookies
 app.use(cookieParser());
 
 // Body parsing middleware
-app.use(express.json({ limit: "10kb" })); // Limit body size to prevent large payload attacks
-app.use(bodyParser.json({ limit: "10kb" }));
-
-// Sanitize user input to prevent injection attacks
-app.use(sanitizeInputs);
-
-// Prevent parameter pollution
-app.use(preventParameterPollution);
+app.use(express.json({ limit: "10mb" }));
+app.use(bodyParser.json({ limit: "10mb" }));
 
 // CORS configuration
 app.use(
   cors({
     origin: CLIENT_URL,
-    credentials: true, // This is crucial for cookies to work
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed methods
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
       "X-Requested-With",
       "Accept",
       "Origin",
-    ], // Extended headers for preflight requests
+    ],
     optionsSuccessStatus: 200,
   })
 );
 
-//Explicit handle preflight requests for all routes
-app.options("*", cors({
-  origin: CLIENT_URL,
-  credentials: true,
-}));
+// Handle preflight requests
+app.options("*", cors({ origin: CLIENT_URL, credentials: true }));
 
-// Basic performance monitoring middleware
-app.use((req, res, next) => {
-  const start = Date.now();
-  
-  res.on('finish', () => {
-    const duration = Date.now() - start;
-    console.log(`${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
-    
-    // Log slow requests
-    if (duration > 200) {
-      console.warn(`Slow request: ${req.method} ${req.originalUrl} - ${duration}ms`);
-    }
-  });
-  
-  next();
-});
+// Apply stricter rate limits to authentication routes only
+const authLimiter = createAuthLimiter();
 
 /**-------Database connection strings------*/
 mongoose
@@ -136,15 +81,6 @@ mongoose
   });
 
 /** ------------Routes---------------------*/
-// Add security headers for all routes
-app.use((req: Request, res: Response, next: NextFunction) => {
-  // Apply all security headers from our centralized configuration
-  Object.entries(securityHeaders).forEach(([header, value]) => {
-    res.setHeader(header, value);
-  });
-  next();
-});
-
 // Add health check endpoint
 app.get("/health", (req: Request, res: Response) => {
   const health = checkServerHealth();
@@ -174,12 +110,16 @@ app.get("/health", (req: Request, res: Response) => {
 });
 
 app.use("/api/contact", messageRouter);
-app.use("/api/auth", authLimiter, createAuthLogger(), authRouter); // Apply stricter rate limiting and logging to auth routes
+app.use("/api/auth", authLimiter, authRouter);
 app.use("/api/user", protectRoute, userRouter);
 app.use("/api/product", protectRoute, productRouter);
 app.use("/api/booking", protectRoute, bookingRouter);
 app.use("/api/review", protectRoute, reviewRouter);
-app.use("/api/generate",protectRoute, groqRouter);
+app.use("/api/generate", protectRoute, groqRouter);
+app.use("/api/projects", projectRouter);
+app.use("/api/about", aboutRouter);
+app.use("/api/home", homeContentRouter);
+app.use("/api/skills", skillRouter);
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
@@ -230,26 +170,14 @@ app.use(function (req: Request, res: Response) {
 });
 
 /* -------Server connection string------- */
-// Start the server with port detection
+// Start the server
 const startServer = async () => {
   try {
-    const preferredPort = parseInt(PORT, 10);
-    const availablePort = await findAvailablePort(preferredPort);
+    const port = parseInt(PORT, 10);
 
-    const server = app.listen(availablePort, () => {
-      console.log(
-        `Server is running in ${ENV} at http://localhost:${availablePort}`
-      );
-      console.log(
-        `Health check available at: http://localhost:${availablePort}/health`
-      );
-
-      // Log if we're using a different port than preferred
-      if (availablePort !== preferredPort) {
-        console.log(
-          `Note: The original port ${preferredPort} was in use, so port ${availablePort} is being used instead.`
-        );
-      }
+    const server = app.listen(port, () => {
+      console.log(`Server is running in ${ENV} at http://localhost:${port}`);
+      console.log(`Health check available at: http://localhost:${port}/health`);
     });
 
     // Set up graceful shutdown handling
