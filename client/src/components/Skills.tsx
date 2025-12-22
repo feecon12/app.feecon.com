@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { Skill as SkillType } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -44,7 +45,7 @@ const Skills: React.FC = () => {
   const fetchSkills = async (): Promise<void> => {
     try {
       const response = await axios.get<{ data: SkillType[] }>(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/skills`
+        urlConfig.GET_SKILLS
       );
       if (response.data.data && response.data.data.length > 0) {
         setSkills(response.data.data);

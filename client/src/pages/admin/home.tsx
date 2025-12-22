@@ -24,9 +24,7 @@ const AdminHome = () => {
 
   const fetchHomeContent = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/home`
-      );
+      const response = await axios.get(urlConfig.GET_HOME);
       if (response.data.data) {
         setFormData({
           heroText: response.data.data.heroText || "",
@@ -58,13 +56,9 @@ const AdminHome = () => {
     setMessage({ type: "", text: "" });
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/home`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(urlConfig.HOME, formData, {
+        withCredentials: true,
+      });
 
       setMessage({
         type: "success",

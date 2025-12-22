@@ -4,6 +4,7 @@ import { GithubIcon } from "@/components/Icons";
 import { Layout } from "@/components/Layout";
 import TransitionEffect from "@/components/TransitionEffect";
 import { Project as ProjectType } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Head from "next/head";
@@ -172,9 +173,7 @@ const Projects: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/projects`
-        );
+        const response = await axios.get(urlConfig.GET_PROJECTS);
         setProjects(response.data.data || []);
         setLoading(false);
       } catch (err) {

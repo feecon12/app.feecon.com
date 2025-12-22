@@ -4,6 +4,7 @@ import { LinkArrow } from "@/components/Icons";
 import { Layout } from "@/components/Layout";
 import TransitionEffect from "@/components/TransitionEffect";
 import { HomeContent } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { Inter } from "next/font/google";
 import Head from "next/head";
@@ -26,7 +27,7 @@ export default function Home() {
   const fetchHomeContent = async (): Promise<void> => {
     try {
       const response = await axios.get<{ data: HomeContent }>(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/home`
+        urlConfig.GET_HOME
       );
       if (response.data.data) {
         setHomeContent(response.data.data);

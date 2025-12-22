@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { Project } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Head from "next/head";
@@ -10,8 +11,6 @@ import { toast } from "react-toastify";
 import AdminProjectForm from "../../components/AdminProjectForm";
 import { Layout } from "../../components/Layout";
 import TransitionEffect from "../../components/TransitionEffect";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const AdminProjects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -26,7 +25,7 @@ const AdminProjects: React.FC = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/projects`);
+      const response = await axios.get(urlConfig.GET_PROJECTS);
       if (response.data.success) {
         setProjects(response.data.data);
       }
@@ -39,7 +38,7 @@ const AdminProjects: React.FC = () => {
 
   const handleCreateProject = async (formData: Partial<Project>) => {
     try {
-      const response = await axios.post(`${API_URL}/api/projects`, formData, {
+      const response = await axios.post(urlConfig.PROJECTS, formData, {
         withCredentials: true,
       });
 
@@ -56,7 +55,7 @@ const AdminProjects: React.FC = () => {
   const handleUpdateProject = async (formData: Partial<Project>) => {
     try {
       const response = await axios.patch(
-        `${API_URL}/api/projects/${editingProject._id}`,
+        `${urlConfig.PROJECTS}/${editingProject._id}`,
         formData,
         { withCredentials: true }
       );
@@ -76,7 +75,7 @@ const AdminProjects: React.FC = () => {
     if (!confirm("Are you sure you want to delete this project?")) return;
 
     try {
-      const response = await axios.delete(`${API_URL}/api/projects/${id}`, {
+      const response = await axios.delete(`${urlConfig.PROJECTS}/${id}`, {
         withCredentials: true,
       });
 
