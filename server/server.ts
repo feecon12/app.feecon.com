@@ -129,7 +129,6 @@ app.use("/api/home", homeContentRouter);
 app.use("/api/skills", skillRouter);
 app.use("/api/blogs", blogRouter);
 app.use("/api/upload", uploadRouter);
-app.use("/api/upload", uploadRouter);
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

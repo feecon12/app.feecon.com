@@ -145,10 +145,9 @@ const BlogDetailPage: React.FC = () => {
             )}
 
             <article className="prose prose-lg dark:prose-invert max-w-none">
-              <div
-                className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-              />
+              <div className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+                {blog.content}
+              </div>
             </article>
 
             <div className="mt-12 pt-8 border-t border-gray-300 dark:border-gray-700">

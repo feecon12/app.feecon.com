@@ -70,7 +70,17 @@ export const getBlog = async (
 
     // If blog is not published, only allow admin to view
     if (!blog.published) {
+      // Check if user is authenticated first
       const userRole = (req as any).userRole;
+      const userId = (req as any).userId;
+
+      if (!userId || !userRole) {
+        return res.status(401).json({
+          success: false,
+          message: "Authentication required to view unpublished blogs",
+        });
+      }
+
       if (userRole !== "admin") {
         return res.status(403).json({
           success: false,
