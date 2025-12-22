@@ -137,7 +137,7 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Content Management Cards */}
-            <div className="flex flex-row flex-wrap justify-center items-center gap-8 w-full max-w-6xl mx-auto">
+            <div className="flex flex-row flex-wrap justify-center items-stretch gap-6 w-full max-w-6xl mx-auto">
               {contentManagementCards.map((card, index) => (
                 <motion.div
                   key={card.title}
@@ -147,19 +147,19 @@ const Dashboard: React.FC = () => {
                   whileHover={{ scale: 1.05, y: -5 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleNavigation(card.path)}
-                  className={`relative cursor-pointer w-64 h-64 p-8 rounded-2xl bg-gradient-to-br ${card.color} text-light shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group`}
+                  className="relative cursor-pointer w-56 h-56 p-6 rounded-2xl bg-light dark:bg-dark border-2 border-gray-200 dark:border-gray-700 text-dark dark:text-light shadow-lg hover:shadow-2xl hover:border-primary dark:hover:border-primary transition-all duration-300 overflow-hidden group"
                 >
                   {/* Background Pattern */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.1),transparent)]"></div>
+                  <div className="absolute inset-0 opacity-5 dark:opacity-10">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(193,19,19,0.1),transparent)]"></div>
                   </div>
 
                   {/* Content */}
                   <div className="relative z-10 flex flex-col h-full justify-between">
                     {/* Icon */}
-                    <div className="mb-4">
+                    <div className="mb-3">
                       <svg
-                        className="w-12 h-12 transform group-hover:rotate-12 transition-transform duration-300"
+                        className="w-10 h-10 text-primary transform group-hover:rotate-12 transition-transform duration-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -170,18 +170,18 @@ const Dashboard: React.FC = () => {
 
                     {/* Text */}
                     <div>
-                      <h3 className="text-2xl font-bold mb-2 group-hover:translate-x-1 transition-transform duration-300">
+                      <h3 className="text-xl font-bold mb-1.5 text-dark dark:text-light group-hover:translate-x-1 transition-transform duration-300">
                         {card.title}
                       </h3>
-                      <p className="text-light/80 text-sm group-hover:translate-x-1 transition-transform duration-300">
+                      <p className="text-gray-600 dark:text-gray-400 text-xs group-hover:translate-x-1 transition-transform duration-300">
                         {card.description}
                       </p>
                     </div>
 
                     {/* Arrow Icon */}
-                    <div className="absolute bottom-6 right-6 transform translate-x-8 group-hover:translate-x-0 transition-transform duration-300">
+                    <div className="absolute bottom-4 right-4 transform translate-x-8 group-hover:translate-x-0 transition-transform duration-300">
                       <svg
-                        className="w-6 h-6"
+                        className="w-5 h-5 text-primary"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
