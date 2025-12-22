@@ -1,5 +1,5 @@
 // @ts-nocheck
-import AnimatedText from "@/components/AnimatedText";
+import { AnimatedText } from "@/components/AnimatedText";
 import { Layout } from "@/components/Layout";
 import TransitionEffect from "@/components/TransitionEffect";
 import { Blog } from "@/types";
