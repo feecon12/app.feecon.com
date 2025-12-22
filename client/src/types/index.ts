@@ -12,6 +12,23 @@ export interface Project {
   updatedAt: string;
 }
 
+export interface Blog {
+  _id: string;
+  title: string;
+  content: string;
+  summary?: string;
+  author: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+  tags?: string[];
+  published: boolean;
+  image?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Skill {
   _id: string;
   name: string;

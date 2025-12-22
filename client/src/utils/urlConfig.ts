@@ -19,6 +19,9 @@ interface UrlConfig {
   HOME: string;
   GET_SKILLS: string;
   SKILLS: string;
+  GET_BLOGS: string;
+  GET_PUBLISHED_BLOGS: string;
+  BLOGS: string;
   UPLOAD_IMAGE: string;
   UPLOAD_RESUME: string;
   UPLOAD_FILE: string;
@@ -43,6 +46,9 @@ const urlConfig: UrlConfig = {
   HOME: `${BASE_URL}/api/home`,
   GET_SKILLS: `${BASE_URL}/api/skills`,
   SKILLS: `${BASE_URL}/api/skills`,
+  GET_BLOGS: `${BASE_URL}/api/blogs`,
+  GET_PUBLISHED_BLOGS: `${BASE_URL}/api/blogs/published`,
+  BLOGS: `${BASE_URL}/api/blogs`,
   UPLOAD_IMAGE: `${BASE_URL}/api/upload/image`,
   UPLOAD_RESUME: `${BASE_URL}/api/upload/resume`,
   UPLOAD_FILE: `${BASE_URL}/api/upload/file`,

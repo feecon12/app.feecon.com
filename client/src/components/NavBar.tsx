@@ -293,6 +293,7 @@ export const NavBar: React.FC = () => {
               <CustomLink href="/" title="Home" className="mr-4" />
               <CustomLink href="/about" title="About" className="mx-4" />
               <CustomLink href="/projects" title="Projects" className="mx-4" />
+              <CustomLink href="/blog" title="Blog" className="mx-4" />
               <CustomLink
                 href="/contactus"
                 title="Contact Me"
@@ -450,6 +451,12 @@ export const NavBar: React.FC = () => {
                   <CustomMobileLink
                     href="/projects"
                     title="Projects"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <CustomMobileLink
+                    href="/blog"
+                    title="Blog"
                     className=""
                     toggle={handleClick}
                   />
