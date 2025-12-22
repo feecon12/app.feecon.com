@@ -7,6 +7,7 @@ import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "../contexts/AuthContext";
+import { DataProvider } from "../contexts/DataContext";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -22,26 +23,28 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <AuthProvider>
-        <main
-          className={`${nunito.variable} font-nunito bg-light  dark:bg-dark w-full min-h-screen`}
-        >
-          <NavBar />
+        <DataProvider>
+          <main
+            className={`${nunito.variable} font-nunito bg-light  dark:bg-dark w-full min-h-screen`}
+          >
+            <NavBar />
 
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <Component {...pageProps} />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <Component {...pageProps} />
 
-          <Footer />
-        </main>
+            <Footer />
+          </main>
+        </DataProvider>
       </AuthProvider>
     </>
   );

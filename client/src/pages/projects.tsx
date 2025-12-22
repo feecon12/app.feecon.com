@@ -3,7 +3,7 @@ import { AnimatedText } from "@/components/AnimatedText";
 import { GithubIcon } from "@/components/Icons";
 import { Layout } from "@/components/Layout";
 import TransitionEffect from "@/components/TransitionEffect";
-import { Project as ProjectType } from "@/types";
+import { useDataContext } from "@/contexts/DataContext";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -166,25 +166,30 @@ const Project: React.FC<ProjectProps> = ({
   );
 };
 const Projects: React.FC = () => {
-  const [projects, setProjects] = useState<ProjectType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { projectsData, setProjectsData, projectsLoaded, setProjectsLoaded } =
+    useDataContext();
+  const [loading, setLoading] = useState<boolean>(!projectsLoaded);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await axios.get(urlConfig.GET_PROJECTS);
-        setProjects(response.data.data || []);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching projects:", err);
-        setError("Failed to load projects");
-        setLoading(false);
-      }
-    };
+    if (!projectsLoaded) {
+      const fetchProjects = async () => {
+        try {
+          const response = await axios.get(urlConfig.GET_PROJECTS);
+          setProjectsData(response.data.data || []);
+          setProjectsLoaded(true);
+          setLoading(false);
+        } catch (err) {
+          console.error("Error fetching projects:", err);
+          setError("Failed to load projects");
+          setProjectsLoaded(true);
+          setLoading(false);
+        }
+      };
 
-    fetchProjects();
-  }, []);
+      fetchProjects();
+    }
+  }, [projectsLoaded]);
 
   if (loading) {
     return (
@@ -260,13 +265,13 @@ const Projects: React.FC = () => {
             <div className="text-center text-red-500 dark:text-red-400">
               <p>{error}</p>
             </div>
-          ) : projects.length === 0 ? (
+          ) : projectsData.length === 0 ? (
             <div className="text-center text-dark dark:text-light">
               <p className="text-xl">No projects available yet.</p>
             </div>
           ) : (
             <div className="grid grid-cols-12 gap-24 gap-y-32 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0">
-              {projects.map((project, index) => {
+              {projectsData.map((project, index) => {
                 // Alternate between featured (full width) and regular projects
                 const isFeatured = index % 3 === 0;
 

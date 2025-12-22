@@ -6,7 +6,7 @@ import { Layout } from "@/components/Layout";
 import SkillAndCertifications from "@/components/SkillAndCertifications";
 import Skills from "@/components/Skills";
 import TransitionEffect from "@/components/TransitionEffect";
-import { AboutData } from "@/types";
+import { useDataContext } from "@/contexts/DataContext";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { useInView, useMotionValue, useSpring } from "framer-motion";
@@ -43,26 +43,30 @@ const AnimatedNumbers: React.FC<AnimatedNumbersProps> = ({ value }) => {
 };
 
 const About: React.FC = () => {
-  const [aboutData, setAboutData] = useState<AboutData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { aboutData, setAboutData, aboutLoaded, setAboutLoaded } =
+    useDataContext();
+  const [loading, setLoading] = useState<boolean>(!aboutLoaded);
 
   useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        const response = await axios.get(urlConfig.GET_ABOUT);
-        if (response.data.data) {
-          setAboutData(response.data.data);
+    if (!aboutLoaded) {
+      const fetchAbout = async () => {
+        try {
+          const response = await axios.get(urlConfig.GET_ABOUT);
+          if (response.data.data) {
+            setAboutData(response.data.data);
+          }
+          setAboutLoaded(true);
+        } catch (error) {
+          console.error("Error fetching about data:", error);
+          setAboutLoaded(true);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error("Error fetching about data:", error);
-        // Continue with default content if API fails
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchAbout();
-  }, []);
+      fetchAbout();
+    }
+  }, [aboutLoaded]);
 
   if (loading) {
     return (
