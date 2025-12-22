@@ -1,5 +1,7 @@
 // @ts-nocheck
 import { Project } from "@/types";
+import urlConfig from "@/utils/urlConfig";
+import axios from "axios";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -32,6 +34,35 @@ const AdminProjectForm: React.FC<AdminProjectFormProps> = ({
   });
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const response = await axios.post(urlConfig.UPLOAD_IMAGE, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
+
+        if (response.data.success) {
+          setFormData((prev) => ({ ...prev, image: response.data.data.url }));
+        }
+      } catch (error) {
+        console.error("Upload failed:", error);
+        alert("Failed to upload image");
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -136,16 +167,18 @@ const AdminProjectForm: React.FC<AdminProjectFormProps> = ({
 
         <div>
           <label className="block text-lg font-medium mb-2 text-dark dark:text-light">
-            Image URL
+            Project Image
           </label>
           <input
-            type="url"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-light dark:bg-dark text-dark dark:text-light"
-            placeholder="https://example.com/image.jpg"
+            disabled={uploading}
           />
+          {uploading && (
+            <p className="text-sm text-primary mt-2">Uploading image...</p>
+          )}
           {formData.image && (
             <div className="mt-4">
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">

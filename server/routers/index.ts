@@ -8,6 +8,7 @@ import productRouter from "./productRouter";
 import projectRouter from "./projectRouter";
 import reviewRouter from "./reviewRouter";
 import skillRouter from "./skillRouter";
+import uploadRouter from "./uploadRouter";
 import userRouter from "./userRouter";
 
 export {
@@ -21,5 +22,6 @@ export {
   projectRouter,
   reviewRouter,
   skillRouter,
+  uploadRouter,
   userRouter,
 };
