@@ -139,8 +139,40 @@ const AdminHome = () => {
         <Head>
           <title>Admin - Home Content Management</title>
         </Head>
-        <main className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <main className="w-full min-h-screen py-16">
+          <Layout className="pt-16">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex justify-between items-center mb-8">
+                <div className="h-10 w-64 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+              </div>
+              <div className="bg-light dark:bg-dark p-8 rounded-lg shadow-lg border border-solid border-dark dark:border-light">
+                {/* Hero Text skeleton */}
+                <div className="mb-6">
+                  <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                {/* Bio skeleton */}
+                <div className="mb-6">
+                  <div className="h-6 w-56 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-32 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                {/* Image skeleton */}
+                <div className="mb-6">
+                  <div className="h-6 w-36 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+                  <div className="w-40 h-40 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+                </div>
+                {/* Resume skeleton */}
+                <div className="mb-6">
+                  <div className="h-6 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                {/* Button skeleton */}
+                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </Layout>
         </main>
       </>
     );

@@ -50,6 +50,46 @@ export default function Home() {
     homeContent?.profileImage || profilepic;
   const resumeLink = homeContent?.resumeLink || "/Feecon_resume_fullstack.pdf";
 
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>FEECON | Portfolio</title>
+          <meta
+            name="description"
+            content="Professional portfolio showcasing projects and expertise"
+          />
+        </Head>
+        <TransitionEffect />
+        <main className="flex items-center text-dark w-full min-h-screen dark:text-light">
+          <Layout className="pt-0 md:pt-16 sm:pt-8">
+            <div className="flex items-center justify-between w-full lg:flex-col">
+              <div className="w-1/2 md:w-full">
+                <div className="w-full h-[500px] bg-gray-300 dark:bg-gray-700 rounded-lg animate-pulse lg:hidden md:block"></div>
+              </div>
+              <div className="w-1/2 flex flex-col items-center self-center lg:w-full lg:text-center">
+                <div className="w-full space-y-4 mb-4">
+                  <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-12 w-3/4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                <div className="w-full space-y-2 my-4">
+                  <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-2/3 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                <div className="flex items-center self-start mt-2 lg:self-center gap-4">
+                  <div className="h-12 w-32 bg-gray-300 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                  <div className="h-6 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </Layout>
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
