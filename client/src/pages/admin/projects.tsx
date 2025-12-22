@@ -3,6 +3,7 @@ import { Project } from "@/types";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -156,13 +157,13 @@ const AdminProjects: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-light dark:bg-dark p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
                   >
-                    <img
-                      src={project.image}
+                    <Image
+                      src={project.image || "/images/placeholder.jpg"}
                       alt={project.title}
+                      width={400}
+                      height={192}
+                      unoptimized
                       className="w-full h-48 object-cover rounded-lg mb-4"
-                      onError={(e) => {
-                        e.target.src = "/images/placeholder.jpg";
-                      }}
                     />
                     <h3 className="text-xl font-bold mb-2 dark:text-light">
                       {project.title}

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Project } from "@/types";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface ProjectFormData {
@@ -150,13 +151,13 @@ const AdminProjectForm: React.FC<AdminProjectFormProps> = ({
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Image Preview:
               </p>
-              <img
+              <Image
                 src={formData.image}
                 alt="Preview"
+                width={160}
+                height={160}
+                unoptimized
                 className="w-40 h-40 object-cover rounded-lg border-2 border-solid border-gray-300 dark:border-gray-600"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                }}
               />
             </div>
           )}

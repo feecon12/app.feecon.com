@@ -2,6 +2,7 @@
 import { FormMessage } from "@/types";
 import axios from "axios";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
@@ -176,9 +177,12 @@ const AdminAbout: React.FC = () => {
                 />
                 {formData.profileImage && (
                   <div className="mt-4">
-                    <img
+                    <Image
                       src={formData.profileImage}
                       alt="Profile preview"
+                      width={160}
+                      height={160}
+                      unoptimized
                       className="w-40 h-40 object-cover rounded-lg"
                     />
                   </div>
