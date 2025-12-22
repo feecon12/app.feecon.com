@@ -279,6 +279,13 @@ export const NavBar: React.FC = () => {
                 title="Dashboard"
                 className="mr-4"
               />
+            </>
+          ) : (
+            <>
+              <CustomLink href="/" title="Home" className="mr-4" />
+              <CustomLink href="/about" title="About" className="mx-4" />
+              <CustomLink href="/projects" title="Projects" className="mx-4" />
+              <CustomLink href="/blog" title="Blog" className="mx-4" />
               <DropdownMenu title="AI Solutions" className="inline-block mx-4">
                 <DropdownItem href="/sumText" title="Summary Generator" />
                 <DropdownItem href="/fotofunic" title="Fotofunic AI" />
@@ -287,13 +294,6 @@ export const NavBar: React.FC = () => {
                   title="Twitter Bio Generator"
                 />
               </DropdownMenu>
-            </>
-          ) : (
-            <>
-              <CustomLink href="/" title="Home" className="mr-4" />
-              <CustomLink href="/about" title="About" className="mx-4" />
-              <CustomLink href="/projects" title="Projects" className="mx-4" />
-              <CustomLink href="/blog" title="Blog" className="mx-4" />
               <CustomLink
                 href="/contactus"
                 title="Contact Me"
@@ -413,26 +413,6 @@ export const NavBar: React.FC = () => {
                     className=""
                     toggle={handleClick}
                   />
-                  <MobileDropdown title="AI Solutions" toggle={handleClick}>
-                    <CustomMobileLink
-                      href="/sumText"
-                      title="Summary Generator"
-                      className="text-sm"
-                      toggle={handleClick}
-                    />
-                    <CustomMobileLink
-                      href="/fotofunic"
-                      title="Fotofunic AI"
-                      className="text-sm"
-                      toggle={handleClick}
-                    />
-                    <CustomMobileLink
-                      href="/twitterBioGenerator"
-                      title="Twitter Bio Generator"
-                      className="text-sm"
-                      toggle={handleClick}
-                    />
-                  </MobileDropdown>
                 </>
               ) : (
                 <>
@@ -460,6 +440,26 @@ export const NavBar: React.FC = () => {
                     className=""
                     toggle={handleClick}
                   />
+                  <MobileDropdown title="AI Solutions" toggle={handleClick}>
+                    <CustomMobileLink
+                      href="/sumText"
+                      title="Summary Generator"
+                      className="text-sm"
+                      toggle={handleClick}
+                    />
+                    <CustomMobileLink
+                      href="/fotofunic"
+                      title="Fotofunic AI"
+                      className="text-sm"
+                      toggle={handleClick}
+                    />
+                    <CustomMobileLink
+                      href="/twitterBioGenerator"
+                      title="Twitter Bio Generator"
+                      className="text-sm"
+                      toggle={handleClick}
+                    />
+                  </MobileDropdown>
                   <CustomMobileLink
                     href="/contactus"
                     title="Contact Me"
