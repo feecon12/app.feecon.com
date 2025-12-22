@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { FormMessage } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
@@ -36,9 +37,7 @@ const AdminAbout: React.FC = () => {
 
   const fetchAbout = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/about`
-      );
+      const response = await axios.get(urlConfig.GET_ABOUT);
       if (response.data.data) {
         setFormData({
           biography: response.data.data.biography || "",
@@ -72,13 +71,9 @@ const AdminAbout: React.FC = () => {
     setMessage({ type: "", text: "" });
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/about`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(urlConfig.ABOUT, formData, {
+        withCredentials: true,
+      });
 
       setMessage({
         type: "success",

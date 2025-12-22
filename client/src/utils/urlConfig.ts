@@ -11,6 +11,14 @@ interface UrlConfig {
   SEND_MESSAGE: string;
   GENERATE_AI_TEXT: string;
   CHECK_AUTH: string;
+  GET_PROJECTS: string;
+  PROJECTS: string;
+  GET_ABOUT: string;
+  ABOUT: string;
+  GET_HOME: string;
+  HOME: string;
+  GET_SKILLS: string;
+  SKILLS: string;
 }
 
 const urlConfig: UrlConfig = {
@@ -24,6 +32,14 @@ const urlConfig: UrlConfig = {
   SEND_MESSAGE: `${BASE_URL}/api/contact`,
   GENERATE_AI_TEXT: `${BASE_URL}/api/generate`,
   CHECK_AUTH: `${BASE_URL}/api/auth/me`,
+  GET_PROJECTS: `${BASE_URL}/api/projects`,
+  PROJECTS: `${BASE_URL}/api/projects`,
+  GET_ABOUT: `${BASE_URL}/api/about`,
+  ABOUT: `${BASE_URL}/api/about`,
+  GET_HOME: `${BASE_URL}/api/home`,
+  HOME: `${BASE_URL}/api/home`,
+  GET_SKILLS: `${BASE_URL}/api/skills`,
+  SKILLS: `${BASE_URL}/api/skills`,
 };
 
 export default urlConfig;

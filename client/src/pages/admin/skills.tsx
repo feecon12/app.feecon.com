@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { FormMessage, Skill } from "@/types";
+import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Head from "next/head";
@@ -33,9 +34,7 @@ const AdminSkills: React.FC = () => {
 
   const fetchSkills = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/skills`
-      );
+      const response = await axios.get(urlConfig.GET_SKILLS);
       setSkills(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -59,14 +58,14 @@ const AdminSkills: React.FC = () => {
     try {
       if (editingId) {
         await axios.patch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/skills/${editingId}`,
+          `${urlConfig.SKILLS}/${editingId}`,
           formData,
           { withCredentials: true }
         );
         setMessage({ type: "success", text: "Skill updated successfully!" });
       } else {
         await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/skills`,
+          urlConfig.SKILLS,
           formData,
           { withCredentials: true }
         );
@@ -99,7 +98,7 @@ const AdminSkills: React.FC = () => {
 
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/skills/${id}`,
+        `${urlConfig.SKILLS}/${id}`,
         { withCredentials: true }
       );
       setMessage({ type: "success", text: "Skill deleted successfully!" });

@@ -48,9 +48,7 @@ const About: React.FC = () => {
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/about`
-        );
+        const response = await axios.get(urlConfig.GET_ABOUT);
         if (response.data.data) {
           setAboutData(response.data.data);
         }
