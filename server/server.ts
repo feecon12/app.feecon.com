@@ -10,6 +10,7 @@ import { protectRoute } from "./controllers/authController";
 import {
   aboutRouter,
   authRouter,
+  blogRouter,
   bookingRouter,
   groqRouter,
   homeContentRouter,
@@ -126,7 +127,7 @@ app.use("/api/projects", projectRouter);
 app.use("/api/about", aboutRouter);
 app.use("/api/home", homeContentRouter);
 app.use("/api/skills", skillRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/api/blogs", blogRouter);
 app.use("/api/upload", uploadRouter);
 
 /**----Central Error Handling Middleware----*/

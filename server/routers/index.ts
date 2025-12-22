@@ -1,5 +1,6 @@
 import aboutRouter from "./aboutRouter";
 import authRouter from "./authRouter";
+import blogRouter from "./blogRouter";
 import bookingRouter from "./bookingRouter";
 import groqRouter from "./groqRouter";
 import homeContentRouter from "./homeContentRouter";
@@ -14,6 +15,7 @@ import userRouter from "./userRouter";
 export {
   aboutRouter,
   authRouter,
+  blogRouter,
   bookingRouter,
   groqRouter,
   homeContentRouter,
