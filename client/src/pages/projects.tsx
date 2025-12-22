@@ -194,10 +194,48 @@ const Projects: React.FC = () => {
           <meta name="description" content="Portfolio projects" />
         </Head>
         <TransitionEffect />
-        <main className="w-full mb-16 flex flex-col items-center justify-center min-h-screen">
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-          </div>
+        <main className="w-full mb-16 flex flex-col items-center justify-center">
+          <Layout className="pt-16">
+            {/* Title skeleton */}
+            <div className="w-full flex justify-center mb-16 sm:mb-8">
+              <div className="h-16 w-[500px] bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+            </div>
+            <div className="grid grid-cols-12 gap-24 gap-y-32 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0">
+              {/* Featured project skeleton */}
+              <div className="col-span-12">
+                <div className="w-full flex items-center justify-between rounded-3xl border border-solid border-dark dark:border-light bg-light dark:bg-dark shadow-2xl p-12 lg:flex-col lg:p-8">
+                  <div className="w-1/2 lg:w-full h-80 bg-gray-300 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                  <div className="w-1/2 lg:w-full pl-6 lg:pl-0 lg:pt-6">
+                    <div className="h-6 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+                    <div className="h-10 w-3/4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+                    <div className="space-y-2">
+                      <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                      <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                      <div className="h-4 w-2/3 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                    </div>
+                    <div className="flex gap-4 mt-4">
+                      <div className="h-10 w-10 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                      <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Project cards skeleton */}
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="col-span-6 sm:col-span-12">
+                  <div className="w-full flex flex-col items-center justify-center rounded-2xl border border-solid border-dark dark:border-light bg-light dark:bg-dark p-6">
+                    <div className="w-full h-48 bg-gray-300 dark:bg-gray-700 rounded-lg animate-pulse mb-4"></div>
+                    <div className="h-6 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-8 w-3/4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+                    <div className="flex gap-4">
+                      <div className="h-8 w-8 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                      <div className="h-8 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Layout>
         </main>
       </>
     );

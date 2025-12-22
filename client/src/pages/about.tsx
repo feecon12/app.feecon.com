@@ -72,8 +72,44 @@ const About: React.FC = () => {
           <meta name="about page" content="This is about the developer." />
         </Head>
         <TransitionEffect />
-        <main className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <main className="flex w-full flex-col items-center justify-center dark:text-light">
+          <Layout className="pt-16">
+            {/* Title skeleton */}
+            <div className="w-full flex justify-center mb-16 sm:mb-8">
+              <div className="h-16 w-96 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+            </div>
+            <div className="grid w-full grid-cols-8 gap-16 pt-16 sm:gap-8">
+              {/* Biography skeleton */}
+              <div className="col-span-3 flex flex-col items-start justify-start xl:col-span-4 md:order-2 md:col-span-8">
+                <div className="h-6 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+                <div className="space-y-2 w-full">
+                  <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-3/4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+              </div>
+              {/* Image skeleton */}
+              <div className="col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark bg-light dark:bg-dark dark:border-light p-8 xl:col-span-4 md:order-1 md:col-span-8">
+                <div className="w-full h-80 bg-gray-300 dark:bg-gray-700 rounded-2xl animate-pulse"></div>
+              </div>
+              {/* Stats skeleton */}
+              <div className="col-span-2 flex flex-col items-end justify-between xl:col-span-8 xl:flex-row xl:items-center md:order-3">
+                <div className="flex flex-col items-end justify-center xl:items-center">
+                  <div className="h-16 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                <div className="flex flex-col items-end justify-center xl:items-center">
+                  <div className="h-16 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+                <div className="flex flex-col items-end justify-center xl:items-center">
+                  <div className="h-16 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </Layout>
         </main>
       </>
     );

@@ -57,7 +57,7 @@ const AdminSkills: React.FC = () => {
 
     try {
       if (editingId) {
-                await axios.patch(`${urlConfig.SKILLS}/${editingId}`, formData, {
+        await axios.patch(`${urlConfig.SKILLS}/${editingId}`, formData, {
           withCredentials: true,
         });
         setMessage({ type: "success", text: "Skill updated successfully!" });
@@ -116,8 +116,47 @@ const AdminSkills: React.FC = () => {
         <Head>
           <title>Admin - Skills Management</title>
         </Head>
-        <main className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <main className="w-full min-h-screen py-16">
+          <Layout className="pt-16">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex justify-between items-center mb-8">
+                <div className="h-10 w-48 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+              </div>
+              {/* Form skeleton */}
+              <div className="bg-light dark:bg-dark p-8 rounded-lg shadow-lg border border-solid border-dark dark:border-light mb-8">
+                <div className="h-8 w-40 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-6"></div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  </div>
+                  <div>
+                    <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  </div>
+                  <div>
+                    <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+              {/* Skills list skeleton */}
+              <div className="h-8 w-40 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div
+                    key={i}
+                    className="bg-light dark:bg-dark p-6 rounded-lg border border-gray-300 dark:border-gray-700"
+                  >
+                    <div className="h-6 w-24 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-4 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-4 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Layout>
         </main>
       </>
     );

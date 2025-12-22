@@ -144,8 +144,22 @@ const AdminProjects: React.FC = () => {
             )}
 
             {loading ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="bg-light dark:bg-dark p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
+                  >
+                    <div className="w-full h-48 bg-gray-300 dark:bg-gray-700 rounded-lg mb-4 animate-pulse"></div>
+                    <div className="h-6 w-3/4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-4 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+                    <div className="h-4 w-2/3 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-4"></div>
+                    <div className="flex gap-2">
+                      <div className="h-8 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                      <div className="h-8 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
