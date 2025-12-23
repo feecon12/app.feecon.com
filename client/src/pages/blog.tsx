@@ -56,6 +56,31 @@ const BlogPage: React.FC = () => {
           name="description"
           content="Read tech articles and insights on web development, programming, and software engineering"
         />
+        <meta
+          name="keywords"
+          content="Feecon, blog, tech articles, web development, programming, software engineering, insights"
+        />
+        <meta property="og:title" content="Blog | Tech Articles & Insights" />
+        <meta
+          property="og:description"
+          content="Read tech articles and insights on web development, programming, and software engineering"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://app.feecon.com/blog" />
+        <meta
+          property="og:image"
+          content="https://app.feecon.com/images/logo/feecon-og.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog | Tech Articles & Insights" />
+        <meta
+          name="twitter:description"
+          content="Read tech articles and insights on web development, programming, and software engineering"
+        />
+        <meta
+          name="twitter:image"
+          content="https://app.feecon.com/images/logo/feecon-og.png"
+        />
       </Head>
       <TransitionEffect />
       <main className="w-full min-h-screen py-16 dark:text-light">
