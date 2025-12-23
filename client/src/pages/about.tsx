@@ -66,7 +66,7 @@ const About: React.FC = () => {
 
       fetchAbout();
     }
-  }, [aboutLoaded]);
+  }, [aboutLoaded, setAboutData, setAboutLoaded]);
 
   if (loading) {
     return (

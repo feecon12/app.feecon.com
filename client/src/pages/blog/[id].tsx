@@ -6,6 +6,7 @@ import { Blog } from "@/types";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -18,23 +19,22 @@ const BlogDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
+      const fetchBlog = async () => {
+        try {
+          const response = await axios.get(`${urlConfig.BLOGS}/${id}`);
+          if (response.data.success) {
+            setBlog(response.data.data);
+          }
+        } catch (error) {
+          toast.error("Failed to fetch blog post");
+          router.push("/blog");
+        } finally {
+          setLoading(false);
+        }
+      };
       fetchBlog();
     }
-  }, [id]);
-
-  const fetchBlog = async () => {
-    try {
-      const response = await axios.get(`${urlConfig.BLOGS}/${id}`);
-      if (response.data.success) {
-        setBlog(response.data.data);
-      }
-    } catch (error) {
-      toast.error("Failed to fetch blog post");
-      router.push("/blog");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [id, router]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -127,10 +127,18 @@ const BlogDetailPage: React.FC = () => {
 
             {blog.image && (
               <div className="mb-8 overflow-hidden rounded-lg">
-                <img
+                <Image
                   src={blog.image}
                   alt={blog.title}
+                  width={800}
+                  height={400}
                   className="w-full h-auto object-cover"
+                  style={{ objectFit: "cover", width: "100%", height: "auto" }}
+                  priority={false}
+                  unoptimized={
+                    typeof blog.image === "string" &&
+                    blog.image.startsWith("http")
+                  }
                 />
               </div>
             )}
