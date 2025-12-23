@@ -23,26 +23,25 @@ export default function Home() {
 
   useEffect(() => {
     if (!homeLoaded) {
+      const fetchHomeContent = async (): Promise<void> => {
+        try {
+          const response = await axios.get<{ data: HomeContent }>(
+            urlConfig.GET_HOME
+          );
+          if (response.data.data) {
+            setHomeData(response.data.data);
+          }
+          setHomeLoaded(true);
+        } catch (error) {
+          console.error("Error fetching home content:", error);
+          setHomeLoaded(true);
+        } finally {
+          setLoading(false);
+        }
+      };
       fetchHomeContent();
     }
-  }, [homeLoaded]);
-
-  const fetchHomeContent = async (): Promise<void> => {
-    try {
-      const response = await axios.get<{ data: HomeContent }>(
-        urlConfig.GET_HOME
-      );
-      if (response.data.data) {
-        setHomeData(response.data.data);
-      }
-      setHomeLoaded(true);
-    } catch (error) {
-      console.error("Error fetching home content:", error);
-      setHomeLoaded(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [homeLoaded, setHomeData, setHomeLoaded, setLoading]);
 
   // Fallback content
   const heroText =

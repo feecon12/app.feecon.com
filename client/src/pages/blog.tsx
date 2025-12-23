@@ -7,6 +7,7 @@ import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -95,10 +96,22 @@ const BlogPage: React.FC = () => {
                 >
                   {blog.image && (
                     <div className="mb-4 overflow-hidden rounded-lg">
-                      <img
+                      <Image
                         src={blog.image}
                         alt={blog.title}
+                        width={600}
+                        height={192}
                         className="w-full h-48 object-cover"
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "12rem",
+                        }}
+                        priority={false}
+                        unoptimized={
+                          typeof blog.image === "string" &&
+                          blog.image.startsWith("http")
+                        }
                       />
                     </div>
                   )}

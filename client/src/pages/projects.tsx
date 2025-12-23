@@ -189,7 +189,13 @@ const Projects: React.FC = () => {
 
       fetchProjects();
     }
-  }, [projectsLoaded]);
+  }, [
+    projectsLoaded,
+    setProjectsData,
+    setProjectsLoaded,
+    setLoading,
+    setError,
+  ]);
 
   if (loading) {
     return (
