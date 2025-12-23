@@ -85,7 +85,7 @@ const BioGenerator: React.FC = () => {
   };
 
   return (
-    <ProtectedRoute requireAuth={true}>
+    <ProtectedRoute requireAuth={false}>
       <>
         <Head>
           <title>Feecon | Generator AI </title>

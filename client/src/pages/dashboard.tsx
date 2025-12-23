@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
         />
       </Head>
       <TransitionEffect />
-      <ProtectedRoute>
+      <ProtectedRoute requireAuth={true}>
         <main className="flex w-full flex-col items-center justify-center min-h-screen dark:text-light bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
           <Layout className="pt-16">
             {/* Header Section */}

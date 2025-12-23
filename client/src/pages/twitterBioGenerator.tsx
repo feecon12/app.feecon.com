@@ -5,7 +5,7 @@ import React from "react";
 
 const TwitterBioGenerator: React.FC = () => {
   return (
-    <ProtectedRoute requireAuth={true}>
+    <ProtectedRoute requireAuth={false}>
       <div className="w-full h-screen overflow-hidden">
         <TransitionEffect />
         <Head>
