@@ -5,7 +5,7 @@ import React from "react";
 
 const FotofunicAI: React.FC = () => {
   return (
-    <ProtectedRoute requireAuth={true}>
+    <ProtectedRoute requireAuth={false}>
       <div className="w-full h-screen flex flex-col">
         <TransitionEffect />
         <Head>

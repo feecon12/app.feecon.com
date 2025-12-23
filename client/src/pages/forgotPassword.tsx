@@ -102,7 +102,7 @@ const ForgotPassword: React.FC = () => {
         closeButton: true,
         closeOnClick: true,
       });
-    } finally {
+    } finally {                
       setIsSubmitting(false); // Re-enable the button after submission
     }
   };

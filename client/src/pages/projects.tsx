@@ -256,17 +256,35 @@ const Projects: React.FC = () => {
     <>
       <Head>
         <title>Feecon | Projects</title>
-        <meta name="description" content="Portfolio projects by Feecon. Explore web, mobile, and AI solutions built by Feecon." />
-        <meta name="keywords" content="Feecon, projects, portfolio, web development, mobile apps, AI, software engineer" />
+        <meta
+          name="description"
+          content="Portfolio projects by Feecon. Explore web, mobile, and AI solutions built by Feecon."
+        />
+        <meta
+          name="keywords"
+          content="Feecon, projects, portfolio, web development, mobile apps, AI, software engineer"
+        />
         <meta property="og:title" content="Feecon | Projects" />
-        <meta property="og:description" content="Portfolio projects by Feecon. Explore web, mobile, and AI solutions built by Feecon." />
+        <meta
+          property="og:description"
+          content="Portfolio projects by Feecon. Explore web, mobile, and AI solutions built by Feecon."
+        />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://app.feecon.com/projects" />
-        <meta property="og:image" content="https://app.feecon.com/images/logo/feecon-og.png" />
+        <meta
+          property="og:image"
+          content="https://app.feecon.com/images/logo/feecon-og.png"
+        />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Feecon | Projects" />
-        <meta name="twitter:description" content="Portfolio projects by Feecon. Explore web, mobile, and AI solutions built by Feecon." />
-        <meta name="twitter:image" content="https://app.feecon.com/images/logo/feecon-og.png" />
+        <meta
+          name="twitter:description"
+          content="Portfolio projects by Feecon. Explore web, mobile, and AI solutions built by Feecon."
+        />
+        <meta
+          name="twitter:image"
+          content="https://app.feecon.com/images/logo/feecon-og.png"
+        />
       </Head>
       <TransitionEffect />
 
