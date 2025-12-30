@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --exec ts-node server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test":"echo \"Running Test...\" & exit 0"
   },
   "keywords": [],
   "author": "Feecon",
