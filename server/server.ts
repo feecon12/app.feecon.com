@@ -53,10 +53,18 @@ app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(bodyParser.json({ limit: "10mb" }));
 
-// CORS configuration
+// CORS configuration: allow only CLIENT_URL (frontend)
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (origin === CLIENT_URL) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -70,8 +78,21 @@ app.use(
   })
 );
 
-// Handle preflight requests
-app.options("*", cors({ origin: CLIENT_URL, credentials: true }));
+// Handle preflight requests for CLIENT_URL only
+app.options(
+  "*",
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (origin === CLIENT_URL) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // Apply stricter rate limits to authentication routes only
 const authLimiter = createAuthLimiter();
