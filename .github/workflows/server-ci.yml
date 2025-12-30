@@ -37,7 +37,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/app.feecon.com/server
+            cd /home/ubuntu/app.feecon.com
             git pull origin master
             npm install
             pm2 restart nodeapp
