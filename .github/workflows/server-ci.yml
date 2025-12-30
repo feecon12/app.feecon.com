@@ -2,14 +2,14 @@ name: Server CI/CD
 
 on:
   push:
-    branches: [ master ]   # deploy only when master updates
+    branches: [master] # deploy only when master updates
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: server   # 👈 your backend folder
+        working-directory: server # 👈 your backend folder
 
     steps:
       - name: Checkout code
@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
@@ -37,7 +37,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/server
+            cd /home/ubuntu/app.feecon.com/server
             git pull origin master
             npm install
             pm2 restart nodeapp
