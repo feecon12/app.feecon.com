@@ -2,7 +2,14 @@ name: Server CI/CD
 
 on:
   push:
-    branches: [master] # deploy only when master updates
+    branches:
+      - master   # deploy only when master updates
+    paths:
+      - 'app.feecon.com/server/**'   # only when server and its subdirectories update
+    paths-ignore:
+      - 'app.feecon.com/docs/**'
+      - 'app.feecon.com/client/**'
+
 
 jobs:
   build:
