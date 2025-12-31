@@ -235,14 +235,17 @@ export const NavBar: React.FC = () => {
   const [mode, setMode] = useThemeSwitcher();
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+  const router = useRouter();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = async () => {
+    
     await logout();
     setIsOpen(false); // Close mobile menu if open
+    router.push("/");
   };
 
   return (

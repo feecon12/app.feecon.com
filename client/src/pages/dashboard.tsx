@@ -120,7 +120,7 @@ const Dashboard: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Portfolio CMS Dashboard
+                Admin Panel
               </motion.h1>
               <motion.p
                 className="text-xl text-gray-600 dark:text-gray-400"
