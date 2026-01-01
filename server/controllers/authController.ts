@@ -259,16 +259,16 @@ const loginHandler = async (req: CustomRequest, res: Response) => {
     res.cookie("token", accessToken, {
       maxAge: 15 * 60 * 1000, // 15 minutes
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "none" : "strict",
     });
 
     // Set refresh token in HTTPS cookie
     res.cookie("refreshToken", refreshToken, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "none" : "strict",
     });
 
     // Log successful login
@@ -455,15 +455,15 @@ const refreshAccessToken = async (
     res.cookie("token", accessToken, {
       maxAge: 15 * 60 * 1000, // 15 minutes
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "none" : "strict",
     });
 
     res.cookie("refreshToken", newRefreshToken, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "none" : "strict",
     });
 
     // Continue with authenticated request
@@ -516,9 +516,17 @@ const logoutHandler = (req: CustomRequest, res: Response): void => {
       }
     }
 
-    // Clear cookies
-    res.clearCookie("token");
-    res.clearCookie("refreshToken");
+    // Clear cookies with same options as when they were set
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.ENV === "production",
+      sameSite:
+        process.env.ENV === "production"
+          ? ("none" as const)
+          : ("strict" as const),
+    };
+    res.clearCookie("token", cookieOptions);
+    res.clearCookie("refreshToken", cookieOptions);
 
     // Log the logout event
     if (req.userId) {

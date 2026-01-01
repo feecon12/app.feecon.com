@@ -42,7 +42,7 @@ export const createGeneralLimiter = () => {
 export const createAuthLimiter = () => {
   return rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: process.env.NODE_ENV === "production" ? 20 : Number.MAX_VALUE, // Start blocking after 20 requests in production
+    max: process.env.ENV === "production" ? 20 : Number.MAX_VALUE, // Start blocking after 20 requests in production
     message: "Too many login attempts, please try again after an hour",
     standardHeaders: true,
     legacyHeaders: false,
@@ -55,7 +55,7 @@ export const createAuthLimiter = () => {
 export const createUploadLimiter = () => {
   return rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: process.env.NODE_ENV === "production" ? 50 : Number.MAX_VALUE, // 50 uploads per hour in production
+    max: process.env.ENV === "production" ? 50 : Number.MAX_VALUE, // 50 uploads per hour in production
     message: "Too many uploads from this IP, please try again later.",
     standardHeaders: true,
     legacyHeaders: false,
@@ -68,7 +68,7 @@ export const createUploadLimiter = () => {
 export const createContactLimiter = () => {
   return rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: process.env.NODE_ENV === "production" ? 10 : Number.MAX_VALUE, // 10 messages per hour in production
+    max: process.env.ENV === "production" ? 10 : Number.MAX_VALUE, // 10 messages per hour in production
     message: "Too many messages sent, please try again later.",
     standardHeaders: true,
     legacyHeaders: false,
