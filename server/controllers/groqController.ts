@@ -13,7 +13,7 @@ interface GenerateRequest {
   model?: string;
 }
 
-//Generate AI response handler
+//Generate AI response Handler
 const groqHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     if (process.env.NODE_ENV === "development") {
