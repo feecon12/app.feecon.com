@@ -8,6 +8,19 @@ const isImageFile = (mimetype: string): boolean => {
   return /^image\/(jpeg|jpg|png|gif|webp)$/i.test(mimetype);
 };
 
+// Get the base URL for uploads (handles reverse proxy)
+const getBaseUrl = (req: Request): string => {
+  // Check for forwarded protocol (from Nginx/reverse proxy)
+  const forwardedProto = req.get("x-forwarded-proto");
+  const protocol = forwardedProto || req.protocol;
+  
+  // Check for forwarded host
+  const forwardedHost = req.get("x-forwarded-host");
+  const host = forwardedHost || req.get("host");
+  
+  return `${protocol}://${host}`;
+};
+
 // Upload single file handler with image optimization
 export const uploadFile = async (req: Request, res: Response) => {
   try {
@@ -18,8 +31,7 @@ export const uploadFile = async (req: Request, res: Response) => {
       });
     }
 
-    const protocol = req.protocol;
-    const host = req.get("host");
+    const baseUrl = getBaseUrl(req);
     const originalPath = req.file.path;
     const originalFilename = req.file.filename;
 
@@ -47,8 +59,8 @@ export const uploadFile = async (req: Request, res: Response) => {
           fs.unlinkSync(originalPath);
         }
 
-        const optimizedUrl = `${protocol}://${host}/uploads/${optimizedFilename}`;
-        const thumbnailUrl = `${protocol}://${host}/uploads/${thumbnailFilename}`;
+        const optimizedUrl = `${baseUrl}/uploads/${optimizedFilename}`;
+        const thumbnailUrl = `${baseUrl}/uploads/${thumbnailFilename}`;
 
         return res.status(200).json({
           success: true,
@@ -65,7 +77,7 @@ export const uploadFile = async (req: Request, res: Response) => {
       } catch (optimizeError) {
         console.error("Image optimization error:", optimizeError);
         // If optimization fails, fall back to original file
-        const fileUrl = `${protocol}://${host}/uploads/${originalFilename}`;
+        const fileUrl = `${baseUrl}/uploads/${originalFilename}`;
         return res.status(200).json({
           success: true,
           message: "File uploaded (optimization failed, using original)",
@@ -82,7 +94,7 @@ export const uploadFile = async (req: Request, res: Response) => {
     }
 
     // For non-image files, return as-is
-    const fileUrl = `${protocol}://${host}/uploads/${originalFilename}`;
+    const fileUrl = `${baseUrl}/uploads/${originalFilename}`;
 
     res.status(200).json({
       success: true,
