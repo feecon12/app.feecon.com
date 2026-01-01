@@ -1,9 +1,9 @@
 // @ts-nocheck
+import ImagePreview from "@/components/ImagePreview";
 import { FormMessage } from "@/types";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
@@ -177,7 +177,7 @@ const AdminAbout: React.FC = () => {
                 Manage About Section
               </h1>
               <button
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/admin/dashboard")}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
               >
                 Back to Dashboard
@@ -236,13 +236,14 @@ const AdminAbout: React.FC = () => {
                 )}
                 {formData.profileImage && (
                   <div className="mt-4">
-                    <Image
+                    <ImagePreview
                       src={formData.profileImage}
                       alt="Profile preview"
+                      onRemove={() =>
+                        setFormData((prev) => ({ ...prev, profileImage: "" }))
+                      }
                       width={160}
                       height={160}
-                      unoptimized
-                      className="w-40 h-40 object-cover rounded-lg"
                     />
                   </div>
                 )}
@@ -259,7 +260,7 @@ const AdminAbout: React.FC = () => {
                     value={formData.experience}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-dark dark:text-light"
-                    placeholder="e.g., 50+"
+                    placeholder="e.g., 5"
                   />
                 </div>
 
@@ -273,7 +274,7 @@ const AdminAbout: React.FC = () => {
                     value={formData.clients}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-dark dark:text-light"
-                    placeholder="e.g., 100+"
+                    placeholder="e.g., 50"
                   />
                 </div>
 
@@ -287,7 +288,7 @@ const AdminAbout: React.FC = () => {
                     value={formData.projectsCompleted}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-dark dark:text-light"
-                    placeholder="e.g., 200+"
+                    placeholder="e.g., 200"
                   />
                 </div>
 
@@ -301,7 +302,7 @@ const AdminAbout: React.FC = () => {
                     value={formData.yearsOfExperience}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-dark dark:text-light"
-                    placeholder="e.g., 5+"
+                    placeholder="e.g., 5"
                   />
                 </div>
               </div>

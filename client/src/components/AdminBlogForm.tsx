@@ -3,8 +3,8 @@ import { Blog } from "@/types";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import React, { useState } from "react";
+import ImagePreview from "./ImagePreview";
 
 interface BlogFormData {
   title: string;
@@ -82,7 +82,10 @@ const AdminBlogForm: React.FC<AdminBlogFormProps> = ({
 
     // Convert comma-separated tags string to array
     const tagsArray = formData.tags
-      ? formData.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
+      ? formData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean)
       : [];
 
     const blogData = {
@@ -197,13 +200,13 @@ const AdminBlogForm: React.FC<AdminBlogFormProps> = ({
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Image Preview:
               </p>
-              <Image
+              <ImagePreview
                 src={formData.image}
                 alt="Preview"
+                onRemove={() => setFormData((prev) => ({ ...prev, image: "" }))}
                 width={300}
                 height={200}
-                unoptimized
-                className="w-full max-w-md h-48 object-cover rounded-lg border-2 border-solid border-gray-300 dark:border-gray-600"
+                className="w-full max-w-md h-48"
               />
             </div>
           )}

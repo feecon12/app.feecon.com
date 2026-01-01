@@ -3,8 +3,8 @@ import { Project } from "@/types";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import React, { useState } from "react";
+import ImagePreview from "./ImagePreview";
 
 interface ProjectFormData {
   title: string;
@@ -184,13 +184,12 @@ const AdminProjectForm: React.FC<AdminProjectFormProps> = ({
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Image Preview:
               </p>
-              <Image
+              <ImagePreview
                 src={formData.image}
                 alt="Preview"
+                onRemove={() => setFormData((prev) => ({ ...prev, image: "" }))}
                 width={160}
                 height={160}
-                unoptimized
-                className="w-40 h-40 object-cover rounded-lg border-2 border-solid border-gray-300 dark:border-gray-600"
               />
             </div>
           )}

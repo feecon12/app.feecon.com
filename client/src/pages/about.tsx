@@ -207,7 +207,7 @@ const About: React.FC = () => {
               <div className="flex flex-col items-end justify-center xl:items-center">
                 <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
                   {aboutData?.clients ? (
-                    aboutData.clients
+                    `${aboutData.clients}+`
                   ) : (
                     <>
                       <AnimatedNumbers value={30} />+
@@ -222,7 +222,7 @@ const About: React.FC = () => {
               <div className="flex flex-col items-end justify-center  xl:items-center">
                 <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
                   {aboutData?.projectsCompleted ? (
-                    aboutData.projectsCompleted
+                    `${aboutData.projectsCompleted}+`
                   ) : (
                     <>
                       <AnimatedNumbers value={50} />+
@@ -237,7 +237,7 @@ const About: React.FC = () => {
               <div className="flex flex-col items-end justify-center  xl:items-center">
                 <span className="inline-block text-7xl font-bold md:text-6xl sm:text-5xl xs:text-4xl ">
                   {aboutData?.yearsOfExperience ? (
-                    aboutData.yearsOfExperience
+                    `${aboutData.yearsOfExperience}+`
                   ) : (
                     <>
                       <AnimatedNumbers value={5} />+
