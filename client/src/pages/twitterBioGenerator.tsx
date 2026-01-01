@@ -1,11 +1,9 @@
-import ProtectedRoute from "@/components/ProtectedRoute";
 import TransitionEffect from "@/components/TransitionEffect";
 import Head from "next/head";
 import React from "react";
 
 const TwitterBioGenerator: React.FC = () => {
   return (
-    <ProtectedRoute requireAuth={false}>
       <div className="w-full h-screen overflow-hidden">
         <TransitionEffect />
         <Head>
@@ -22,7 +20,6 @@ const TwitterBioGenerator: React.FC = () => {
           allow="clipboard-write; camera; microphone; fullscreen"
         />
       </div>
-    </ProtectedRoute>
   );
 };
 

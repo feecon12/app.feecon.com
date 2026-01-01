@@ -83,7 +83,7 @@ const BlogPage: React.FC = () => {
         />
       </Head>
       <TransitionEffect />
-      <main className="w-full min-h-screen py-16 dark:text-light">
+      <main className="w-full mb-16 flex flex-col items-center justify-center">
         <Layout className="pt-16">
           <AnimatedText
             text="Tech Articles & Insights"
@@ -91,7 +91,7 @@ const BlogPage: React.FC = () => {
           />
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-12 gap-24 gap-y-32 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div
                   key={i}
@@ -111,16 +111,16 @@ const BlogPage: React.FC = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-12 gap-24 gap-y-32 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0">
               {blogs.map((blog) => (
                 <motion.article
                   key={blog._id}
-                  className="bg-light dark:bg-dark border border-solid border-dark dark:border-light rounded-lg p-6 hover:shadow-xl transition-all cursor-pointer"
+                  className="col-span-12 sm:col-span-12 md:col-span-6  flex flex-col justify-between bg-light dark:bg-dark border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
                   whileHover={{ scale: 1.05 }}
                   onClick={() => router.push(`/blog/${blog._id}`)}
                 >
                   {blog.image && (
-                    <div className="mb-4 overflow-hidden rounded-lg">
+                    <div className="col-span-12">
                       <Image
                         src={blog.image}
                         alt={blog.title}

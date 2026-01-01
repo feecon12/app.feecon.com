@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { AnimatedText } from "@/components/AnimatedText";
 import { Layout } from "@/components/Layout";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import TransitionEffect from "@/components/TransitionEffect";
 import URL from "@/utils/urlConfig";
 import axios from "axios";
@@ -57,7 +56,7 @@ const BioGenerator: React.FC = () => {
       };
 
       const response = await axios.post(URL.GENERATE_AI_TEXT, reqData, {
-        withCredentials: true,
+        withCredentials: false,
       });
 
       if (response.status === 201) {
@@ -85,7 +84,6 @@ const BioGenerator: React.FC = () => {
   };
 
   return (
-    <ProtectedRoute requireAuth={false}>
       <>
         <Head>
           <title>Feecon | Generator AI </title>
@@ -337,7 +335,6 @@ const BioGenerator: React.FC = () => {
           </Layout>
         </main>
       </>
-    </ProtectedRoute>
   );
 };
 

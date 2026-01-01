@@ -278,7 +278,7 @@ export const NavBar: React.FC = () => {
           {isAuthenticated ? (
             <>
               <CustomLink
-                href="/dashboard"
+                href="/admin/dashboard"
                 title="Dashboard"
                 className="mr-4"
               />
@@ -410,7 +410,7 @@ export const NavBar: React.FC = () => {
               {isAuthenticated ? (
                 <>
                   <CustomMobileLink
-                    href="/dashboard"
+                    href="/admin/dashboard"
                     title="Dashboard"
                     className=""
                     toggle={handleClick}

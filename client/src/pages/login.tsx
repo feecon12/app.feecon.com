@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { Layout } from "@/components/Layout";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -66,7 +65,7 @@ const Login: React.FC = () => {
         console.log("Login successful:", result.data.user);
 
         // Redirect to dashboard page
-        router.push("/dashboard");
+        router.push("/admin/dashboard");
       }
     } catch (error) {
       console.error(
@@ -79,7 +78,6 @@ const Login: React.FC = () => {
   };
 
   return (
-    <ProtectedRoute requireAuth={false}>
       <>
         <Head>
           <title>Feecon | Login</title>
@@ -172,7 +170,6 @@ const Login: React.FC = () => {
           </Layout>
         </main>
       </>
-    </ProtectedRoute>
   );
 };
 
