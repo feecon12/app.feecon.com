@@ -44,6 +44,11 @@ const CLIENT_URL = process.env.CLIENT_URL;
 const ENV = process.env.ENV;
 
 /**-------Middlewares----------------------*/
+// Trust proxy (for Nginx reverse proxy - needed for correct protocol detection)
+if (ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 // Basic Helmet security headers (with relaxed policy for uploads)
 app.use(
   helmet({
