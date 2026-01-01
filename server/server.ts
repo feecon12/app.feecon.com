@@ -22,7 +22,12 @@ import {
   uploadRouter,
   userRouter,
 } from "./routers";
-import { createAuthLimiter } from "./utils/security";
+import {
+  createAuthLimiter,
+  createContactLimiter,
+  createGeneralLimiter,
+  createUploadLimiter,
+} from "./utils/security";
 import { checkServerHealth, setupGracefulShutdown } from "./utils/serverUtils";
 
 dotenv.config();
@@ -70,22 +75,31 @@ app.use(
   })
 );
 // Add this line to handle preflight requests for all routes
-app.options("*", cors({
-  origin: CLIENT_URL,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "X-Requested-With",
-    "Accept",
-    "Origin",
-  ],
-  optionsSuccessStatus: 200,
-}));
+app.options(
+  "*",
+  cors({
+    origin: CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+    ],
+    optionsSuccessStatus: 200,
+  })
+);
 
-// Apply stricter rate limits to authentication routes only
+// Rate limiters
+const generalLimiter = createGeneralLimiter();
 const authLimiter = createAuthLimiter();
+const contactLimiter = createContactLimiter();
+const uploadLimiter = createUploadLimiter();
+
+// Apply general rate limit to all API routes
+app.use("/api", generalLimiter);
 
 /**-------Database connection strings------*/
 mongoose
@@ -127,7 +141,7 @@ app.get("/health", (req: Request, res: Response) => {
   });
 });
 
-app.use("/api/contact", messageRouter);
+app.use("/api/contact", contactLimiter, messageRouter);
 app.use("/api/auth", authLimiter, authRouter);
 app.use("/api/user", protectRoute, userRouter);
 app.use("/api/product", protectRoute, productRouter);
@@ -139,7 +153,7 @@ app.use("/api/about", aboutRouter);
 app.use("/api/home", homeContentRouter);
 app.use("/api/skills", skillRouter);
 app.use("/api/blogs", blogRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/api/upload", uploadLimiter, uploadRouter);
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

@@ -50,6 +50,32 @@ export const createAuthLimiter = () => {
 };
 
 /**
+ * Create a rate limiter for file uploads
+ */
+export const createUploadLimiter = () => {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour window
+    max: process.env.NODE_ENV === "production" ? 50 : Number.MAX_VALUE, // 50 uploads per hour in production
+    message: "Too many uploads from this IP, please try again later.",
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+};
+
+/**
+ * Create a rate limiter for contact/message routes
+ */
+export const createContactLimiter = () => {
+  return rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour window
+    max: process.env.NODE_ENV === "production" ? 10 : Number.MAX_VALUE, // 10 messages per hour in production
+    message: "Too many messages sent, please try again later.",
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+};
+
+/**
  * Set common security headers
  */
 export const securityHeaders = {
