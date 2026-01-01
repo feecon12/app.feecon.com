@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import mongoose from "mongoose";
+import path from "path";
 import { protectRoute } from "./controllers/authController";
 import {
   aboutRouter,
@@ -115,8 +116,9 @@ mongoose
   .catch((err: Error) => {
     console.log("Something went wrong with DB connection", err);
   });
-// Serve static files
-app.use("/uploads", express.static("uploads"));
+// Serve static files from the uploads directory (using absolute path for consistency)
+const uploadsPath = path.join(__dirname, "uploads");
+app.use("/uploads", express.static(uploadsPath));
 /** ------------Routes---------------------*/
 // Add health check endpoint
 app.get("/health", (req: Request, res: Response) => {
