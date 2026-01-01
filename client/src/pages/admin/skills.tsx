@@ -175,7 +175,7 @@ const AdminSkills: React.FC = () => {
                 Manage Skills
               </h1>
               <button
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/admin/dashboard")}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
               >
                 Back to Dashboard

@@ -1,8 +1,8 @@
 // @ts-nocheck
+import ImagePreview from "@/components/ImagePreview";
 import urlConfig from "@/utils/urlConfig";
 import axios from "axios";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
@@ -191,7 +191,7 @@ const AdminHome = () => {
                 Manage Home Content
               </h1>
               <button
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/admin/dashboard")}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
               >
                 Back to Dashboard
@@ -283,15 +283,17 @@ const AdminHome = () => {
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       Image Preview:
                     </p>
-                    <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-solid border-dark dark:border-light">
-                      <Image
-                        src={formData.profileImage}
-                        alt="Profile preview"
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
-                    </div>
+                    <ImagePreview
+                      src={formData.profileImage}
+                      alt="Profile preview"
+                      onRemove={() =>
+                        setFormData((prev) => ({ ...prev, profileImage: "" }))
+                      }
+                      width={160}
+                      height={160}
+                      rounded="full"
+                      className="w-40 h-40"
+                    />
                   </div>
                 )}
               </div>
@@ -317,17 +319,29 @@ const AdminHome = () => {
                   </p>
                 )}
                 {formData.resumeLink && (
-                  <p className="text-sm text-green-600 dark:text-green-400 mt-2">
-                    Current:{" "}
-                    <a
-                      href={formData.resumeLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
+                  <div className="flex items-center gap-3 mt-2">
+                    <p className="text-sm text-green-600 dark:text-green-400">
+                      Current:{" "}
+                      <a
+                        href={formData.resumeLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      >
+                        View Resume
+                      </a>
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData((prev) => ({ ...prev, resumeLink: "" }))
+                      }
+                      className="bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs transition-colors"
+                      title="Remove resume"
                     >
-                      View Resume
-                    </a>
-                  </p>
+                      ✕
+                    </button>
+                  </div>
                 )}
               </div>
 
