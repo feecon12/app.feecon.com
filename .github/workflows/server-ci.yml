@@ -2,9 +2,7 @@ name: Server CI/CD
 
 on:
   push:
-    branches: [master] # deploy only when master updates
-    paths:
-      - "/server/**" # only when server and its subdirectories update
+    branches: [master] 
 
 jobs:
   build:
