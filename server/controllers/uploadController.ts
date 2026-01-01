@@ -1,8 +1,14 @@
 import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
+import { optimiseImage, generateThumbnail } from "../utils/imageOptimizer";
 
-// Upload single file handler
+// Check if file is an image
+const isImageFile = (mimetype: string): boolean => {
+  return /^image\/(jpeg|jpg|png|gif|webp)$/i.test(mimetype);
+};
+
+// Upload single file handler with image optimization
 export const uploadFile = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
@@ -12,20 +18,79 @@ export const uploadFile = async (req: Request, res: Response) => {
       });
     }
 
-    // Build full URL using request protocol and host
     const protocol = req.protocol;
     const host = req.get("host");
-    const fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+    const originalPath = req.file.path;
+    const originalFilename = req.file.filename;
+
+    // If it's an image, optimize it
+    if (isImageFile(req.file.mimetype)) {
+      const filenameWithoutExt = path.basename(originalFilename, path.extname(originalFilename));
+      const optimizedFilename = `${filenameWithoutExt}.webp`;
+      const thumbnailFilename = `${filenameWithoutExt}-thumb.webp`;
+      const uploadsDir = path.join(__dirname, "../uploads");
+      const optimizedPath = path.join(uploadsDir, optimizedFilename);
+      const thumbnailPath = path.join(uploadsDir, thumbnailFilename);
+
+      try {
+        // Optimize image and convert to WebP
+        await optimiseImage(originalPath, optimizedPath);
+        
+        // Generate thumbnail
+        await generateThumbnail(originalPath, thumbnailPath);
+
+        // Delete original file after optimization
+        if (fs.existsSync(originalPath)) {
+          fs.unlinkSync(originalPath);
+        }
+
+        const optimizedUrl = `${protocol}://${host}/uploads/${optimizedFilename}`;
+        const thumbnailUrl = `${protocol}://${host}/uploads/${thumbnailFilename}`;
+
+        return res.status(200).json({
+          success: true,
+          message: "Image uploaded and optimized successfully",
+          data: {
+            filename: optimizedFilename,
+            url: optimizedUrl,
+            thumbnailUrl: thumbnailUrl,
+            originalName: req.file.originalname,
+            mimetype: "image/webp",
+            optimized: true,
+          },
+        });
+      } catch (optimizeError) {
+        console.error("Image optimization error:", optimizeError);
+        // If optimization fails, fall back to original file
+        const fileUrl = `${protocol}://${host}/uploads/${originalFilename}`;
+        return res.status(200).json({
+          success: true,
+          message: "File uploaded (optimization failed, using original)",
+          data: {
+            filename: originalFilename,
+            url: fileUrl,
+            path: originalPath,
+            mimetype: req.file.mimetype,
+            size: req.file.size,
+            optimized: false,
+          },
+        });
+      }
+    }
+
+    // For non-image files, return as-is
+    const fileUrl = `${protocol}://${host}/uploads/${originalFilename}`;
 
     res.status(200).json({
       success: true,
       message: "File uploaded successfully",
       data: {
-        filename: req.file.filename,
+        filename: originalFilename,
         url: fileUrl,
-        path: req.file.path,
+        path: originalPath,
         mimetype: req.file.mimetype,
         size: req.file.size,
+        optimized: false,
       },
     });
   } catch (error) {

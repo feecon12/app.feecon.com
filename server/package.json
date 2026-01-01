@@ -7,7 +7,7 @@
     "dev": "nodemon --exec ts-node server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test":"echo \"Running Test...\" & exit 0"
+    "test": "echo \"Running Test...\" & exit 0"
   },
   "keywords": [],
   "author": "Feecon",
@@ -27,7 +27,8 @@
     "mongoose": "^8.6.3",
     "multer": "^2.0.2",
     "nodemailer": "^6.9.15",
-    "razorpay": "^2.9.6"
+    "razorpay": "^2.9.6",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -40,6 +41,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.1.0",
     "@types/nodemailer": "^6.4.17",
+    "@types/sharp": "^0.31.1",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
