@@ -1,9 +1,11 @@
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/NavBar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import "@/styles/globals.css";
 import { AppProps } from "next/app";
 import { Nunito } from "next/font/google";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -15,6 +17,9 @@ const nunito = Nunito({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const isAdminRoute = router.pathname.startsWith("/admin");
+
   return (
     <>
       <Head>
@@ -40,7 +45,14 @@ export default function App({ Component, pageProps }: AppProps) {
               draggable
               pauseOnHover
             />
-            <Component {...pageProps} />
+
+            {isAdminRoute ? (
+              <ProtectedRoute requireAuth={true}>
+                <Component {...pageProps} />
+              </ProtectedRoute>
+            ) : (
+              <Component {...pageProps} />
+            )}
 
             <Footer />
           </main>

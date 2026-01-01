@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { Layout } from "@/components/Layout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+// import ProtectedRoute from "@/components/ProtectedRoute";
 import TransitionEffect from "@/components/TransitionEffect";
 import { User } from "@/types";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
-import { useSession } from "../hooks/useAuthHooks";
+import { useSession } from "../../hooks/useAuthHooks";
 
 interface ContentCard {
   title: string;
@@ -109,7 +109,6 @@ const Dashboard: React.FC = () => {
         />
       </Head>
       <TransitionEffect />
-      <ProtectedRoute requireAuth={true}>
         <main className="flex w-full flex-col items-center justify-center min-h-screen dark:text-light bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
           <Layout className="pt-16">
             {/* Header Section */}
@@ -227,7 +226,6 @@ const Dashboard: React.FC = () => {
             </motion.div>
           </Layout>
         </main>
-      </ProtectedRoute>
     </>
   );
 };
