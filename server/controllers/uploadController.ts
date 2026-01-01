@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
-import { optimiseImage, generateThumbnail } from "../utils/imageOptimizer";
+import { generateThumbnail, optimiseImage } from "../utils/imageOptimizer";
 
 // Check if file is an image
 const isImageFile = (mimetype: string): boolean => {
@@ -25,7 +25,10 @@ export const uploadFile = async (req: Request, res: Response) => {
 
     // If it's an image, optimize it
     if (isImageFile(req.file.mimetype)) {
-      const filenameWithoutExt = path.basename(originalFilename, path.extname(originalFilename));
+      const filenameWithoutExt = path.basename(
+        originalFilename,
+        path.extname(originalFilename)
+      );
       const optimizedFilename = `${filenameWithoutExt}.webp`;
       const thumbnailFilename = `${filenameWithoutExt}-thumb.webp`;
       const uploadsDir = path.join(__dirname, "../uploads");
@@ -35,7 +38,7 @@ export const uploadFile = async (req: Request, res: Response) => {
       try {
         // Optimize image and convert to WebP
         await optimiseImage(originalPath, optimizedPath);
-        
+
         // Generate thumbnail
         await generateThumbnail(originalPath, thumbnailPath);
 
