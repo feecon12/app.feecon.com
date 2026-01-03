@@ -9,11 +9,14 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ onClear }) => {
     <div className="px-4 py-3 bg-primary dark:bg-primaryDark text-white dark:text-dark flex items-center justify-between">
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-full bg-white/20 dark:bg-dark/20 flex items-center justify-center">
-          <span className="text-lg">🤖</span>
+          {/* AI Brain Icon */}
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2m-4 9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1m8 0a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1m-4 0a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1Z" />
+          </svg>
         </div>
         <div>
-          <h3 className="font-semibold text-sm">AI Assistant</h3>
-          <p className="text-[10px] opacity-80">Always here to help</p>
+          <h3 className="font-semibold text-sm">Gugu AI</h3>
+          <p className="text-[10px] opacity-80">Your intelligent assistant</p>
         </div>
       </div>
 

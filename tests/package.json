@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "npx playwright test",
+    "test:agent": "npx playwright test tests/agent.spec.js tests/guardrails.spec.js",
+    "test:guardrails": "npx playwright test tests/guardrails.spec.js",
     "load-test": "npx playwright test api-load-test.js --project=api-load-testing"
   },
   "keywords": [],

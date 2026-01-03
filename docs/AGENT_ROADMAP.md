@@ -386,6 +386,7 @@ npm run test -- tests/guardrails.spec.js
 ### Test Categories
 
 #### 1. API Endpoint Tests (`agent.spec.js`)
+
 - Agent status and health checks
 - Chat functionality (with and without LLM)
 - Session management
@@ -394,6 +395,7 @@ npm run test -- tests/guardrails.spec.js
 - Admin endpoints (usage, actions, statistics)
 
 #### 2. Security Tests (`guardrails.spec.js`)
+
 - Prompt injection detection
 - XSS sanitization
 - Content filtering (API keys, paths)
@@ -404,17 +406,18 @@ npm run test -- tests/guardrails.spec.js
 ### Continuous Integration
 
 Tests run automatically on:
+
 - Pull requests to `master`
 - Push to feature branches
 
 ### Success Metrics (Phase 1)
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Response accuracy | > 80% | TBD |
-| Response time | < 3s | TBD |
-| Test coverage | > 70% | TBD |
-| Security tests passing | 100% | ✅ |
+| Metric                 | Target | Current |
+| ---------------------- | ------ | ------- |
+| Response accuracy      | > 80%  | TBD     |
+| Response time          | < 3s   | TBD     |
+| Test coverage          | > 70%  | TBD     |
+| Security tests passing | 100%   | ✅      |
 
 ---
 
