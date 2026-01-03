@@ -1,3 +1,8 @@
+/**
+ * Server Entry Point
+ * app.feecon.com Backend API
+ */
+
 /**------Module imports -----------------------*/
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
