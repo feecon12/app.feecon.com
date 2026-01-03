@@ -52,11 +52,14 @@ export const searchSkillsTool = new DynamicStructuredTool({
 
       const skills = await Skill.find(filter).limit(20);
 
-      const result = skills.length === 0
-        ? "No skills found matching the criteria."
-        : `Found ${skills.length} skills:\n${skills
-            .map((s: any) => `- ${s.name}${s.category ? ` (${s.category})` : ""}`)
-            .join("\n")}`;
+      const result =
+        skills.length === 0
+          ? "No skills found matching the criteria."
+          : `Found ${skills.length} skills:\n${skills
+              .map(
+                (s: any) => `- ${s.name}${s.category ? ` (${s.category})` : ""}`
+              )
+              .join("\n")}`;
 
       // Log the action
       if (currentSessionId) {
@@ -124,16 +127,17 @@ export const searchProjectsTool = new DynamicStructuredTool({
 
       const projects = await Project.find(filter).limit(10).sort("-createdAt");
 
-      const result = projects.length === 0
-        ? "No projects found matching the criteria."
-        : `Found ${projects.length} projects:\n${projects
-            .map(
-              (p: any) =>
-                `- **${p.title}**: ${
-                  p.description?.substring(0, 100) || "No description"
-                }...${p.projectUrl ? ` [View](${p.projectUrl})` : ""}`
-            )
-            .join("\n")}`;
+      const result =
+        projects.length === 0
+          ? "No projects found matching the criteria."
+          : `Found ${projects.length} projects:\n${projects
+              .map(
+                (p: any) =>
+                  `- **${p.title}**: ${
+                    p.description?.substring(0, 100) || "No description"
+                  }...${p.projectUrl ? ` [View](${p.projectUrl})` : ""}`
+              )
+              .join("\n")}`;
 
       if (currentSessionId) {
         logAction({
@@ -194,16 +198,17 @@ export const searchBlogsTool = new DynamicStructuredTool({
 
       const blogs = await Blog.find(filter).limit(10).sort("-createdAt");
 
-      const result = blogs.length === 0
-        ? "No blog posts found matching the criteria."
-        : `Found ${blogs.length} blog posts:\n${blogs
-            .map(
-              (b: any) =>
-                `- **${b.title}**: ${
-                  b.excerpt || b.content?.substring(0, 80) || ""
-                }...`
-            )
-            .join("\n")}`;
+      const result =
+        blogs.length === 0
+          ? "No blog posts found matching the criteria."
+          : `Found ${blogs.length} blog posts:\n${blogs
+              .map(
+                (b: any) =>
+                  `- **${b.title}**: ${
+                    b.excerpt || b.content?.substring(0, 80) || ""
+                  }...`
+              )
+              .join("\n")}`;
 
       if (currentSessionId) {
         logAction({
@@ -246,7 +251,7 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
   }),
   func: async ({ question }: { question: string }) => {
     const startTime = Date.now();
-    
+
     // FAQ knowledge base
     const faqs: Record<string, string> = {
       contact:
@@ -263,6 +268,16 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
         "I specialize in React, Next.js, Node.js, TypeScript, MongoDB, PostgreSQL, AWS, and more. Use the 'search_skills' tool for a complete list.",
       timeline:
         "Project timelines depend on scope. Small projects: 1-2 weeks. Medium: 1-2 months. Large: 3+ months. Let's discuss your specific needs.",
+      resume:
+        "You can view the complete professional experience, skills, and projects on this portfolio website. Navigate to the About page for biography, or the Skills section for technical expertise. For a formal resume, please use the contact form to request one.",
+      cv: "You can view the complete professional experience, skills, and projects on this portfolio website. Navigate to the About page for biography, or the Skills section for technical expertise. For a formal resume/CV, please use the contact form to request one.",
+      download:
+        "This portfolio website serves as a comprehensive online resume. You can explore skills, projects, and experience through the navigation. For downloadable documents, please contact directly through the contact form.",
+      hire: "I'm available for hire! You can book a consultation through the booking feature, or send a message through the contact form. Let's discuss your project requirements.",
+      location:
+        "I work remotely and am available for projects worldwide. Timezone: IST (UTC+5:30). Happy to accommodate different time zones for meetings.",
+      about:
+        "I'm a full-stack developer specializing in React, Next.js, and Node.js. Check out the About page for my full biography, and the Projects section to see my work.",
     };
 
     const questionLower = question.toLowerCase();
@@ -279,7 +294,8 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
     }
 
     if (!matchedKey) {
-      answer = "I don't have a specific FAQ answer for that. You can ask me about: contact info, services, experience, availability, pricing, technologies, or project timelines.";
+      answer =
+        "I don't have a specific FAQ answer for that. You can ask me about: contact info, services, experience, availability, pricing, technologies, timelines, resume/CV, hiring, location, or about the portfolio owner.";
     }
 
     if (currentSessionId) {
@@ -305,7 +321,7 @@ export const submitContactTool = new DynamicStructuredTool({
     "Submit a contact request or message. Use this when a user wants to get in touch, send a message, or inquire about services.",
   schema: z.object({
     name: z.string().describe("Name of the person contacting"),
-    email: z.string().email().describe("Email address"),
+    email: z.string().describe("Email address of the person"),
     message: z.string().describe("The message or inquiry"),
     subject: z.string().optional().describe("Subject of the message"),
   }),
@@ -321,7 +337,7 @@ export const submitContactTool = new DynamicStructuredTool({
     subject?: string;
   }) => {
     const startTime = Date.now();
-    
+
     // Validate input with guardrails
     const validation = guardrails.validateInput(message);
     if (validation.blocked) {
@@ -348,7 +364,7 @@ export const submitContactTool = new DynamicStructuredTool({
         3, // Max 3 contacts per session
         300000 // 5 minute window
       );
-      
+
       if (!rateCheck.allowed) {
         logAction({
           sessionId: currentSessionId,
@@ -417,7 +433,7 @@ export const getBookingInfoTool = new DynamicStructuredTool({
   }),
   func: async ({ type }: { type?: "consultation" | "project" | "general" }) => {
     const startTime = Date.now();
-    
+
     const bookingInfo: Record<string, string> = {
       consultation:
         "For a consultation call, you can book a 30-minute discovery session. This helps us understand your project requirements and discuss potential solutions.",
@@ -427,7 +443,8 @@ export const getBookingInfoTool = new DynamicStructuredTool({
         "I offer various booking options: 30-min discovery calls, 1-hour technical consultations, and project kickoff sessions. Visit the booking page to see available slots.",
     };
 
-    const result = bookingInfo[type || "general"] +
+    const result =
+      bookingInfo[type || "general"] +
       "\n\nTo proceed, please visit the booking section on the website or let me know your preferred date/time.";
 
     if (currentSessionId) {

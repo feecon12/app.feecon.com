@@ -1,9 +1,17 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { agentTools, setToolContext, clearToolContext } from "../utils/agentTools";
-import { getRecentActions, getSessionActions, getActionStats } from "../utils/agentActionLogger";
+import {
+  getActionStats,
+  getRecentActions,
+  getSessionActions,
+} from "../utils/agentActionLogger";
 import guardrails from "../utils/agentGuardrails";
+import {
+  agentTools,
+  clearToolContext,
+  setToolContext,
+} from "../utils/agentTools";
 import llmService, { LLMProvider } from "../utils/llmService";
 
 // In-memory conversation storage (replace with Redis/MongoDB for production)
@@ -25,7 +33,9 @@ const feedbackStore: Array<{
 const requestTracker: Map<string, { count: number; resetAt: Date }> = new Map();
 
 // System prompt for the agent
-const SYSTEM_PROMPT = `You are a helpful AI assistant for a professional portfolio website (app.feecon.com).
+const SYSTEM_PROMPT = `You are Gugu AI, a friendly and intelligent AI assistant for a professional portfolio website (app.feecon.com).
+
+Your name is "Gugu AI" - always introduce yourself as Gugu AI when greeting users.
 
 Your role is to:
 1. Help visitors learn about the portfolio owner's skills, projects, and experience
@@ -35,6 +45,7 @@ Your role is to:
 
 Guidelines:
 - Be friendly, professional, and concise
+- Introduce yourself as "Gugu AI" when appropriate
 - Use the available tools to fetch real data from the website
 - If you don't know something, say so and suggest alternatives
 - For complex inquiries, offer to connect them with the portfolio owner
@@ -84,7 +95,11 @@ const initializeLLM = async () => {
 
   // Bind tools to the LLM (cast to any to access bindTools method)
   const llmWithTools = (primary.llm as any).bindTools(agentTools);
-  return { llm: llmWithTools, provider: primary.provider };
+  return {
+    llm: llmWithTools,
+    baseLlm: primary.llm,
+    provider: primary.provider,
+  };
 };
 
 // Process tool calls and get results
@@ -178,7 +193,8 @@ export const chatHandler = async (
     if (validation.blocked) {
       res.status(400).json({
         success: false,
-        error: "Your message could not be processed. Please rephrase and try again.",
+        error:
+          "Your message could not be processed. Please rephrase and try again.",
         blocked: true,
       });
       return;
@@ -195,7 +211,7 @@ export const chatHandler = async (
     }
 
     // Get the LLM with tools (async lazy initialization)
-    const { llm, provider } = await getLLM();
+    const { llm, baseLlm, provider } = await getLLM();
     conversation.provider = provider;
 
     // Set tool context for action logging
@@ -225,10 +241,10 @@ export const chatHandler = async (
       const toolResults = await processToolCalls(response.tool_calls);
       toolsUsed = response.tool_calls.map((tc: any) => tc.name);
 
-      // Make another call with tool results for final response
+      // Make another call with tool results for final response (use base LLM without tools)
       const toolResultMessage = `Tool results:\n${toolResults.join(
         "\n"
-      )}\n\nBased on these results, please provide a helpful response to the user.`;
+      )}\n\nBased on these results, please provide a helpful response to the user. Do not call any more tools.`;
 
       const finalMessages: BaseMessage[] = [
         ...messages,
@@ -238,7 +254,7 @@ export const chatHandler = async (
         new HumanMessage(toolResultMessage),
       ];
 
-      const finalLLMResponse = await llm.invoke(finalMessages);
+      const finalLLMResponse = await baseLlm.invoke(finalMessages);
       finalResponse =
         typeof finalLLMResponse.content === "string"
           ? finalLLMResponse.content

@@ -77,7 +77,7 @@ export interface UsageStats {
 
 // Default models for each provider
 const DEFAULT_MODELS: Record<LLMProvider, string> = {
-  groq: "llama-3.1-70b-versatile",
+  groq: "llama-3.3-70b-versatile",
   openai: "gpt-4o-mini",
   anthropic: "claude-3-haiku-20240307",
 };
@@ -85,7 +85,7 @@ const DEFAULT_MODELS: Record<LLMProvider, string> = {
 // Approximate cost per 1K tokens (input + output average)
 const COST_PER_1K_TOKENS: Record<LLMProvider, Record<string, number>> = {
   groq: {
-    "llama-3.1-70b-versatile": 0.0008,
+    "llama-3.3-70b-versatile": 0.0008,
     "llama-3.1-8b-instant": 0.0001,
     "mixtral-8x7b-32768": 0.0003,
   },
@@ -232,7 +232,9 @@ class LLMService {
 
     this.initialized = true;
     console.log(
-      `[LLM Service] Initialized with providers: ${this.getAvailableProviders().join(", ") || "none"}`
+      `[LLM Service] Initialized with providers: ${
+        this.getAvailableProviders().join(", ") || "none"
+      }`
     );
   }
 
