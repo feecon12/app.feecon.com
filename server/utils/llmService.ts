@@ -4,11 +4,40 @@
  * Features: Fallback, retry logic, usage tracking, rate limiting
  */
 
-import { ChatGroq } from "@langchain/groq";
-import { ChatOpenAI } from "@langchain/openai";
-import { ChatAnthropic } from "@langchain/anthropic";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
-import { BaseMessage, HumanMessage, SystemMessage } from "@langchain/core/messages";
+import {
+  BaseMessage,
+  HumanMessage,
+  SystemMessage,
+} from "@langchain/core/messages";
+
+// Lazy imports to prevent crashes if packages are missing
+let ChatGroq: any;
+let ChatOpenAI: any;
+let ChatAnthropic: any;
+
+const loadProviders = async () => {
+  try {
+    const groqModule = await import("@langchain/groq");
+    ChatGroq = groqModule.ChatGroq;
+  } catch (e) {
+    console.warn("[LLM Service] @langchain/groq not available");
+  }
+
+  try {
+    const openaiModule = await import("@langchain/openai");
+    ChatOpenAI = openaiModule.ChatOpenAI;
+  } catch (e) {
+    console.warn("[LLM Service] @langchain/openai not available");
+  }
+
+  try {
+    const anthropicModule = await import("@langchain/anthropic");
+    ChatAnthropic = anthropicModule.ChatAnthropic;
+  } catch (e) {
+    console.warn("[LLM Service] @langchain/anthropic not available");
+  }
+};
 
 // ============ Types ============
 
@@ -138,49 +167,81 @@ class LLMService {
   private providers: Map<LLMProvider, BaseChatModel> = new Map();
   private usageTracker = new UsageTracker();
   private fallbackOrder: LLMProvider[] = ["groq", "openai", "anthropic"];
+  private initialized = false;
 
   constructor() {
-    this.initializeProviders();
+    // Don't initialize in constructor - use lazy init
   }
 
-  private initializeProviders(): void {
+  async initialize(): Promise<void> {
+    if (this.initialized) return;
+
+    // Load provider modules dynamically
+    await loadProviders();
+
     // Initialize Groq (free tier available - prioritize)
-    if (process.env.GROQ_API_KEY) {
-      this.providers.set(
-        "groq",
-        new ChatGroq({
-          apiKey: process.env.GROQ_API_KEY,
-          model: process.env.GROQ_MODEL || DEFAULT_MODELS.groq,
-          temperature: parseFloat(process.env.AGENT_TEMPERATURE || "0.7"),
-          maxTokens: parseInt(process.env.AGENT_MAX_TOKENS || "1024"),
-        })
-      );
+    if (process.env.GROQ_API_KEY && ChatGroq) {
+      try {
+        this.providers.set(
+          "groq",
+          new ChatGroq({
+            apiKey: process.env.GROQ_API_KEY,
+            model: process.env.GROQ_MODEL || DEFAULT_MODELS.groq,
+            temperature: parseFloat(process.env.AGENT_TEMPERATURE || "0.7"),
+            maxTokens: parseInt(process.env.AGENT_MAX_TOKENS || "1024"),
+          })
+        );
+      } catch (e) {
+        console.error("[LLM Service] Failed to initialize Groq:", e);
+      }
     }
 
     // Initialize OpenAI
-    if (process.env.OPENAI_API_KEY) {
-      this.providers.set(
-        "openai",
-        new ChatOpenAI({
-          apiKey: process.env.OPENAI_API_KEY,
-          model: process.env.OPENAI_MODEL || DEFAULT_MODELS.openai,
-          temperature: parseFloat(process.env.AGENT_TEMPERATURE || "0.7"),
-          maxTokens: parseInt(process.env.AGENT_MAX_TOKENS || "1024"),
-        })
-      );
+    if (process.env.OPENAI_API_KEY && ChatOpenAI) {
+      try {
+        this.providers.set(
+          "openai",
+          new ChatOpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+            model: process.env.OPENAI_MODEL || DEFAULT_MODELS.openai,
+            temperature: parseFloat(process.env.AGENT_TEMPERATURE || "0.7"),
+            maxTokens: parseInt(process.env.AGENT_MAX_TOKENS || "1024"),
+          })
+        );
+      } catch (e) {
+        console.error("[LLM Service] Failed to initialize OpenAI:", e);
+      }
     }
 
     // Initialize Anthropic
-    if (process.env.ANTHROPIC_API_KEY) {
-      this.providers.set(
-        "anthropic",
-        new ChatAnthropic({
-          apiKey: process.env.ANTHROPIC_API_KEY,
-          model: process.env.ANTHROPIC_MODEL || DEFAULT_MODELS.anthropic,
-          temperature: parseFloat(process.env.AGENT_TEMPERATURE || "0.7"),
-          maxTokens: parseInt(process.env.AGENT_MAX_TOKENS || "1024"),
-        })
-      );
+    if (process.env.ANTHROPIC_API_KEY && ChatAnthropic) {
+      try {
+        this.providers.set(
+          "anthropic",
+          new ChatAnthropic({
+            apiKey: process.env.ANTHROPIC_API_KEY,
+            model: process.env.ANTHROPIC_MODEL || DEFAULT_MODELS.anthropic,
+            temperature: parseFloat(process.env.AGENT_TEMPERATURE || "0.7"),
+            maxTokens: parseInt(process.env.AGENT_MAX_TOKENS || "1024"),
+          })
+        );
+      } catch (e) {
+        console.error("[LLM Service] Failed to initialize Anthropic:", e);
+      }
+    }
+
+    this.initialized = true;
+    console.log(
+      `[LLM Service] Initialized with providers: ${this.getAvailableProviders().join(", ") || "none"}`
+    );
+  }
+
+  /**
+   * Ensure service is initialized before use
+   */
+  private async ensureInitialized(): Promise<void> {
+    if (!this.initialized) {
+      await this.initialize();
     }
   }
 
@@ -201,7 +262,11 @@ class LLMService {
   /**
    * Get the primary (preferred) provider
    */
-  getPrimaryProvider(): { provider: LLMProvider; llm: BaseChatModel } | null {
+  async getPrimaryProvider(): Promise<{
+    provider: LLMProvider;
+    llm: BaseChatModel;
+  } | null> {
+    await this.ensureInitialized();
     for (const provider of this.fallbackOrder) {
       const llm = this.providers.get(provider);
       if (llm) {
@@ -219,8 +284,13 @@ class LLMService {
     preferredProvider?: LLMProvider,
     maxRetries: number = 2
   ): Promise<LLMResponse> {
+    await this.ensureInitialized();
+
     const providers = preferredProvider
-      ? [preferredProvider, ...this.fallbackOrder.filter((p) => p !== preferredProvider)]
+      ? [
+          preferredProvider,
+          ...this.fallbackOrder.filter((p) => p !== preferredProvider),
+        ]
       : this.fallbackOrder;
 
     let lastError: Error | null = null;
@@ -262,7 +332,8 @@ class LLMService {
             model: DEFAULT_MODELS[provider],
             usage: {
               promptTokens: Math.ceil(
-                messages.reduce((acc, m) => acc + String(m.content).length, 0) / 4
+                messages.reduce((acc, m) => acc + String(m.content).length, 0) /
+                  4
               ),
               completionTokens: Math.ceil(content.length / 4),
               totalTokens: estimatedTokens,
@@ -290,7 +361,9 @@ class LLMService {
     }
 
     throw new Error(
-      `All LLM providers failed. Last error: ${lastError?.message || "Unknown error"}`
+      `All LLM providers failed. Last error: ${
+        lastError?.message || "Unknown error"
+      }`
     );
   }
 
@@ -303,7 +376,7 @@ class LLMService {
     preferredProvider?: LLMProvider
   ): Promise<LLMResponse> {
     const messages: BaseMessage[] = [];
-    
+
     if (systemPrompt) {
       messages.push(new SystemMessage(systemPrompt));
     }
@@ -333,7 +406,12 @@ class LLMService {
     healthy: boolean;
     providers: Record<LLMProvider, { available: boolean; latencyMs?: number }>;
   }> {
-    const results: Record<LLMProvider, { available: boolean; latencyMs?: number }> = {
+    await this.ensureInitialized();
+
+    const results: Record<
+      LLMProvider,
+      { available: boolean; latencyMs?: number }
+    > = {
       groq: { available: false },
       openai: { available: false },
       anthropic: { available: false },

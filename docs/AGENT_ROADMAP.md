@@ -191,6 +191,7 @@ VECTOR_DB_PATH=./data/vectors
 ### LLM Provider Priority
 
 The system uses a fallback order for LLM providers:
+
 1. **Groq** (Primary) - Free tier, fast inference, LLaMA 3.1 models
 2. **OpenAI** (Fallback) - GPT-4o models, higher accuracy
 3. **Anthropic** (Fallback) - Claude models, best for long conversations

@@ -2,7 +2,7 @@ import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { agentTools } from "../utils/agentTools";
-import llmService, { LLMProvider, UsageStats } from "../utils/llmService";
+import llmService, { LLMProvider } from "../utils/llmService";
 
 // In-memory conversation storage (replace with Redis/MongoDB for production)
 const conversationStore: Map<
@@ -45,12 +45,17 @@ const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = parseInt(process.env.AGENT_RATE_LIMIT || "30");
 
 // Check rate limit for a session/IP
-const checkRateLimit = (identifier: string): { allowed: boolean; remaining: number; resetIn: number } => {
+const checkRateLimit = (
+  identifier: string
+): { allowed: boolean; remaining: number; resetIn: number } => {
   const now = new Date();
   let tracker = requestTracker.get(identifier);
 
   if (!tracker || tracker.resetAt < now) {
-    tracker = { count: 0, resetAt: new Date(now.getTime() + RATE_LIMIT_WINDOW_MS) };
+    tracker = {
+      count: 0,
+      resetAt: new Date(now.getTime() + RATE_LIMIT_WINDOW_MS),
+    };
     requestTracker.set(identifier, tracker);
   }
 
@@ -66,9 +71,9 @@ const checkRateLimit = (identifier: string): { allowed: boolean; remaining: numb
   };
 };
 
-// Initialize the LLM with tool binding
-const initializeLLM = () => {
-  const primary = llmService.getPrimaryProvider();
+// Initialize the LLM with tool binding (async for lazy loading)
+const initializeLLM = async () => {
+  const primary = await llmService.getPrimaryProvider();
   if (!primary) {
     throw new Error(
       "No LLM API key configured. Set GROQ_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY."
@@ -101,11 +106,11 @@ const processToolCalls = async (toolCalls: any[]): Promise<string[]> => {
 };
 
 // Lazy initialization of LLM
-let llmWithTools: ReturnType<typeof initializeLLM> | null = null;
+let llmWithTools: Awaited<ReturnType<typeof initializeLLM>> | null = null;
 
-const getLLM = () => {
+const getLLM = async () => {
   if (!llmWithTools) {
-    llmWithTools = initializeLLM();
+    llmWithTools = await initializeLLM();
   }
   return llmWithTools;
 };
@@ -115,8 +120,8 @@ const sanitizeInput = (input: string): string => {
   return input
     .trim()
     .slice(0, 2000) // Max 2000 characters
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ''); // Remove control characters
+    .replace(/<[^>]*>/g, "") // Remove HTML tags
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ""); // Remove control characters
 };
 
 /**
@@ -130,8 +135,8 @@ export const chatHandler = async (
     const { message, sessionId: providedSessionId } = req.body;
 
     // Get client identifier for rate limiting (IP or session)
-    const clientId = providedSessionId || req.ip || 'anonymous';
-    
+    const clientId = providedSessionId || req.ip || "anonymous";
+
     // Check rate limit
     const rateLimit = checkRateLimit(clientId);
     if (!rateLimit.allowed) {
@@ -176,8 +181,8 @@ export const chatHandler = async (
       conversationStore.set(sessionId, conversation);
     }
 
-    // Get the LLM with tools
-    const { llm, provider } = getLLM();
+    // Get the LLM with tools (async lazy initialization)
+    const { llm, provider } = await getLLM();
     conversation.provider = provider;
 
     // Build messages array with system prompt and history
@@ -419,21 +424,26 @@ export const getStatus = async (
   res: Response
 ): Promise<void> => {
   try {
+    const primary = await llmService.getPrimaryProvider();
     const availableProviders = llmService.getAvailableProviders();
-    const primary = llmService.getPrimaryProvider();
     const usageStats = llmService.getUsageStats();
 
     res.status(200).json({
       success: true,
       data: {
-        status: availableProviders.length > 0 ? "operational" : "not_configured",
+        status:
+          availableProviders.length > 0 ? "operational" : "not_configured",
         providers: availableProviders,
         primaryProvider: primary?.provider || "none",
         model:
           process.env.AGENT_MODEL ||
-          (primary?.provider === "groq" ? "llama-3.1-70b-versatile" : 
-           primary?.provider === "openai" ? "gpt-4o-mini" : 
-           primary?.provider === "anthropic" ? "claude-3-haiku-20240307" : "unknown"),
+          (primary?.provider === "groq"
+            ? "llama-3.1-70b-versatile"
+            : primary?.provider === "openai"
+              ? "gpt-4o-mini"
+              : primary?.provider === "anthropic"
+                ? "claude-3-haiku-20240307"
+                : "unknown"),
         activeSessions: conversationStore.size,
         totalFeedback: feedbackStore.length,
         averageRating:
@@ -451,9 +461,18 @@ export const getStatus = async (
           averageLatencyMs: Math.round(usageStats.averageLatencyMs),
           errors: usageStats.errors,
           byProvider: {
-            groq: { requests: usageStats.requestsByProvider.groq, tokens: usageStats.tokensByProvider.groq },
-            openai: { requests: usageStats.requestsByProvider.openai, tokens: usageStats.tokensByProvider.openai },
-            anthropic: { requests: usageStats.requestsByProvider.anthropic, tokens: usageStats.tokensByProvider.anthropic },
+            groq: {
+              requests: usageStats.requestsByProvider.groq,
+              tokens: usageStats.tokensByProvider.groq,
+            },
+            openai: {
+              requests: usageStats.requestsByProvider.openai,
+              tokens: usageStats.tokensByProvider.openai,
+            },
+            anthropic: {
+              requests: usageStats.requestsByProvider.anthropic,
+              tokens: usageStats.tokensByProvider.anthropic,
+            },
           },
         },
         rateLimit: {
