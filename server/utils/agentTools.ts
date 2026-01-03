@@ -1,5 +1,6 @@
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
+import About from "../models/aboutModel";
 import Blog from "../models/blogModel";
 import Message from "../models/messageModel";
 import Project from "../models/projectModel";
@@ -277,7 +278,7 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
       location:
         "I work remotely and am available for projects worldwide. Timezone: IST (UTC+5:30). Happy to accommodate different time zones for meetings.",
       about:
-        "I'm a full-stack developer specializing in React, Next.js, and Node.js. Check out the About page for my full biography, and the Projects section to see my work.",
+        "For detailed information about the portfolio owner, I can fetch their biography and stats. Use the 'get_about_info' tool for the full story, or visit the About page on the website.",
     };
 
     const questionLower = question.toLowerCase();
@@ -481,11 +482,113 @@ export const getBookingInfoTool = new DynamicStructuredTool({
   },
 });
 
+// Tool: Get About Info
+export const getAboutInfoTool = new DynamicStructuredTool({
+  name: "get_about_info",
+  description:
+    "Get information about the portfolio owner including biography, experience, and background. Use this when users ask about the person behind the portfolio, their background, who they are, or want to learn more about them.",
+  schema: z.object({
+    infoType: z
+      .enum(["biography", "stats", "all"])
+      .optional()
+      .describe(
+        "Type of info to retrieve: 'biography' for personal story, 'stats' for numbers (years, clients, projects), 'all' for everything"
+      ),
+  }),
+  func: async ({
+    infoType = "all",
+  }: {
+    infoType?: "biography" | "stats" | "all";
+  }) => {
+    const startTime = Date.now();
+    try {
+      const about = await About.findOne().sort({ updatedAt: -1 });
+
+      if (!about) {
+        if (currentSessionId) {
+          logAction({
+            sessionId: currentSessionId,
+            userId: currentUserId,
+            toolName: "get_about_info",
+            input: { infoType },
+            output: null,
+            success: false,
+            error: "No about info found",
+            durationMs: Date.now() - startTime,
+          });
+        }
+        return "About information is not available at the moment. Please check the About page on the website.";
+      }
+
+      let result = "";
+
+      if (infoType === "biography" || infoType === "all") {
+        if (about.biography) {
+          result += `**About the Portfolio Owner:**\n${about.biography}\n\n`;
+        }
+        if (about.experience) {
+          result += `**Experience:**\n${about.experience}\n\n`;
+        }
+      }
+
+      if (infoType === "stats" || infoType === "all") {
+        const stats = [];
+        if (about.yearsOfExperience) {
+          stats.push(`- Years of Experience: ${about.yearsOfExperience}`);
+        }
+        if (about.projectsCompleted) {
+          stats.push(`- Projects Completed: ${about.projectsCompleted}`);
+        }
+        if (about.clients) {
+          stats.push(`- Clients Served: ${about.clients}`);
+        }
+        if (stats.length > 0) {
+          result += `**Quick Stats:**\n${stats.join("\n")}`;
+        }
+      }
+
+      if (!result) {
+        result =
+          "About information is currently being updated. Please check back later or visit the About page.";
+      }
+
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "get_about_info",
+          input: { infoType },
+          output: { hasData: !!about },
+          success: true,
+          durationMs: Date.now() - startTime,
+        });
+      }
+
+      return result.trim();
+    } catch (error) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "get_about_info",
+          input: { infoType },
+          output: null,
+          success: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+          durationMs: Date.now() - startTime,
+        });
+      }
+      return "Error retrieving about information. Please try again.";
+    }
+  },
+});
+
 // Export all tools as an array
 export const agentTools = [
   searchSkillsTool,
   searchProjectsTool,
   searchBlogsTool,
+  getAboutInfoTool,
   getFaqAnswerTool,
   submitContactTool,
   getBookingInfoTool,
