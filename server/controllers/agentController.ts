@@ -440,10 +440,10 @@ export const getStatus = async (
           (primary?.provider === "groq"
             ? "llama-3.1-70b-versatile"
             : primary?.provider === "openai"
-              ? "gpt-4o-mini"
-              : primary?.provider === "anthropic"
-                ? "claude-3-haiku-20240307"
-                : "unknown"),
+            ? "gpt-4o-mini"
+            : primary?.provider === "anthropic"
+            ? "claude-3-haiku-20240307"
+            : "unknown"),
         activeSessions: conversationStore.size,
         totalFeedback: feedbackStore.length,
         averageRating:
