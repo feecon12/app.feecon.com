@@ -15,7 +15,8 @@
 4. [Technology Stack](#technology-stack)
 5. [Implementation Roadmap](#implementation-roadmap)
 6. [Architecture](#architecture)
-7. [Related GitHub Issues](#related-github-issues)
+7. [Testing Strategy](#testing-strategy)
+8. [Related GitHub Issues](#related-github-issues)
 
 ---
 
@@ -359,12 +360,75 @@ GET    /api/agent/status        # Check agent health
 
 ---
 
+## Testing Strategy
+
+### Test Files Location
+
+```
+tests/tests/agent.spec.js       # API endpoint tests
+tests/tests/guardrails.spec.js  # Security pattern tests
+```
+
+### Running Tests
+
+```bash
+# Run all agent tests
+cd tests
+npm run test -- tests/agent.spec.js tests/guardrails.spec.js
+
+# Run with local server
+API_URL=http://localhost:5000 npm run test -- tests/agent.spec.js
+
+# Run security tests only
+npm run test -- tests/guardrails.spec.js
+```
+
+### Test Categories
+
+#### 1. API Endpoint Tests (`agent.spec.js`)
+- Agent status and health checks
+- Chat functionality (with and without LLM)
+- Session management
+- Feedback submission
+- Rate limiting
+- Admin endpoints (usage, actions, statistics)
+
+#### 2. Security Tests (`guardrails.spec.js`)
+- Prompt injection detection
+- XSS sanitization
+- Content filtering (API keys, paths)
+- PII detection patterns
+- Input validation
+- Rate limiting logic
+
+### Continuous Integration
+
+Tests run automatically on:
+- Pull requests to `master`
+- Push to feature branches
+
+### Success Metrics (Phase 1)
+
+| Metric | Target | Current |
+|--------|--------|---------|
+| Response accuracy | > 80% | TBD |
+| Response time | < 3s | TBD |
+| Test coverage | > 70% | TBD |
+| Security tests passing | 100% | ✅ |
+
+---
+
 ## Changelog
 
-| Date       | Change                            | Author       |
-| ---------- | --------------------------------- | ------------ |
-| 2026-01-03 | Initial roadmap created           | AI Assistant |
-| 2026-01-03 | Agent purpose defined (Issue #69) | AI Assistant |
+| Date       | Change                                    | Author       |
+| ---------- | ----------------------------------------- | ------------ |
+| 2026-01-03 | Initial roadmap created                   | AI Assistant |
+| 2026-01-03 | Agent purpose defined (Issue #69)         | AI Assistant |
+| 2026-01-03 | LangChain framework added (Issue #70)     | AI Assistant |
+| 2026-01-03 | Multi-provider LLM service (Issue #71)    | AI Assistant |
+| 2026-01-03 | Chat widget UI added (Issue #72)          | AI Assistant |
+| 2026-01-03 | Guardrails & action logging (Issue #73)   | AI Assistant |
+| 2026-01-03 | Testing strategy & test files (Issue #74) | AI Assistant |
 
 ---
 
