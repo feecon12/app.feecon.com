@@ -278,7 +278,7 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
       location:
         "I work remotely and am available for projects worldwide. Timezone: IST (UTC+5:30). Happy to accommodate different time zones for meetings.",
       about:
-        "For detailed information about the portfolio owner, I can fetch their biography and stats. Use the 'get_about_info' tool for the full story, or visit the About page on the website.",
+        "I'm a full-stack developer specializing in React, Next.js, and Node.js. Check out the About page for my full biography, and the Projects section to see my work.",
     };
 
     const questionLower = question.toLowerCase();
