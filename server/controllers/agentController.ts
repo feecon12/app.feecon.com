@@ -244,7 +244,7 @@ export const chatHandler = async (
       // Make another call with tool results for final response (use base LLM without tools)
       const toolResultMessage = `Tool results:\n${toolResults.join(
         "\n"
-      )}\n\nBased on these results, please provide a helpful response to the user. Do not call any more tools.`;
+      )}\n\nBased on these results, please provide a helpful response to the user.`;
 
       const finalMessages: BaseMessage[] = [
         ...messages,

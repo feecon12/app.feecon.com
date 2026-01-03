@@ -242,7 +242,6 @@ export const NavBar: React.FC = () => {
   };
 
   const handleLogout = async () => {
-    
     await logout();
     setIsOpen(false); // Close mobile menu if open
     router.push("/");
@@ -286,6 +285,7 @@ export const NavBar: React.FC = () => {
           ) : (
             <>
               <CustomLink href="/" title="Home" className="mr-4" />
+              <CustomLink href="/about" title="About" className="mx-4" />
               <CustomLink href="/projects" title="Projects" className="mx-4" />
               <CustomLink href="/blog" title="Blog" className="mx-4" />
               <DropdownMenu title="AI Solutions" className="inline-block mx-4">
@@ -421,6 +421,12 @@ export const NavBar: React.FC = () => {
                   <CustomMobileLink
                     href="/"
                     title="Home"
+                    className=""
+                    toggle={handleClick}
+                  />
+                  <CustomMobileLink
+                    href="/about"
+                    title="About"
                     className=""
                     toggle={handleClick}
                   />
