@@ -1,7 +1,7 @@
+import { ChatWidget } from "@/components/ChatWidget";
 import { Footer } from "@/components/Footer";
 import { NavBar } from "@/components/NavBar";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { ChatWidget } from "@/components/ChatWidget";
 import "@/styles/globals.css";
 import { AppProps } from "next/app";
 import { Nunito } from "next/font/google";

@@ -1,7 +1,9 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { agentTools } from "../utils/agentTools";
+import { agentTools, setToolContext, clearToolContext } from "../utils/agentTools";
+import { getRecentActions, getSessionActions, getActionStats } from "../utils/agentActionLogger";
+import guardrails from "../utils/agentGuardrails";
 import llmService, { LLMProvider } from "../utils/llmService";
 
 // In-memory conversation storage (replace with Redis/MongoDB for production)
@@ -171,6 +173,17 @@ export const chatHandler = async (
       return;
     }
 
+    // Validate input with guardrails
+    const validation = guardrails.validateInput(sanitizedMessage);
+    if (validation.blocked) {
+      res.status(400).json({
+        success: false,
+        error: "Your message could not be processed. Please rephrase and try again.",
+        blocked: true,
+      });
+      return;
+    }
+
     // Get or create session ID
     const sessionId = providedSessionId || uuidv4();
 
@@ -184,6 +197,9 @@ export const chatHandler = async (
     // Get the LLM with tools (async lazy initialization)
     const { llm, provider } = await getLLM();
     conversation.provider = provider;
+
+    // Set tool context for action logging
+    setToolContext(sessionId, (req as any).user?.id);
 
     // Build messages array with system prompt and history
     const messages: BaseMessage[] = [
@@ -243,6 +259,16 @@ export const chatHandler = async (
     if (conversation.messages.length > 20) {
       conversation.messages = conversation.messages.slice(-20);
     }
+
+    // Clear tool context
+    clearToolContext();
+
+    // Validate and filter output
+    const outputValidation = guardrails.validateOutput(finalResponse);
+    if (outputValidation.warnings.length > 0) {
+      console.log("[Agent Output Warnings]", outputValidation.warnings);
+    }
+    finalResponse = guardrails.filterContent(finalResponse);
 
     // Generate message ID for feedback
     const messageId = uuidv4();
@@ -536,6 +562,96 @@ export const healthCheck = async (
   }
 };
 
+/**
+ * Get Action Logs (Admin endpoint)
+ * Returns recent agent actions for audit/monitoring
+ */
+export const getActionLogs = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const limit = parseInt(req.query.limit as string) || 100;
+    const actions = getRecentActions(limit);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        actions,
+        count: actions.length,
+      },
+    });
+  } catch (error: any) {
+    console.error("[Action Logs Error]", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to get action logs.",
+    });
+  }
+};
+
+/**
+ * Get Session Actions (Admin endpoint)
+ * Returns actions for a specific session
+ */
+export const getSessionActionLogs = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { sessionId } = req.params;
+
+    if (!sessionId) {
+      res.status(400).json({
+        success: false,
+        error: "Session ID is required.",
+      });
+      return;
+    }
+
+    const actions = getSessionActions(sessionId);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        sessionId,
+        actions,
+        count: actions.length,
+      },
+    });
+  } catch (error: any) {
+    console.error("[Session Action Logs Error]", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to get session action logs.",
+    });
+  }
+};
+
+/**
+ * Get Action Statistics (Admin endpoint)
+ * Returns aggregated statistics about agent actions
+ */
+export const getActionStatistics = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const stats = getActionStats();
+
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error: any) {
+    console.error("[Action Statistics Error]", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to get action statistics.",
+    });
+  }
+};
+
 export default {
   chatHandler,
   getHistory,
@@ -544,4 +660,7 @@ export default {
   getStatus,
   getUsageStats,
   healthCheck,
+  getActionLogs,
+  getSessionActionLogs,
+  getActionStatistics,
 };

@@ -8,6 +8,9 @@ import {
   getUsageStats,
   healthCheck,
   submitFeedback,
+  getActionLogs,
+  getSessionActionLogs,
+  getActionStatistics,
 } from "../controllers/agentController";
 
 const router = Router();
@@ -71,5 +74,27 @@ router.get("/usage", getUsageStats);
  * @access  Public
  */
 router.get("/health", healthCheck);
+
+/**
+ * @route   GET /api/agent/actions
+ * @desc    Get recent agent action logs (audit trail)
+ * @access  Admin (TODO: add auth middleware)
+ * @query   { limit?: number }
+ */
+router.get("/actions", getActionLogs);
+
+/**
+ * @route   GET /api/agent/actions/:sessionId
+ * @desc    Get action logs for a specific session
+ * @access  Admin (TODO: add auth middleware)
+ */
+router.get("/actions/:sessionId", getSessionActionLogs);
+
+/**
+ * @route   GET /api/agent/statistics
+ * @desc    Get aggregated action statistics
+ * @access  Admin (TODO: add auth middleware)
+ */
+router.get("/statistics", getActionStatistics);
 
 export default router;
