@@ -131,7 +131,7 @@ test.describe("Guardrails Patterns", () => {
       // Test with 'is' keyword format for comprehensive coverage
       const content2 = 'Your api_key is "sk-1234567890abcdef123456"';
       const filtered2 = content2.replace(
-        /(?:api[_-]?key|secret|password|token)\s*(?:is)?\s*[:=]?\s*['"]?[\w-]{20,}['"]?/gi,
+        /(?:api[_-]?key|secret|password|token)\s*(?:(?:is\s*)?['"]|[:=]\s*)[\w-]{20,}['"]?/gi,
         "[REDACTED]"
       );
       expect(filtered2).toContain("[REDACTED]");
