@@ -1,4 +1,5 @@
 import aboutRouter from "./aboutRouter";
+import agentRouter from "./agentRouter";
 import authRouter from "./authRouter";
 import blogRouter from "./blogRouter";
 import bookingRouter from "./bookingRouter";
@@ -14,6 +15,7 @@ import userRouter from "./userRouter";
 
 export {
   aboutRouter,
+  agentRouter,
   authRouter,
   blogRouter,
   bookingRouter,

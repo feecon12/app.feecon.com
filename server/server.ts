@@ -10,6 +10,7 @@ import path from "path";
 import { protectRoute } from "./controllers/authController";
 import {
   aboutRouter,
+  agentRouter,
   authRouter,
   blogRouter,
   bookingRouter,
@@ -161,6 +162,7 @@ app.use("/api/home", homeContentRouter);
 app.use("/api/skills", skillRouter);
 app.use("/api/blogs", blogRouter);
 app.use("/api/upload", uploadLimiter, uploadRouter);
+app.use("/api/agent", agentRouter);
 
 /**----Central Error Handling Middleware----*/
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

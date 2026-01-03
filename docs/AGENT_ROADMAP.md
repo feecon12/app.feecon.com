@@ -39,13 +39,13 @@ This document outlines the roadmap for building an AI-powered website agent for 
 
 #### Capabilities
 
-| Feature | Description | API Integration |
-|---------|-------------|-----------------|
-| **FAQ Bot** | Answer questions about skills, experience, projects | `/api/skills`, `/api/about` |
-| **Project Explorer** | Help users find relevant projects by technology | `/api/projects` |
-| **Contact Assistant** | Qualify leads before contact form submission | `/api/messages` |
-| **Blog Navigator** | Recommend relevant blog posts based on interests | `/api/blogs` |
-| **Booking Guide** | Explain services and guide through booking | `/api/bookings` |
+| Feature               | Description                                         | API Integration             |
+| --------------------- | --------------------------------------------------- | --------------------------- |
+| **FAQ Bot**           | Answer questions about skills, experience, projects | `/api/skills`, `/api/about` |
+| **Project Explorer**  | Help users find relevant projects by technology     | `/api/projects`             |
+| **Contact Assistant** | Qualify leads before contact form submission        | `/api/messages`             |
+| **Blog Navigator**    | Recommend relevant blog posts based on interests    | `/api/blogs`                |
+| **Booking Guide**     | Explain services and guide through booking          | `/api/bookings`             |
 
 #### Example Interactions
 
@@ -95,15 +95,15 @@ Admin: Reviews → Publishes
 
 ### Existing Features That Can Be Leveraged
 
-| Feature | Backend | Frontend | AI Potential |
-|---------|---------|----------|--------------|
-| **Blog System** | ✅ CRUD + Publishing | ✅ Admin panel | 🤖 Auto-generate posts |
-| **Projects Portfolio** | ✅ CRUD | ✅ Showcase page | 🤖 Auto-describe projects |
-| **Contact/Messages** | ✅ Nodemailer | ✅ Contact form | 🤖 Auto-respond to inquiries |
-| **Booking/Payments** | ✅ Razorpay | ✅ Checkout | 🤖 Booking assistant |
-| **User Auth** | ✅ JWT + Cookies | ✅ Login/Signup | 🤖 Onboarding help |
-| **Skills/About** | ✅ Dynamic content | ✅ About page | 🤖 Resume builder |
-| **Groq AI** | ✅ Already integrated! | ✅ Text generation | 🤖 Expand capabilities |
+| Feature                | Backend                | Frontend           | AI Potential                 |
+| ---------------------- | ---------------------- | ------------------ | ---------------------------- |
+| **Blog System**        | ✅ CRUD + Publishing   | ✅ Admin panel     | 🤖 Auto-generate posts       |
+| **Projects Portfolio** | ✅ CRUD                | ✅ Showcase page   | 🤖 Auto-describe projects    |
+| **Contact/Messages**   | ✅ Nodemailer          | ✅ Contact form    | 🤖 Auto-respond to inquiries |
+| **Booking/Payments**   | ✅ Razorpay            | ✅ Checkout        | 🤖 Booking assistant         |
+| **User Auth**          | ✅ JWT + Cookies       | ✅ Login/Signup    | 🤖 Onboarding help           |
+| **Skills/About**       | ✅ Dynamic content     | ✅ About page      | 🤖 Resume builder            |
+| **Groq AI**            | ✅ Already integrated! | ✅ Text generation | 🤖 Expand capabilities       |
 
 ### Existing AI Foundation
 
@@ -129,24 +129,24 @@ server/utils/crudFactory.ts → Query data for context
 
 ### Recommended Stack (Open Source + Minimal Paid)
 
-| Layer | Technology | License/Cost | Purpose |
-|-------|------------|--------------|---------|
-| **Framework** | LangChain.js | MIT (Free) | Agent orchestration, chains, tools |
-| **LLM** | Groq (LLaMA 3) / OpenAI GPT-4 | Pay-per-use | Natural language understanding |
-| **Vector DB** | FAISS / ChromaDB | Open Source (Free) | Memory, context storage, RAG |
-| **Backend** | Node.js + Express | Open Source (Free) | API server, integrations |
-| **Frontend** | React (Next.js) | Open Source (Free) | Chat widget, UI components |
-| **Hosting** | AWS EC2 / Vercel | ~$20-50/month | Application hosting |
-| **Database** | MongoDB | Open Source (Free) | Conversation history, user data |
+| Layer         | Technology                    | License/Cost       | Purpose                            |
+| ------------- | ----------------------------- | ------------------ | ---------------------------------- |
+| **Framework** | LangChain.js                  | MIT (Free)         | Agent orchestration, chains, tools |
+| **LLM**       | Groq (LLaMA 3) / OpenAI GPT-4 | Pay-per-use        | Natural language understanding     |
+| **Vector DB** | FAISS / ChromaDB              | Open Source (Free) | Memory, context storage, RAG       |
+| **Backend**   | Node.js + Express             | Open Source (Free) | API server, integrations           |
+| **Frontend**  | React (Next.js)               | Open Source (Free) | Chat widget, UI components         |
+| **Hosting**   | AWS EC2 / Vercel              | ~$20-50/month      | Application hosting                |
+| **Database**  | MongoDB                       | Open Source (Free) | Conversation history, user data    |
 
 ### Estimated Monthly Cost
 
-| Item | Estimated Cost |
-|------|----------------|
-| LLM API (10K queries) | ~$10-30 |
-| EC2/Vercel Hosting | ~$20-50 |
-| Domain/SSL | ~$1-5 |
-| **Total** | **~$30-85/month** |
+| Item                  | Estimated Cost    |
+| --------------------- | ----------------- |
+| LLM API (10K queries) | ~$10-30           |
+| EC2/Vercel Hosting    | ~$20-50           |
+| Domain/SSL            | ~$1-5             |
+| **Total**             | **~$30-85/month** |
 
 ### Installation Commands
 
@@ -188,16 +188,17 @@ AGENT_MAX_TOKENS=1024
 
 **Goal:** Simple chatbot answering FAQs
 
-| Task | Status | Issue |
-|------|--------|-------|
-| Define agent purpose | ✅ Done | #69 |
-| Set up LangChain.js | ⬜ Todo | #70 |
-| Integrate with Groq/OpenAI | ⬜ Todo | #71 |
-| Create chat API endpoint | ⬜ Todo | #72 |
-| Build chat widget UI | ⬜ Todo | #72 |
-| Basic FAQ responses | ⬜ Todo | #72 |
+| Task                       | Status  | Issue |
+| -------------------------- | ------- | ----- |
+| Define agent purpose       | ✅ Done | #69   |
+| Set up LangChain.js        | ⬜ Todo | #70   |
+| Integrate with Groq/OpenAI | ⬜ Todo | #71   |
+| Create chat API endpoint   | ⬜ Todo | #72   |
+| Build chat widget UI       | ⬜ Todo | #72   |
+| Basic FAQ responses        | ⬜ Todo | #72   |
 
 **Success Metrics:**
+
 - Response accuracy > 80%
 - Response time < 3 seconds
 - User satisfaction score baseline
@@ -206,15 +207,16 @@ AGENT_MAX_TOKENS=1024
 
 **Goal:** Multi-step workflows with tool integration
 
-| Task | Status | Issue |
-|------|--------|-------|
-| Add tool access (APIs) | ⬜ Todo | #73 |
-| Implement vector DB for RAG | ⬜ Todo | #73 |
-| Add conversation memory | ⬜ Todo | #73 |
-| Guardrails and safety | ⬜ Todo | #73 |
-| Content generation features | ⬜ Todo | #73 |
+| Task                        | Status  | Issue |
+| --------------------------- | ------- | ----- |
+| Add tool access (APIs)      | ⬜ Todo | #73   |
+| Implement vector DB for RAG | ⬜ Todo | #73   |
+| Add conversation memory     | ⬜ Todo | #73   |
+| Guardrails and safety       | ⬜ Todo | #73   |
+| Content generation features | ⬜ Todo | #73   |
 
 **Success Metrics:**
+
 - 95% uptime
 - Response accuracy > 90%
 - Successful workflow completion > 85%
@@ -223,14 +225,15 @@ AGENT_MAX_TOKENS=1024
 
 **Goal:** Fully autonomous DevOps assistant
 
-| Task | Status | Issue |
-|------|--------|-------|
-| GitHub Actions integration | ⬜ Todo | #74 |
-| Deployment monitoring | ⬜ Todo | #74 |
-| Auto-scaling capabilities | ⬜ Todo | #74 |
-| Cost optimization | ⬜ Todo | #74 |
+| Task                       | Status  | Issue |
+| -------------------------- | ------- | ----- |
+| GitHub Actions integration | ⬜ Todo | #74   |
+| Deployment monitoring      | ⬜ Todo | #74   |
+| Auto-scaling capabilities  | ⬜ Todo | #74   |
+| Cost optimization          | ⬜ Todo | #74   |
 
 **Success Metrics:**
+
 - 99.9% uptime
 - Cost savings > 20%
 - Mean time to resolution < 5 minutes
@@ -312,27 +315,29 @@ GET    /api/agent/status        # Check agent health
 
 ## Related GitHub Issues
 
-| Issue | Title | Status | Phase |
-|-------|-------|--------|-------|
-| [#69](https://github.com/feecon12/app.feecon.com/issues/69) | Define Agent's Purpose | ✅ In Progress | 1 |
-| [#70](https://github.com/feecon12/app.feecon.com/issues/70) | Pick Core Framework | ⬜ Todo | 1 |
-| [#71](https://github.com/feecon12/app.feecon.com/issues/71) | Connect to LLM | ⬜ Todo | 1 |
-| [#72](https://github.com/feecon12/app.feecon.com/issues/72) | Build Website Integration | ⬜ Todo | 2 |
-| [#73](https://github.com/feecon12/app.feecon.com/issues/73) | Add Autonomy | ⬜ Todo | 2 |
-| [#74](https://github.com/feecon12/app.feecon.com/issues/74) | Test & Iterate | ⬜ Todo | 3 |
-| [#75](https://github.com/feecon12/app.feecon.com/issues/75) | Starter Stack Reference | 📚 Reference | - |
+| Issue                                                       | Title                     | Status         | Phase |
+| ----------------------------------------------------------- | ------------------------- | -------------- | ----- |
+| [#69](https://github.com/feecon12/app.feecon.com/issues/69) | Define Agent's Purpose    | ✅ In Progress | 1     |
+| [#70](https://github.com/feecon12/app.feecon.com/issues/70) | Pick Core Framework       | ⬜ Todo        | 1     |
+| [#71](https://github.com/feecon12/app.feecon.com/issues/71) | Connect to LLM            | ⬜ Todo        | 1     |
+| [#72](https://github.com/feecon12/app.feecon.com/issues/72) | Build Website Integration | ⬜ Todo        | 2     |
+| [#73](https://github.com/feecon12/app.feecon.com/issues/73) | Add Autonomy              | ⬜ Todo        | 2     |
+| [#74](https://github.com/feecon12/app.feecon.com/issues/74) | Test & Iterate            | ⬜ Todo        | 3     |
+| [#75](https://github.com/feecon12/app.feecon.com/issues/75) | Starter Stack Reference   | 📚 Reference   | -     |
 
 ---
 
 ## Resources
 
 ### Documentation
+
 - [LangChain.js Docs](https://js.langchain.com/)
 - [Groq API Docs](https://console.groq.com/docs)
 - [OpenAI API Docs](https://platform.openai.com/docs)
 - [ChromaDB Docs](https://docs.trychroma.com/)
 
 ### Tutorials
+
 - [Building AI Agents with LangChain](https://js.langchain.com/docs/modules/agents/)
 - [RAG with LangChain](https://js.langchain.com/docs/modules/data_connection/)
 
@@ -340,11 +345,11 @@ GET    /api/agent/status        # Check agent health
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
-| 2026-01-03 | Initial roadmap created | AI Assistant |
+| Date       | Change                            | Author       |
+| ---------- | --------------------------------- | ------------ |
+| 2026-01-03 | Initial roadmap created           | AI Assistant |
 | 2026-01-03 | Agent purpose defined (Issue #69) | AI Assistant |
 
 ---
 
-*This document is maintained as part of the app.feecon.com project. For updates, see the [GitHub Project Board](https://github.com/users/feecon12/projects/2).*
+_This document is maintained as part of the app.feecon.com project. For updates, see the [GitHub Project Board](https://github.com/users/feecon12/projects/2)._
