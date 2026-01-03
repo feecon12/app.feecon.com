@@ -4,11 +4,28 @@ import Blog from "../models/blogModel";
 import Message from "../models/messageModel";
 import Project from "../models/projectModel";
 import Skill from "../models/skillModel";
+import { logAction } from "./agentActionLogger";
+import guardrails from "./agentGuardrails";
 
 /**
  * Agent Tools for the Website Agent
  * These tools allow the AI agent to interact with the website's data
+ * All tools now include action logging for audit trails
  */
+
+// Session context for logging (set by controller)
+let currentSessionId: string | null = null;
+let currentUserId: string | undefined = undefined;
+
+export const setToolContext = (sessionId: string, userId?: string) => {
+  currentSessionId = sessionId;
+  currentUserId = userId;
+};
+
+export const clearToolContext = () => {
+  currentSessionId = null;
+  currentUserId = undefined;
+};
 
 // Tool: Search Skills
 export const searchSkillsTool = new DynamicStructuredTool({
@@ -26,6 +43,7 @@ export const searchSkillsTool = new DynamicStructuredTool({
       .describe("Category to filter by (e.g., frontend, backend, database)"),
   }),
   func: async ({ query, category }: { query?: string; category?: string }) => {
+    const startTime = Date.now();
     try {
       const filter: Record<string, any> = {};
       if (category) {
@@ -34,16 +52,39 @@ export const searchSkillsTool = new DynamicStructuredTool({
 
       const skills = await Skill.find(filter).limit(20);
 
-      if (skills.length === 0) {
-        return "No skills found matching the criteria.";
+      const result = skills.length === 0
+        ? "No skills found matching the criteria."
+        : `Found ${skills.length} skills:\n${skills
+            .map((s: any) => `- ${s.name}${s.category ? ` (${s.category})` : ""}`)
+            .join("\n")}`;
+
+      // Log the action
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "search_skills",
+          input: { query, category },
+          output: { count: skills.length },
+          success: true,
+          durationMs: Date.now() - startTime,
+        });
       }
 
-      const skillsList = skills
-        .map((s: any) => `- ${s.name}${s.category ? ` (${s.category})` : ""}`)
-        .join("\n");
-
-      return `Found ${skills.length} skills:\n${skillsList}`;
+      return result;
     } catch (error) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "search_skills",
+          input: { query, category },
+          output: null,
+          success: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+          durationMs: Date.now() - startTime,
+        });
+      }
       return "Error searching skills. Please try again.";
     }
   },
@@ -71,6 +112,7 @@ export const searchProjectsTool = new DynamicStructuredTool({
     query?: string;
     technology?: string;
   }) => {
+    const startTime = Date.now();
     try {
       const filter: Record<string, any> = {};
       if (query) {
@@ -82,21 +124,43 @@ export const searchProjectsTool = new DynamicStructuredTool({
 
       const projects = await Project.find(filter).limit(10).sort("-createdAt");
 
-      if (projects.length === 0) {
-        return "No projects found matching the criteria.";
+      const result = projects.length === 0
+        ? "No projects found matching the criteria."
+        : `Found ${projects.length} projects:\n${projects
+            .map(
+              (p: any) =>
+                `- **${p.title}**: ${
+                  p.description?.substring(0, 100) || "No description"
+                }...${p.projectUrl ? ` [View](${p.projectUrl})` : ""}`
+            )
+            .join("\n")}`;
+
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "search_projects",
+          input: { query, technology },
+          output: { count: projects.length },
+          success: true,
+          durationMs: Date.now() - startTime,
+        });
       }
 
-      const projectsList = projects
-        .map(
-          (p: any) =>
-            `- **${p.title}**: ${
-              p.description?.substring(0, 100) || "No description"
-            }...${p.projectUrl ? ` [View](${p.projectUrl})` : ""}`
-        )
-        .join("\n");
-
-      return `Found ${projects.length} projects:\n${projectsList}`;
+      return result;
     } catch (error) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "search_projects",
+          input: { query, technology },
+          output: null,
+          success: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+          durationMs: Date.now() - startTime,
+        });
+      }
       return "Error searching projects. Please try again.";
     }
   },
@@ -115,6 +179,7 @@ export const searchBlogsTool = new DynamicStructuredTool({
     tag: z.string().optional().describe("Filter by tag"),
   }),
   func: async ({ query, tag }: { query?: string; tag?: string }) => {
+    const startTime = Date.now();
     try {
       const filter: Record<string, any> = { published: true };
       if (query) {
@@ -129,21 +194,43 @@ export const searchBlogsTool = new DynamicStructuredTool({
 
       const blogs = await Blog.find(filter).limit(10).sort("-createdAt");
 
-      if (blogs.length === 0) {
-        return "No blog posts found matching the criteria.";
+      const result = blogs.length === 0
+        ? "No blog posts found matching the criteria."
+        : `Found ${blogs.length} blog posts:\n${blogs
+            .map(
+              (b: any) =>
+                `- **${b.title}**: ${
+                  b.excerpt || b.content?.substring(0, 80) || ""
+                }...`
+            )
+            .join("\n")}`;
+
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "search_blogs",
+          input: { query, tag },
+          output: { count: blogs.length },
+          success: true,
+          durationMs: Date.now() - startTime,
+        });
       }
 
-      const blogsList = blogs
-        .map(
-          (b: any) =>
-            `- **${b.title}**: ${
-              b.excerpt || b.content?.substring(0, 80) || ""
-            }...`
-        )
-        .join("\n");
-
-      return `Found ${blogs.length} blog posts:\n${blogsList}`;
+      return result;
     } catch (error) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "search_blogs",
+          input: { query, tag },
+          output: null,
+          success: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+          durationMs: Date.now() - startTime,
+        });
+      }
       return "Error searching blogs. Please try again.";
     }
   },
@@ -158,6 +245,8 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
     question: z.string().describe("The FAQ question to answer"),
   }),
   func: async ({ question }: { question: string }) => {
+    const startTime = Date.now();
+    
     // FAQ knowledge base
     const faqs: Record<string, string> = {
       contact:
@@ -177,19 +266,39 @@ export const getFaqAnswerTool = new DynamicStructuredTool({
     };
 
     const questionLower = question.toLowerCase();
+    let matchedKey: string | null = null;
+    let answer: string;
 
     // Find matching FAQ
-    for (const [key, answer] of Object.entries(faqs)) {
+    for (const [key, value] of Object.entries(faqs)) {
       if (questionLower.includes(key)) {
-        return answer;
+        matchedKey = key;
+        answer = value;
+        break;
       }
     }
 
-    return "I don't have a specific FAQ answer for that. You can ask me about: contact info, services, experience, availability, pricing, technologies, or project timelines.";
+    if (!matchedKey) {
+      answer = "I don't have a specific FAQ answer for that. You can ask me about: contact info, services, experience, availability, pricing, technologies, or project timelines.";
+    }
+
+    if (currentSessionId) {
+      logAction({
+        sessionId: currentSessionId,
+        userId: currentUserId,
+        toolName: "get_faq_answer",
+        input: { question },
+        output: { matchedKey },
+        success: true,
+        durationMs: Date.now() - startTime,
+      });
+    }
+
+    return answer!;
   },
 });
 
-// Tool: Submit Contact Request
+// Tool: Submit Contact Request (Sensitive - includes guardrails)
 export const submitContactTool = new DynamicStructuredTool({
   name: "submit_contact",
   description:
@@ -211,17 +320,85 @@ export const submitContactTool = new DynamicStructuredTool({
     message: string;
     subject?: string;
   }) => {
+    const startTime = Date.now();
+    
+    // Validate input with guardrails
+    const validation = guardrails.validateInput(message);
+    if (validation.blocked) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "submit_contact",
+          input: { name, email, messageLength: message.length },
+          output: null,
+          success: false,
+          error: `Blocked: ${validation.reason}`,
+          durationMs: Date.now() - startTime,
+        });
+      }
+      return "Sorry, your message could not be submitted. Please try rephrasing your message.";
+    }
+
+    // Rate limit check for contact submissions
+    if (currentSessionId) {
+      const rateCheck = guardrails.checkSensitiveRateLimit(
+        currentSessionId,
+        "submit_contact",
+        3, // Max 3 contacts per session
+        300000 // 5 minute window
+      );
+      
+      if (!rateCheck.allowed) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "submit_contact",
+          input: { name, email },
+          output: null,
+          success: false,
+          error: "Rate limit exceeded",
+          durationMs: Date.now() - startTime,
+        });
+        return "You've submitted multiple contact requests recently. Please wait a few minutes before trying again.";
+      }
+    }
+
     try {
       await Message.create({
         name,
         email,
-        message,
+        message: validation.sanitizedInput || message,
         subject: subject || "Contact from AI Agent",
         source: "ai-agent",
       });
 
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "submit_contact",
+          input: { name, email, messageLength: message.length },
+          output: { success: true },
+          success: true,
+          durationMs: Date.now() - startTime,
+        });
+      }
+
       return `Thank you, ${name}! Your message has been submitted successfully. You'll receive a response at ${email} within 24-48 hours.`;
     } catch (error) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "submit_contact",
+          input: { name, email },
+          output: null,
+          success: false,
+          error: error instanceof Error ? error.message : "Unknown error",
+          durationMs: Date.now() - startTime,
+        });
+      }
       return "Sorry, there was an error submitting your message. Please try the contact form directly or email us.";
     }
   },
@@ -239,6 +416,8 @@ export const getBookingInfoTool = new DynamicStructuredTool({
       .describe("Type of booking inquiry"),
   }),
   func: async ({ type }: { type?: "consultation" | "project" | "general" }) => {
+    const startTime = Date.now();
+    
     const bookingInfo: Record<string, string> = {
       consultation:
         "For a consultation call, you can book a 30-minute discovery session. This helps us understand your project requirements and discuss potential solutions.",
@@ -248,10 +427,22 @@ export const getBookingInfoTool = new DynamicStructuredTool({
         "I offer various booking options: 30-min discovery calls, 1-hour technical consultations, and project kickoff sessions. Visit the booking page to see available slots.",
     };
 
-    return (
-      bookingInfo[type || "general"] +
-      "\n\nTo proceed, please visit the booking section on the website or let me know your preferred date/time."
-    );
+    const result = bookingInfo[type || "general"] +
+      "\n\nTo proceed, please visit the booking section on the website or let me know your preferred date/time.";
+
+    if (currentSessionId) {
+      logAction({
+        sessionId: currentSessionId,
+        userId: currentUserId,
+        toolName: "get_booking_info",
+        input: { type },
+        output: { infoType: type || "general" },
+        success: true,
+        durationMs: Date.now() - startTime,
+      });
+    }
+
+    return result;
   },
 });
 
