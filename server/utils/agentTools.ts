@@ -338,6 +338,24 @@ export const submitContactTool = new DynamicStructuredTool({
   }) => {
     const startTime = Date.now();
 
+    // Runtime email validation (schema validation removed for Groq API compatibility)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      if (currentSessionId) {
+        logAction({
+          sessionId: currentSessionId,
+          userId: currentUserId,
+          toolName: "submit_contact",
+          input: { name, email },
+          output: null,
+          success: false,
+          error: "Invalid email format",
+          durationMs: Date.now() - startTime,
+        });
+      }
+      return "Please provide a valid email address.";
+    }
+
     // Validate input with guardrails
     const validation = guardrails.validateInput(message);
     if (validation.blocked) {

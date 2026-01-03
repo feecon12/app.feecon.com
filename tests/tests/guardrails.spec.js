@@ -119,13 +119,22 @@ test.describe("Guardrails Patterns", () => {
 
   test.describe("Content Filtering", () => {
     test("should redact API keys", async () => {
-      const content = 'Your api_key="sk-1234567890abcdef123456"';
-      const filtered = content.replace(
+      // Test with equals format
+      const content1 = 'Your api_key="sk-1234567890abcdef123456"';
+      const filtered1 = content1.replace(
         /(?:api[_-]?key|secret|password|token)\s*[:=]\s*['"]?[\w-]{20,}['"]?/gi,
         "[REDACTED]"
       );
-      expect(filtered).toContain("[REDACTED]");
-      expect(filtered).not.toContain("sk-1234567890");
+      expect(filtered1).toContain("[REDACTED]");
+      expect(filtered1).not.toContain("sk-1234567890");
+
+      // Test with 'is' keyword format for comprehensive coverage
+      const content2 = 'Your api_key is "sk-1234567890abcdef123456"';
+      const filtered2 = content2.replace(
+        /(?:api[_-]?key|secret|password|token)\s*(?:is)?\s*[:=]?\s*['"]?[\w-]{20,}['"]?/gi,
+        "[REDACTED]"
+      );
+      expect(filtered2).toContain("[REDACTED]");
     });
 
     test("should redact file paths", async () => {
@@ -142,6 +151,7 @@ test.describe("Guardrails Patterns", () => {
       const ssnPattern = /\b\d{3}[-.]?\d{2}[-.]?\d{4}\b/;
       expect(ssnPattern.test("123-45-6789")).toBe(true);
       expect(ssnPattern.test("123.45.6789")).toBe(true);
+      expect(ssnPattern.test("123456789")).toBe(true); // 9 digits without separator also matches
       expect(ssnPattern.test("hello world")).toBe(false);
     });
 
