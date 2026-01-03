@@ -1,12 +1,14 @@
 import { Router } from "express";
+import rateLimit from "express-rate-limit";
 import {
   chatHandler,
-  getHistory,
-  submitFeedback,
   clearSession,
+  getHistory,
   getStatus,
+  getUsageStats,
+  healthCheck,
+  submitFeedback,
 } from "../controllers/agentController";
-import rateLimit from "express-rate-limit";
 
 const router = Router();
 
@@ -51,9 +53,23 @@ router.delete("/session/:sessionId", clearSession);
 
 /**
  * @route   GET /api/agent/status
- * @desc    Get agent status and health check
+ * @desc    Get agent status and configuration
  * @access  Public
  */
 router.get("/status", getStatus);
+
+/**
+ * @route   GET /api/agent/usage
+ * @desc    Get LLM usage statistics
+ * @access  Admin (TODO: add auth middleware)
+ */
+router.get("/usage", getUsageStats);
+
+/**
+ * @route   GET /api/agent/health
+ * @desc    Quick health check with provider latency
+ * @access  Public
+ */
+router.get("/health", healthCheck);
 
 export default router;

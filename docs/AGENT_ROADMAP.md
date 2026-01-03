@@ -169,16 +169,31 @@ npm install ws socket.io socket.io-client
 ### Environment Variables
 
 ```env
-# Existing
-GROQ_API_KEY=gsk_...
+# LLM Provider API Keys (at least one required)
+GROQ_API_KEY=gsk_...           # Primary: Groq (free tier available)
+OPENAI_API_KEY=sk-...          # Optional: OpenAI (fallback)
+ANTHROPIC_API_KEY=...          # Optional: Anthropic Claude (fallback)
 
-# New (for agent)
-OPENAI_API_KEY=sk-...          # Optional: for GPT models
+# Model Configuration
+GROQ_MODEL=llama-3.1-70b-versatile   # Groq model selection
+OPENAI_MODEL=gpt-4o-mini             # OpenAI model selection
+ANTHROPIC_MODEL=claude-3-haiku-20240307  # Anthropic model selection
+
+# Agent Settings
+AGENT_TEMPERATURE=0.7                # Creativity (0.0-1.0)
+AGENT_MAX_TOKENS=1024                # Max response length
+AGENT_RATE_LIMIT=30                  # Requests per minute per session
+
+# Vector DB (future)
 VECTOR_DB_PATH=./data/vectors
-AGENT_MODEL=llama3-8b-8192     # or gpt-4
-AGENT_TEMPERATURE=0.7
-AGENT_MAX_TOKENS=1024
 ```
+
+### LLM Provider Priority
+
+The system uses a fallback order for LLM providers:
+1. **Groq** (Primary) - Free tier, fast inference, LLaMA 3.1 models
+2. **OpenAI** (Fallback) - GPT-4o models, higher accuracy
+3. **Anthropic** (Fallback) - Claude models, best for long conversations
 
 ---
 
@@ -191,8 +206,8 @@ AGENT_MAX_TOKENS=1024
 | Task                       | Status  | Issue |
 | -------------------------- | ------- | ----- |
 | Define agent purpose       | ✅ Done | #69   |
-| Set up LangChain.js        | ⬜ Todo | #70   |
-| Integrate with Groq/OpenAI | ⬜ Todo | #71   |
+| Set up LangChain.js        | ✅ Done | #70   |
+| Integrate with Groq/OpenAI | ✅ Done | #71   |
 | Create chat API endpoint   | ⬜ Todo | #72   |
 | Build chat widget UI       | ⬜ Todo | #72   |
 | Basic FAQ responses        | ⬜ Todo | #72   |

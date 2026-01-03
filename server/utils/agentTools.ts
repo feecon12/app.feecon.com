@@ -1,9 +1,9 @@
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
-import Skill from "../models/skillModel";
-import Project from "../models/projectModel";
 import Blog from "../models/blogModel";
 import Message from "../models/messageModel";
+import Project from "../models/projectModel";
+import Skill from "../models/skillModel";
 
 /**
  * Agent Tools for the Website Agent
@@ -64,7 +64,13 @@ export const searchProjectsTool = new DynamicStructuredTool({
       .optional()
       .describe("Filter by technology used (e.g., React, Node.js)"),
   }),
-  func: async ({ query, technology }: { query?: string; technology?: string }) => {
+  func: async ({
+    query,
+    technology,
+  }: {
+    query?: string;
+    technology?: string;
+  }) => {
     try {
       const filter: Record<string, any> = {};
       if (query) {
@@ -83,7 +89,9 @@ export const searchProjectsTool = new DynamicStructuredTool({
       const projectsList = projects
         .map(
           (p: any) =>
-            `- **${p.title}**: ${p.description?.substring(0, 100) || "No description"}...${p.projectUrl ? ` [View](${p.projectUrl})` : ""}`
+            `- **${p.title}**: ${
+              p.description?.substring(0, 100) || "No description"
+            }...${p.projectUrl ? ` [View](${p.projectUrl})` : ""}`
         )
         .join("\n");
 
@@ -128,7 +136,9 @@ export const searchBlogsTool = new DynamicStructuredTool({
       const blogsList = blogs
         .map(
           (b: any) =>
-            `- **${b.title}**: ${b.excerpt || b.content?.substring(0, 80) || ""}...`
+            `- **${b.title}**: ${
+              b.excerpt || b.content?.substring(0, 80) || ""
+            }...`
         )
         .join("\n");
 
@@ -190,7 +200,17 @@ export const submitContactTool = new DynamicStructuredTool({
     message: z.string().describe("The message or inquiry"),
     subject: z.string().optional().describe("Subject of the message"),
   }),
-  func: async ({ name, email, message, subject }: { name: string; email: string; message: string; subject?: string }) => {
+  func: async ({
+    name,
+    email,
+    message,
+    subject,
+  }: {
+    name: string;
+    email: string;
+    message: string;
+    subject?: string;
+  }) => {
     try {
       await Message.create({
         name,
