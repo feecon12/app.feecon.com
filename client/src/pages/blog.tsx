@@ -111,7 +111,7 @@ const BlogPage: React.FC = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-12 gap-24 gap-y-32 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0">
+            <div className="grid grid-cols-12 gap-24 gap-y-32 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0 ">
               {blogs.map((blog) => (
                 <motion.article
                   key={blog._id}
@@ -141,7 +141,7 @@ const BlogPage: React.FC = () => {
                     </div>
                   )}
 
-                  <h2 className="text-2xl font-bold mb-2 line-clamp-2">
+                  <h2 className="text-2xl font-bold mt-2 mb-2 line-clamp-2 dark:text-gray-300">
                     {blog.title}
                   </h2>
 

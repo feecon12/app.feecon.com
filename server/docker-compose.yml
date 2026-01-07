@@ -1,22 +1,53 @@
-version: '3.8'
+version: "3.8"
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7
     container_name: feecon-mongo
     ports:
-      - "27017:27017"
+      - "27017:27017" # expose only if you need local tooling access
     environment:
       MONGO_INITDB_DATABASE: feecon
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "bash",
+          "-c",
+          "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 
   server:
-    build: 
+    build:
       context: .
     container_name: feecon-server
     ports:
       - "3002:3001"
     env_file:
-     - .env
+      - .env
     environment:
+      PORT: 3001
+      ENV: production
       DB_URI: mongodb://mongo:27017/feecon
     depends_on:
-      - mongo
+      mongo:
+        condition: service_started
+    volumes:
+      - uploads:/server/uploads
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  mongo-data:
+  uploads:
